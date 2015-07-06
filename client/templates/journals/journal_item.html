@@ -1,0 +1,12 @@
+<template name="journalItem">
+    <div class="journal">
+        <div class="journal-content">
+            <h3>{{title}} <span>{{formatedDate}}</span></h3>
+            <p>
+                submitted by {{author}}
+                {{#if ownJournal}}<a href="{{pathFor 'journalEdit'}}">Edit</a>{{/if}}
+            </p>
+            <a href="{{pathFor 'journalPage'}}" class="discuss btn btn-default">Discuss</a>
+        </div>
+    </div>
+</template>
