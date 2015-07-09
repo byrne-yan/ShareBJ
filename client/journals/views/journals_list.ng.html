@@ -1,0 +1,50 @@
+<div ng-controller="JournalsListCtrl">
+    <div class="bar bar-header bar-dark">
+        <h1 class="title">宝宝日记</h1>
+        <button class="button button-clear" href="/photos">
+            <i class="icon ion-ios-camera-outline "></i>
+        </button>
+
+    </div>
+
+    <ion-content class="has-header" ng-controller="JournalsListCtrl">
+        <ion-list >
+            <ion-item ng-repeat="journal in journals">
+                <div class="item item-thumbnail-left item-text-wrap" href="#">
+                    <img ng-src="{{journal.author.avatar}}"/>
+                    <h2>{{journal.author.name}}</h2>
+                    <p>{{journal.description | limitTo:40}}{{journal.description.length > 40 ? '&hellip;':''}}</p>
+                </div>
+                <div class="row" >
+                    <div class="col col-80 col-offset-20">
+                        <div class="row">
+                            <div class="col col-33 " ng-repeat="image in journal.images">
+                                <img ng-src="{{image.url}}" width="100%"/>
+                            </div>
+                        </div>
+                        <div>{{postDateAbout(journal.createAt)}}</div>
+                    </div>
+                </div>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+
+    <!--<div class="bar bar-footer bar-balanced">-->
+        <!--<div class="title">ShareBJ</div>-->
+        <!--<ion-tabs class="tabs-positive tabs-icon-only">-->
+
+            <!--<ion-tab title="Home" icon-on="ion-ios-filing" icon-off="ion-ios-filing-outline">-->
+                <!--&lt;!&ndash; Tab 1 content &ndash;&gt;-->
+            <!--</ion-tab>-->
+
+            <!--<ion-tab title="About" icon-on="ion-ios-clock" icon-off="ion-ios-clock-outline">-->
+                <!--&lt;!&ndash; Tab 2 content &ndash;&gt;-->
+            <!--</ion-tab>-->
+
+            <!--<ion-tab title="Settings" icon-on="ion-ios-gear" icon-off="ion-ios-gear-outline">-->
+                <!--&lt;!&ndash; Tab 3 content &ndash;&gt;-->
+            <!--</ion-tab>-->
+
+        <!--</ion-tabs>-->
+    <!--</div>-->
+</div>

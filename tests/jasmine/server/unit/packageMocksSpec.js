@@ -7086,7 +7086,7 @@ var packageMetadata = {
                 },
                 "version": {
                   "type": "constant",
-                  "value": "f1e98ed748e2fa4a3aa87d86401cbde66dcae308"
+                  "value": "837d11450ad600b8f24103e3e76002b93ff3f06e"
                 },
                 "PUBLIC_SETTINGS": {
                   "type": "undefined"
@@ -7833,12 +7833,6 @@ var packageMetadata = {
                 },
                 "deny": {
                   "type": "function"
-                },
-                "attachSchema": {
-                  "type": "function"
-                },
-                "simpleSchema": {
-                  "type": "function"
                 }
               }
             }
@@ -7859,11 +7853,11 @@ var packageMetadata = {
       "members": {
         "autoupdateVersion": {
           "type": "constant",
-          "value": "b1060438d6b4496adbcbebcd057c64ebc3574003"
+          "value": "db42bc909dc8ee47316d416d47f191812226a835"
         },
         "autoupdateVersionRefreshable": {
           "type": "constant",
-          "value": "5d4ce88969cfa52a62fde0808705f92c6f8eb4e8"
+          "value": "a3f27fbd23e7ce3fd72d65c0f901a0c7f206eeb2"
         },
         "autoupdateVersionCordova": {
           "type": "constant",
@@ -7878,850 +7872,6 @@ var packageMetadata = {
   },
   "meteor-platform": {},
   "bootstrap": {},
-  "iron:core": {
-    "Iron": {
-      "type": "object",
-      "members": {
-        "utils": {
-          "type": "object",
-          "members": {
-            "assert": {
-              "type": "function"
-            },
-            "warn": {
-              "type": "function"
-            },
-            "defaultValue": {
-              "type": "function"
-            },
-            "inherits": {
-              "type": "function"
-            },
-            "extend": {
-              "type": "function"
-            },
-            "namespace": {
-              "type": "function"
-            },
-            "resolve": {
-              "type": "function"
-            },
-            "capitalize": {
-              "type": "function"
-            },
-            "classCase": {
-              "type": "function"
-            },
-            "camelCase": {
-              "type": "function"
-            },
-            "notifyDeprecated": {
-              "type": "function"
-            },
-            "withDeprecatedNotice": {
-              "type": "function"
-            },
-            "debug": {
-              "type": "function"
-            },
-            "get": {
-              "type": "function"
-            }
-          }
-        },
-        "DynamicTemplate": {
-          "type": "function",
-          "members": {
-            "getParentDataContext": {
-              "type": "function",
-              "refID": 31
-            },
-            "getDataContext": {
-              "type": "function",
-              "refID": 33
-            },
-            "getInclusionArguments": {
-              "type": "function",
-              "refID": 35
-            },
-            "args": {
-              "type": "function",
-              "refID": 37
-            },
-            "extend": {
-              "type": "function",
-              "refID": 39
-            },
-            "findFirstLookupHost": {
-              "type": "function",
-              "refID": 41
-            },
-            "findLookupHostWithProperty": {
-              "type": "function",
-              "refID": 43
-            },
-            "findLookupHostWithHelper": {
-              "type": "function",
-              "refID": 45
-            },
-            "prototype": {
-              "type": "object",
-              "members": {
-                "template": {
-                  "type": "function",
-                  "refID": 48
-                },
-                "defaultTemplate": {
-                  "type": "function",
-                  "refID": 50
-                },
-                "clear": {
-                  "type": "function"
-                },
-                "data": {
-                  "type": "function",
-                  "refID": 54
-                },
-                "create": {
-                  "type": "function",
-                  "refID": 56
-                },
-                "renderView": {
-                  "type": "function",
-                  "refID": 58
-                },
-                "destroy": {
-                  "type": "function",
-                  "refID": 60
-                },
-                "onViewCreated": {
-                  "type": "function",
-                  "refID": 62
-                },
-                "onViewReady": {
-                  "type": "function",
-                  "refID": 64
-                },
-                "onViewDestroyed": {
-                  "type": "function",
-                  "refID": 66
-                },
-                "events": {
-                  "type": "function",
-                  "refID": 68
-                },
-                "insert": {
-                  "type": "function",
-                  "refID": 70
-                }
-              }
-            }
-          }
-        },
-        "Layout": {
-          "type": "function",
-          "refID": 72,
-          "members": {
-            "DEFAULT_REGION": {
-              "type": "constant",
-              "value": "main"
-            },
-            "getParentDataContext": {
-              "ref": 31
-            },
-            "getDataContext": {
-              "ref": 33
-            },
-            "getInclusionArguments": {
-              "ref": 35
-            },
-            "args": {
-              "ref": 37
-            },
-            "extend": {
-              "ref": 39
-            },
-            "findFirstLookupHost": {
-              "ref": 41
-            },
-            "findLookupHostWithProperty": {
-              "ref": 43
-            },
-            "findLookupHostWithHelper": {
-              "ref": 45
-            },
-            "prototype": {
-              "type": "object",
-              "members": {
-                "constructor": {
-                  "ref": 72
-                },
-                "region": {
-                  "type": "function"
-                },
-                "destroyRegions": {
-                  "type": "function"
-                },
-                "render": {
-                  "type": "function"
-                },
-                "has": {
-                  "type": "function"
-                },
-                "regionKeys": {
-                  "type": "function"
-                },
-                "clear": {
-                  "type": "function"
-                },
-                "clearAll": {
-                  "type": "function"
-                },
-                "beginRendering": {
-                  "type": "function"
-                },
-                "onRegionCreated": {
-                  "type": "function"
-                },
-                "onRegionRendered": {
-                  "type": "function"
-                },
-                "onRegionDestroyed": {
-                  "type": "function"
-                },
-                "template": {
-                  "ref": 48
-                },
-                "defaultTemplate": {
-                  "ref": 50
-                },
-                "data": {
-                  "ref": 54
-                },
-                "create": {
-                  "ref": 56
-                },
-                "renderView": {
-                  "ref": 58
-                },
-                "destroy": {
-                  "ref": 60
-                },
-                "onViewCreated": {
-                  "ref": 62
-                },
-                "onViewReady": {
-                  "ref": 64
-                },
-                "onViewDestroyed": {
-                  "ref": 66
-                },
-                "events": {
-                  "ref": 68
-                },
-                "insert": {
-                  "ref": 70
-                }
-              }
-            }
-          }
-        },
-        "Url": {
-          "type": "function",
-          "members": {
-            "normalize": {
-              "type": "function"
-            },
-            "isSameOrigin": {
-              "type": "function"
-            },
-            "fromQueryString": {
-              "type": "function"
-            },
-            "toQueryString": {
-              "type": "function"
-            },
-            "parse": {
-              "type": "function"
-            },
-            "prototype": {
-              "type": "object",
-              "members": {
-                "test": {
-                  "type": "function"
-                },
-                "exec": {
-                  "type": "function"
-                },
-                "params": {
-                  "type": "function"
-                },
-                "resolve": {
-                  "type": "function"
-                }
-              }
-            }
-          }
-        },
-        "MiddlewareStack": {
-          "type": "function",
-          "members": {
-            "prototype": {
-              "type": "object",
-              "members": {
-                "findByName": {
-                  "type": "function"
-                },
-                "push": {
-                  "type": "function"
-                },
-                "append": {
-                  "type": "function"
-                },
-                "insertAt": {
-                  "type": "function"
-                },
-                "insertBefore": {
-                  "type": "function"
-                },
-                "insertAfter": {
-                  "type": "function"
-                },
-                "concat": {
-                  "type": "function"
-                },
-                "dispatch": {
-                  "type": "function"
-                }
-              }
-            }
-          }
-        },
-        "Controller": {
-          "type": "function",
-          "members": {
-            "extend": {
-              "type": "function",
-              "refID": 135
-            },
-            "events": {
-              "type": "function",
-              "refID": 137
-            },
-            "helpers": {
-              "type": "function",
-              "refID": 139
-            },
-            "prototype": {
-              "type": "object",
-              "members": {
-                "layout": {
-                  "type": "function",
-                  "refID": 142
-                },
-                "render": {
-                  "type": "function",
-                  "refID": 144
-                },
-                "beginRendering": {
-                  "type": "function",
-                  "refID": 146
-                },
-                "init": {
-                  "type": "function"
-                },
-                "wait": {
-                  "type": "function",
-                  "refID": 150
-                },
-                "ready": {
-                  "type": "function",
-                  "refID": 152
-                }
-              }
-            }
-          }
-        },
-        "RouteController": {
-          "type": "function",
-          "members": {
-            "extend": {
-              "ref": 135
-            },
-            "events": {
-              "ref": 137
-            },
-            "helpers": {
-              "ref": 139
-            },
-            "prototype": {
-              "type": "object",
-              "members": {
-                "constructor": {
-                  "type": "function"
-                },
-                "lookupOption": {
-                  "type": "function"
-                },
-                "configureFromUrl": {
-                  "type": "function"
-                },
-                "runHooks": {
-                  "type": "function"
-                },
-                "getParams": {
-                  "type": "function"
-                },
-                "setParams": {
-                  "type": "function"
-                },
-                "init": {
-                  "type": "function"
-                },
-                "dispatch": {
-                  "type": "function"
-                },
-                "layout": {
-                  "ref": 142
-                },
-                "render": {
-                  "ref": 144
-                },
-                "beginRendering": {
-                  "ref": 146
-                },
-                "wait": {
-                  "ref": 150
-                },
-                "ready": {
-                  "ref": 152
-                }
-              }
-            }
-          }
-        },
-        "Route": {
-          "type": "function",
-          "members": {
-            "prototype": {
-              "type": "object",
-              "members": {
-                "getName": {
-                  "type": "function"
-                },
-                "findControllerConstructor": {
-                  "type": "function"
-                },
-                "createController": {
-                  "type": "function"
-                },
-                "setControllerParams": {
-                  "type": "function"
-                },
-                "dispatch": {
-                  "type": "function"
-                },
-                "path": {
-                  "type": "function"
-                },
-                "url": {
-                  "type": "function"
-                },
-                "params": {
-                  "type": "function"
-                },
-                "get": {
-                  "type": "function"
-                },
-                "post": {
-                  "type": "function"
-                },
-                "put": {
-                  "type": "function"
-                },
-                "delete": {
-                  "type": "function"
-                },
-                "patch": {
-                  "type": "function"
-                }
-              }
-            }
-          }
-        },
-        "Router": {
-          "type": "function",
-          "members": {
-            "HOOK_TYPES": {
-              "type": "array"
-            },
-            "hooks": {
-              "type": "object",
-              "members": {
-                "loading": {
-                  "type": "function"
-                },
-                "dataNotFound": {
-                  "type": "function"
-                }
-              }
-            },
-            "plugins": {
-              "type": "object",
-              "members": {
-                "loading": {
-                  "type": "function"
-                },
-                "dataNotFound": {
-                  "type": "function"
-                }
-              }
-            },
-            "bodyParser": {
-              "type": "function",
-              "members": {
-                "json": {
-                  "type": "function"
-                },
-                "raw": {
-                  "type": "function"
-                },
-                "text": {
-                  "type": "function"
-                },
-                "urlencoded": {
-                  "type": "function"
-                }
-              }
-            },
-            "prototype": {
-              "type": "object",
-              "members": {
-                "init": {
-                  "type": "function"
-                },
-                "configure": {
-                  "type": "function"
-                },
-                "map": {
-                  "type": "function"
-                },
-                "route": {
-                  "type": "function"
-                },
-                "findFirstRoute": {
-                  "type": "function"
-                },
-                "path": {
-                  "type": "function"
-                },
-                "url": {
-                  "type": "function"
-                },
-                "createController": {
-                  "type": "function"
-                },
-                "setTemplateNameConverter": {
-                  "type": "function"
-                },
-                "setControllerNameConverter": {
-                  "type": "function"
-                },
-                "toTemplateName": {
-                  "type": "function"
-                },
-                "toControllerName": {
-                  "type": "function"
-                },
-                "addHook": {
-                  "type": "function"
-                },
-                "lookupHook": {
-                  "type": "function"
-                },
-                "getHooks": {
-                  "type": "function"
-                },
-                "onRun": {
-                  "type": "function"
-                },
-                "onRerun": {
-                  "type": "function"
-                },
-                "onBeforeAction": {
-                  "type": "function"
-                },
-                "onAfterAction": {
-                  "type": "function"
-                },
-                "onStop": {
-                  "type": "function"
-                },
-                "waitOn": {
-                  "type": "function"
-                },
-                "subscriptions": {
-                  "type": "function"
-                },
-                "load": {
-                  "type": "function"
-                },
-                "before": {
-                  "type": "function"
-                },
-                "after": {
-                  "type": "function"
-                },
-                "unload": {
-                  "type": "function"
-                },
-                "plugin": {
-                  "type": "function"
-                },
-                "configureBodyParsers": {
-                  "type": "function"
-                },
-                "start": {
-                  "type": "function"
-                },
-                "dispatch": {
-                  "type": "function"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "iron:dynamic-template": {},
-  "iron:layout": {},
-  "iron:url": {},
-  "iron:middleware-stack": {
-    "Handler": {
-      "type": "function",
-      "members": {
-        "prototype": {
-          "type": "object",
-          "members": {
-            "test": {
-              "type": "function"
-            },
-            "params": {
-              "type": "function"
-            },
-            "resolve": {
-              "type": "function"
-            },
-            "clone": {
-              "type": "function"
-            }
-          }
-        }
-      }
-    }
-  },
-  "iron:location": {},
-  "reactive-dict": {
-    "ReactiveDict": {
-      "type": "function",
-      "members": {
-        "prototype": {
-          "type": "object",
-          "members": {
-            "set": {
-              "type": "function"
-            },
-            "setDefault": {
-              "type": "function"
-            },
-            "get": {
-              "type": "function"
-            },
-            "equals": {
-              "type": "function"
-            }
-          }
-        }
-      }
-    }
-  },
-  "iron:controller": {},
-  "iron:router": {
-    "Router": {
-      "type": "function",
-      "members": {
-        "routes": {
-          "type": "array"
-        },
-        "options": {
-          "type": "object",
-          "members": {
-            "layoutTemplate": {
-              "type": "constant",
-              "value": "layout"
-            },
-            "loadingTemplate": {
-              "type": "constant",
-              "value": "loading"
-            },
-            "notFoundTemplate": {
-              "type": "constant",
-              "value": "notFound"
-            }
-          }
-        },
-        "init": {
-          "type": "function"
-        },
-        "configure": {
-          "type": "function"
-        },
-        "map": {
-          "type": "function"
-        },
-        "route": {
-          "type": "function"
-        },
-        "findFirstRoute": {
-          "type": "function"
-        },
-        "path": {
-          "type": "function"
-        },
-        "url": {
-          "type": "function"
-        },
-        "createController": {
-          "type": "function"
-        },
-        "setTemplateNameConverter": {
-          "type": "function"
-        },
-        "setControllerNameConverter": {
-          "type": "function"
-        },
-        "toTemplateName": {
-          "type": "function"
-        },
-        "toControllerName": {
-          "type": "function"
-        },
-        "addHook": {
-          "type": "function"
-        },
-        "lookupHook": {
-          "type": "function"
-        },
-        "getHooks": {
-          "type": "function"
-        },
-        "onRun": {
-          "type": "function"
-        },
-        "onRerun": {
-          "type": "function"
-        },
-        "onBeforeAction": {
-          "type": "function"
-        },
-        "onAfterAction": {
-          "type": "function"
-        },
-        "onStop": {
-          "type": "function"
-        },
-        "waitOn": {
-          "type": "function"
-        },
-        "subscriptions": {
-          "type": "function"
-        },
-        "load": {
-          "type": "function"
-        },
-        "before": {
-          "type": "function"
-        },
-        "after": {
-          "type": "function"
-        },
-        "unload": {
-          "type": "function"
-        },
-        "plugin": {
-          "type": "function"
-        },
-        "configureBodyParsers": {
-          "type": "function"
-        },
-        "start": {
-          "type": "function"
-        },
-        "dispatch": {
-          "type": "function"
-        }
-      }
-    },
-    "RouteController": {
-      "type": "function",
-      "members": {
-        "extend": {
-          "type": "function"
-        },
-        "events": {
-          "type": "function"
-        },
-        "helpers": {
-          "type": "function"
-        },
-        "prototype": {
-          "type": "object",
-          "members": {
-            "constructor": {
-              "type": "function"
-            },
-            "lookupOption": {
-              "type": "function"
-            },
-            "configureFromUrl": {
-              "type": "function"
-            },
-            "runHooks": {
-              "type": "function"
-            },
-            "getParams": {
-              "type": "function"
-            },
-            "setParams": {
-              "type": "function"
-            },
-            "init": {
-              "type": "function"
-            },
-            "dispatch": {
-              "type": "function"
-            },
-            "layout": {
-              "type": "function"
-            },
-            "render": {
-              "type": "function"
-            },
-            "beginRendering": {
-              "type": "function"
-            },
-            "wait": {
-              "type": "function"
-            },
-            "ready": {
-              "type": "function"
-            }
-          }
-        }
-      }
-    }
-  },
   "sacha:spin": {},
   "twbs:bootstrap": {},
   "npm-bcrypt": {
@@ -8904,12 +8054,6 @@ var packageMetadata = {
               "type": "function"
             },
             "deny": {
-              "type": "function"
-            },
-            "attachSchema": {
-              "type": "function"
-            },
-            "simpleSchema": {
               "type": "function"
             }
           }
@@ -9573,12 +8717,6 @@ var packageMetadata = {
         },
         "deny": {
           "type": "function"
-        },
-        "attachSchema": {
-          "type": "function"
-        },
-        "simpleSchema": {
-          "type": "function"
         }
       }
     },
@@ -9613,12 +8751,6 @@ var packageMetadata = {
           "type": "function"
         },
         "deny": {
-          "type": "function"
-        },
-        "attachSchema": {
-          "type": "function"
-        },
-        "simpleSchema": {
           "type": "function"
         }
       }
@@ -9655,12 +8787,6 @@ var packageMetadata = {
         },
         "deny": {
           "type": "function"
-        },
-        "attachSchema": {
-          "type": "function"
-        },
-        "simpleSchema": {
-          "type": "function"
         }
       }
     },
@@ -9695,12 +8821,6 @@ var packageMetadata = {
           "type": "function"
         },
         "deny": {
-          "type": "function"
-        },
-        "attachSchema": {
-          "type": "function"
-        },
-        "simpleSchema": {
           "type": "function"
         }
       }
@@ -9737,12 +8857,6 @@ var packageMetadata = {
         },
         "deny": {
           "type": "function"
-        },
-        "attachSchema": {
-          "type": "function"
-        },
-        "simpleSchema": {
-          "type": "function"
         }
       }
     },
@@ -9778,12 +8892,6 @@ var packageMetadata = {
         },
         "deny": {
           "type": "function"
-        },
-        "attachSchema": {
-          "type": "function"
-        },
-        "simpleSchema": {
-          "type": "function"
         }
       }
     },
@@ -9818,12 +8926,6 @@ var packageMetadata = {
           "type": "function"
         },
         "deny": {
-          "type": "function"
-        },
-        "attachSchema": {
-          "type": "function"
-        },
-        "simpleSchema": {
           "type": "function"
         }
       }
@@ -9875,7 +8977,84 @@ var packageMetadata = {
                 },
                 "pid": {
                   "type": "constant",
-                  "value": 520
+                  "value": 4120
+                },
+                "fout": {
+                  "type": "constant",
+                  "value": 4
+                },
+                "child": {
+                  "type": "object",
+                  "members": {
+                    "domain": {
+                      "type": "null",
+                      "value": null
+                    },
+                    "signalCode": {
+                      "type": "null",
+                      "value": null
+                    },
+                    "exitCode": {
+                      "type": "null",
+                      "value": null
+                    },
+                    "pid": {
+                      "type": "constant",
+                      "value": 4120
+                    },
+                    "stdin": {
+                      "type": "null",
+                      "value": null
+                    },
+                    "stdout": {
+                      "type": "null",
+                      "value": null
+                    },
+                    "stderr": {
+                      "type": "null",
+                      "value": null
+                    },
+                    "stdio": {
+                      "type": "array"
+                    },
+                    "spawn": {
+                      "type": "function"
+                    },
+                    "kill": {
+                      "type": "function"
+                    },
+                    "ref": {
+                      "type": "function"
+                    },
+                    "unref": {
+                      "type": "function"
+                    },
+                    "setMaxListeners": {
+                      "type": "function"
+                    },
+                    "emit": {
+                      "type": "function"
+                    },
+                    "addListener": {
+                      "type": "function",
+                      "refID": 17
+                    },
+                    "on": {
+                      "ref": 17
+                    },
+                    "once": {
+                      "type": "function"
+                    },
+                    "removeListener": {
+                      "type": "function"
+                    },
+                    "removeAllListeners": {
+                      "type": "function"
+                    },
+                    "listeners": {
+                      "type": "function"
+                    }
+                  }
                 },
                 "getTaskName": {
                   "type": "function"
@@ -9942,115 +9121,9 @@ var packageMetadata = {
       }
     }
   },
-  "aldeed:simple-schema": {
-    "SimpleSchema": {
-      "type": "function",
-      "members": {
-        "extendOptions": {
-          "type": "function"
-        },
-        "RegEx": {
-          "type": "object",
-          "members": {
-            "Email": {
-              "type": "regexp"
-            },
-            "Domain": {
-              "type": "regexp"
-            },
-            "WeakDomain": {
-              "type": "regexp"
-            },
-            "IP": {
-              "type": "regexp"
-            },
-            "IPv4": {
-              "type": "regexp"
-            },
-            "IPv6": {
-              "type": "regexp"
-            },
-            "Url": {
-              "type": "regexp"
-            },
-            "Id": {
-              "type": "regexp"
-            }
-          }
-        },
-        "addValidator": {
-          "type": "function"
-        },
-        "messages": {
-          "type": "function"
-        },
-        "prototype": {
-          "type": "object",
-          "members": {
-            "condition": {
-              "type": "function"
-            },
-            "namedContext": {
-              "type": "function"
-            },
-            "validator": {
-              "type": "function",
-              "refID": 21
-            },
-            "addValidator": {
-              "ref": 21
-            },
-            "pick": {
-              "type": "function"
-            },
-            "clean": {
-              "type": "function"
-            },
-            "schema": {
-              "type": "function"
-            },
-            "getDefinition": {
-              "type": "function"
-            },
-            "keyIsInBlackBox": {
-              "type": "function"
-            },
-            "labels": {
-              "type": "function"
-            },
-            "label": {
-              "type": "function"
-            },
-            "messages": {
-              "type": "function"
-            },
-            "messageForError": {
-              "type": "function"
-            },
-            "allowsKey": {
-              "type": "function"
-            },
-            "newContext": {
-              "type": "function"
-            },
-            "objectKeys": {
-              "type": "function"
-            }
-          }
-        }
-      }
-    },
-    "MongoObject": {
-      "type": "function",
-      "members": {
-        "expandKey": {
-          "type": "function"
-        }
-      }
-    }
-  },
-  "aldeed:autoform": {},
-  "aldeed:collection2": {},
+  "urigo:angular": {},
+  "angularui:angular-ui-router": {},
+  "urigo:ionic": {},
   "session": {},
   "livedata": {
     "DDP": {
@@ -10156,12 +9229,6 @@ var packageMetadata = {
               "type": "function"
             },
             "deny": {
-              "type": "function"
-            },
-            "attachSchema": {
-              "type": "function"
-            },
-            "simpleSchema": {
               "type": "function"
             }
           }
