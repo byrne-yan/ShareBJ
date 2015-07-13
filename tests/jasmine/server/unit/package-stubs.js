@@ -7085,7 +7085,22 @@ var packageMetadata = {
                 },
                 "version": {
                   "type": "constant",
-                  "value": "837d11450ad600b8f24103e3e76002b93ff3f06e"
+                  "value": "3aaca21307932d35c52044de92113ffdb8f4fe35"
+                },
+                "PUBLIC_SETTINGS": {
+                  "type": "undefined"
+                }
+              }
+            },
+            "web.cordova": {
+              "type": "object",
+              "members": {
+                "manifest": {
+                  "type": "array"
+                },
+                "version": {
+                  "type": "constant",
+                  "value": "0724d184528379797d061a3381ae7ea0c40a7285"
                 },
                 "PUBLIC_SETTINGS": {
                   "type": "undefined"
@@ -7105,46 +7120,46 @@ var packageMetadata = {
           "members": {
             "use": {
               "type": "function",
-              "refID": 9
+              "refID": 11
             },
             "handle": {
               "type": "function",
-              "refID": 11
+              "refID": 13
             },
             "listen": {
               "type": "function",
-              "refID": 13
+              "refID": 15
             },
             "setMaxListeners": {
               "type": "function",
-              "refID": 15
+              "refID": 17
             },
             "emit": {
               "type": "function",
-              "refID": 17
+              "refID": 19
             },
             "addListener": {
               "type": "function",
-              "refID": 19
+              "refID": 21
             },
             "on": {
-              "ref": 19
+              "ref": 21
             },
             "once": {
               "type": "function",
-              "refID": 21
+              "refID": 23
             },
             "removeListener": {
               "type": "function",
-              "refID": 23
+              "refID": 25
             },
             "removeAllListeners": {
               "type": "function",
-              "refID": 25
+              "refID": 27
             },
             "listeners": {
               "type": "function",
-              "refID": 27
+              "refID": 29
             },
             "route": {
               "type": "constant",
@@ -7159,37 +7174,37 @@ var packageMetadata = {
           "type": "function",
           "members": {
             "use": {
-              "ref": 9
-            },
-            "handle": {
               "ref": 11
             },
-            "listen": {
+            "handle": {
               "ref": 13
             },
-            "setMaxListeners": {
+            "listen": {
               "ref": 15
             },
-            "emit": {
+            "setMaxListeners": {
               "ref": 17
             },
+            "emit": {
+              "ref": 19
+            },
             "addListener": {
-              "ref": 19
-            },
-            "on": {
-              "ref": 19
-            },
-            "once": {
               "ref": 21
             },
-            "removeListener": {
+            "on": {
+              "ref": 21
+            },
+            "once": {
               "ref": 23
             },
-            "removeAllListeners": {
+            "removeListener": {
               "ref": 25
             },
-            "listeners": {
+            "removeAllListeners": {
               "ref": 27
+            },
+            "listeners": {
+              "ref": 29
             },
             "route": {
               "type": "constant",
@@ -7240,28 +7255,28 @@ var packageMetadata = {
               "type": "function"
             },
             "setMaxListeners": {
-              "ref": 15
-            },
-            "emit": {
               "ref": 17
             },
+            "emit": {
+              "ref": 19
+            },
             "addListener": {
-              "ref": 19
-            },
-            "on": {
-              "ref": 19
-            },
-            "once": {
               "ref": 21
             },
-            "removeListener": {
+            "on": {
+              "ref": 21
+            },
+            "once": {
               "ref": 23
             },
-            "removeAllListeners": {
+            "removeListener": {
               "ref": 25
             },
-            "listeners": {
+            "removeAllListeners": {
               "ref": 27
+            },
+            "listeners": {
+              "ref": 29
             }
           }
         },
@@ -7852,15 +7867,15 @@ var packageMetadata = {
       "members": {
         "autoupdateVersion": {
           "type": "constant",
-          "value": "db42bc909dc8ee47316d416d47f191812226a835"
+          "value": "4185536b4d7b80b3d64b3b7501c5b85f7b9a3c9f"
         },
         "autoupdateVersionRefreshable": {
           "type": "constant",
-          "value": "a3f27fbd23e7ce3fd72d65c0f901a0c7f206eeb2"
+          "value": "8e8e6e278e9138205d6809e25060452a8c3fe96a"
         },
         "autoupdateVersionCordova": {
           "type": "constant",
-          "value": "none"
+          "value": "0724d184528379797d061a3381ae7ea0c40a7285"
         },
         "appId": {
           "type": "constant",
@@ -8272,7 +8287,13 @@ var packageMetadata = {
               }
             },
             "rename": {
-              "type": "function"
+              "type": "function",
+              "members": {
+                "displayName": {
+                  "type": "constant",
+                  "value": "rename"
+                }
+              }
             },
             "realpath": {
               "type": "function",
@@ -8425,7 +8446,7 @@ var packageMetadata = {
             },
             "pathOsDelimiter": {
               "type": "constant",
-              "value": ";"
+              "value": ":"
             },
             "convertToStandardPath": {
               "type": "function"
@@ -8972,15 +8993,15 @@ var packageMetadata = {
                 },
                 "appPath": {
                   "type": "constant",
-                  "value": "D:\\hy-sutdio\\ShareBJ"
+                  "value": "/home/byrne/hy-studio/ShareBJ"
                 },
                 "pid": {
                   "type": "constant",
-                  "value": 4120
+                  "value": 3599
                 },
                 "fout": {
                   "type": "constant",
-                  "value": 4
+                  "value": 26
                 },
                 "child": {
                   "type": "object",
@@ -8999,7 +9020,7 @@ var packageMetadata = {
                     },
                     "pid": {
                       "type": "constant",
-                      "value": 4120
+                      "value": 3599
                     },
                     "stdin": {
                       "type": "null",

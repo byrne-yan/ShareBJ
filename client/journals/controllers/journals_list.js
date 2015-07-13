@@ -6,8 +6,8 @@
 //    }
 //);
 
-angular.module("shareBJ").controller('JournalsListCtrl', ['$scope',
-    function($scope){
+angular.module("shareBJ").controller('JournalsListCtrl', ['$scope','$meteor',
+    function($scope,$meteor){
         $scope.postDateAbout = function(createAt){
             var now = new Date();
             var n1 = createAt.getTime();

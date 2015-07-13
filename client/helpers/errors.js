@@ -5,8 +5,12 @@ throwError = function(message) {
 };
 
 Template.error.onRendered(function() {
-    var error = this.data;
-    Meteor.setTimeout(function () {
-        Errors.remove(error._id);
-    }, 3000);
+    if(this.data)
+    {
+        var error = this.data;
+
+        Meteor.setTimeout(function () {
+            Errors.remove(error._id);
+        }, 3000);
+    }
 });

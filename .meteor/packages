@@ -9,11 +9,9 @@ bootstrap
 sacha:spin
 twbs:bootstrap
 underscore
-ian:accounts-ui-bootstrap-3
 accounts-password
-velocity:core
-velocity:html-reporter
-sanjo:jasmine
 urigo:angular
 angularui:angular-ui-router
 urigo:ionic
+accounts-weibo
+accounts-ui

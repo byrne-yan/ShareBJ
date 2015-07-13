@@ -1,11 +1,14 @@
 <div ng-controller="JournalsListCtrl">
-    <div class="bar bar-header bar-dark">
-        <h1 class="title">宝宝日记</h1>
-        <button class="button button-clear" href="/photos">
+
+    <ion-header-bar class="bar-dark">
+        <button class="button button-clear" ui_sref="home">
+            <i class="icon ion-home "></i>
+        </button>
+        <h1 class="title">{{$root.currentUser.username}}宝宝日记</h1>
+        <button class="button button-clear" ui_sref="photos">
             <i class="icon ion-ios-camera-outline "></i>
         </button>
-
-    </div>
+    </ion-header-bar>
 
     <ion-content class="has-header" ng-controller="JournalsListCtrl">
         <ion-list >

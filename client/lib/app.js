@@ -1,4 +1,4 @@
-angular.module('shareBJ',['angular-meteor','ui.router', 'ionic']);
+angular.module('shareBJ',['angular-meteor','ui.router','ionic']);
 
 // to get meteor app on cordova with angular integration
 function onReady() {
