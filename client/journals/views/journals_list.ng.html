@@ -1,11 +1,17 @@
 <div ng-controller="JournalsListCtrl">
 
     <ion-header-bar class="bar-dark">
-        <button class="button button-clear" ui_sref="home">
-            <i class="icon ion-home "></i>
+        <button class="button button-clear" ng-click="logout()" ng-if="$root.currentUser">
+            <i class="icon ion-log-out "></i>
+        </button>
+        <button class="button button-clear" ui_sref="login" ng-if="!$root.currentUser">
+            <i class="icon ion-log-in "></i>
+        </button>
+        <button class="button button-clear" ui_sref="enroll" ng-if="!$root.currentUser">
+            <i class="icon ion-person-add"></i>
         </button>
         <h1 class="title">{{$root.currentUser.username}}宝宝日记</h1>
-        <button class="button button-clear" ui_sref="photos">
+        <button class="button button-clear" ui_sref="journals_new">
             <i class="icon ion-ios-camera-outline "></i>
         </button>
     </ion-header-bar>

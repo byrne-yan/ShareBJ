@@ -6,8 +6,18 @@
 //    }
 //);
 
-angular.module("shareBJ").controller('JournalsListCtrl', ['$scope','$meteor',
-    function($scope,$meteor){
+angular.module("shareBJ").controller('JournalsListCtrl', ['$scope','$meteor','$state','$ionicModal',
+    function($scope,$meteor,$state,$ionicModal){
+
+         $scope.logout = function(){
+            Meteor.logout(function(error){
+                if(error){
+                    console.log(error);
+                }else{
+                    $state.go('login');
+                }
+            })
+        },
         $scope.postDateAbout = function(createAt){
             var now = new Date();
             var n1 = createAt.getTime();
@@ -23,6 +33,7 @@ angular.module("shareBJ").controller('JournalsListCtrl', ['$scope','$meteor',
             }
             return parseInt((n2-n1)/(24*60*60*1000))+'天前';
         },
+
         $scope.journals = [
             {
                 'description': '这是芋头的第一篇日记',

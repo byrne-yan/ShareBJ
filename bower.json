@@ -1,0 +1,54 @@
+{
+  "name": "ShareBJ",
+  "version": "0.0.1",
+  "authors": [
+    "颜俊标 <byrne.yan@yahoo.com>"
+  ],
+  "description": "A platform on which families records their kids and share with relatives and friends.",
+  "moduleType": [
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "Baby",
+    "Journal",
+    "Share",
+    "Realtime",
+    "Android",
+    "iOS",
+    "Web"
+  ],
+  "license": "MIT",
+  "homepage": "sharebj.hy-studio.cn",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ionic-material": "~0.4.2",
+    "ion-md-input": "~0.0.2",
+    "robotodraft": "~1.1.0"
+  },
+  "ignoredDependencies": [
+    "angular",
+    "angular-animate",
+    "angular-sanitize",
+    "angular-ui-router",
+    "ionic",
+    "waves",
+    "robotdraft"
+  ],
+  "overrides": {
+    "ion-md-input": {
+      "main": [
+        "./css/ion-md-input.css",
+        "./css/ion-md-input.min.css",
+        "./js/ion-md-input.js",
+        "./js/ion-md-input.min.js"
+      ]
+    }
+  }
+}

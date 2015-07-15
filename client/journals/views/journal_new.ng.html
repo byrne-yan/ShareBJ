@@ -1,35 +1,45 @@
-<div ng-controller="JournalCtrl">
-    <ion-header-bar class="bar-dark">
-        <div class="buttons button-right">
-            <button class="button  button-balanced" ng-click="send()">发送</button>
+<div ng-controller="JournalNewCtrl">
+    <div class="bar bar-header bar-dark">
+        <button class="button icon ion-android-arrow-back" ui_sref="journals"></button>
+        <h1 class="title">新日记</h1>
+        <div class="buttons">
+            <button class="button button-small button-balanced" ng-click="send()">
+             发送
+            </button>
         </div>
-    </ion-header-bar>
-    <ion-pane>
-        <ion-content scrollbar-x="false">
-            <ion-list>
-                <label class="item item-input item-clear" >
-                    <textarea class="" ng-model="description" placeholder="这一刻的想法..."></textarea>
-                </label>
-                <ion-item class="item-icon-left">
-                        <div class="row" ng-repeat="image in pickedImages">
-                            <div class="col col-20" >
-                                <a href="{{image.isButton ? '/photos' : image.url}}">
-                                    <img class="img-add" ng-src="{{image.url}}" width="100%">
-                                </a>
-                            </div>
-                        </div>
-                </ion-item>
-                <a class="item item-icon-left" href="">
-                    <i class="icon ion-location"></i>
-                    <p>所在位置</p>
-                </a>
-                <ion-item class="item-divider"></ion-item>
-                <a class="item item-icon-left" href="#">
-                    <i class="icon ion-social-dribbble"></i>
-                    <p>谁可以看</p>
-                    <span class="item-note">{{publicFor}}</span>
-                </a>
-            </ion-list>
-        </ion-content>
-    </ion-pane>
+    </div>
+    <ion-content class="has-header">
+        <ion-list>
+            <label class="item item-input item-clear" >
+                <textarea class="" ng-model="description" placeholder="这一刻的想法..."></textarea>
+            </label>
+        </ion-list>
+
+        <div class="gallery">
+                <img class="imgPicked" ng-repeat="image in pickedImages"
+                     ng-src="{{image}}"
+                     >
+                <img class="imgPicker"
+                     src="/images/plus.jpg"
+                     ngf-select
+                     ng-hide="pickedImages.length>8"
+                     ngf-change="pickImages($files,$event)"
+                     ngf-multiple="true"
+                     ngf-allow-dir="false"
+                     ngf-accept="'image/*'">
+        </div>
+
+        <ion-list>
+            <a class="item item-icon-left" href="#">
+                <i class="icon ion-location"></i>
+                <p>所在位置</p>
+            </a>
+            <ion-item class="item-divider item-stable"></ion-item>
+            <a class="item item-icon-left" href="#">
+                <i class="icon ion-social-dribbble"></i>
+                <p>谁可以看</p>
+                <span class="item-note">{{publicFor}}</span>
+            </a>
+        </ion-list>
+    </ion-content>
 </div>

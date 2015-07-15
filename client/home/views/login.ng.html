@@ -1,0 +1,23 @@
+<ion-view view-title="Login" align-title="left">
+    <ion-header-bar class="bar-dark">
+        <h1 class="title">登录ShareBJ</h1>
+    </ion-header-bar>
+    <ion-content class="has-header" ng-controller="LoginCtrl">
+
+        <div class="list">
+            <ion-md-input ng-model="username" placeholder="昵称" highlight-color="assertive" type="text"></ion-md-input>
+            <ion-md-input ng-model="password" placeholder="密码" highlight-color="assertive" type="password"></ion-md-input>
+        </div>
+        <div class="padding">
+            <button ng-click="login()" class="button button-full button-balanced ink">登录</button>
+        </div>
+        <button ui_sref="enroll" class="button button-clear">注册</button>
+        <!--<div class="button-bar social-login">-->
+            <!--<button class="button button-small button-border icon-left ion-social-google button-assertive-900">Google+</button>-->
+            <!--<button class="button button-small button-border icon-left ion-social-twitter button-calm-900">Twitter</button>-->
+            <!--<button class="button button-small button-border icon-left ion-social-facebook button-positive-900">Facebook</button>-->
+        <!--</div>-->
+    </ion-content>
+</ion-view>
+
+
