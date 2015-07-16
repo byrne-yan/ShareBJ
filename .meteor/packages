@@ -14,3 +14,9 @@ urigo:ionic
 accounts-weibo
 mquandalle:bower
 danialfarid:ng-file-upload
+launch-screen
+cfs:standard-packages
+cfs:gridfs
+cfs:filesystem
+cfs:s3
+cfs:graphicsmagick

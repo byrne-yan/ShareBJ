@@ -1,4 +1,5 @@
 Meteor.startup(function() {
+    FS.debug = true;
     var userIds = [];
     if (Meteor.users.find().count() == 0) {
         var users = [

@@ -30,3 +30,12 @@ Meteor.publish(
     }
 );
 
+Meteor.publish('journals',function(babyId){
+    return Journals.find();
+});
+
+Meteor.publish("images",function(babyId){
+    //check(userId,String);
+    //check(journalId,String);
+    return Images.find();
+});
