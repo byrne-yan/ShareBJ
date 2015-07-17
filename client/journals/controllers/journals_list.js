@@ -6,11 +6,22 @@
 //    }
 //);
 
-angular.module("shareBJ").controller('JournalsListCtrl', ['$scope','$meteor','$state','$ionicModal',
-    function($scope,$meteor,$state,$ionicModal){
+angular.module("shareBJ")
+    .controller('JournalImagesCtrl',['$scope','$meteor',function($scope,$meteor){
+        var journal = $scope.$parent.journal;
+        var imageIds = _.pluck(journal.images,'_id');
 
+        $scope.$meteorCollectionFS(Images,false).subscribe('baby_images');
+        $scope.images = $scope.$meteorCollectionFS(
+            function(){
+                return Images.find({_id:{$in:imageIds}});
+            },
+            false
+        );
+    }])
+    .controller('JournalsListCtrl', ['$scope','$meteor','$state', function($scope,$meteor,$state){
 
-         $scope.logout = function(){
+        $scope.logout = function(){
             Meteor.logout(function(error){
                 if(error){
                     console.log(error);
@@ -18,7 +29,7 @@ angular.module("shareBJ").controller('JournalsListCtrl', ['$scope','$meteor','$s
                     $state.go('login');
                 }
             })
-        },
+        };
         $scope.postDateAbout = function(createAt){
             var now = new Date();
             var n1 = createAt.getTime();
@@ -33,11 +44,11 @@ angular.module("shareBJ").controller('JournalsListCtrl', ['$scope','$meteor','$s
                 return "前天";
             }
             return parseInt((n2-n1)/(24*60*60*1000))+'天前';
-        },
-         $scope.journals = function (){
-             Meteor.subscribe("images",currentBaby);
-             Meteor.subscribe('journals',currentBaby);
-         };
+        };
+
+        $scope.journals =  $scope.$meteorCollection(Journals,false).subscribe('baby_journals');
+
+
         //$scope.journals = [
         //    {
         //        'description': '这是芋头的第一篇日记',
