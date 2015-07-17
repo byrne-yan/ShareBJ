@@ -35,15 +35,30 @@ angular.module('shareBJ')
                         }]
                     }
                 })
-                .state('photos',{
-                        url:'/photos',
-                        templateUrl:'client/photos/views/pick_images.ng.html' ,
-                        controller:'LocalPhotosCtrl'
-                    })
+                //.state('photos',{
+                //        url:'/photos',
+                //        templateUrl:'client/photos/views/pick_images.ng.html' ,
+                //        controller:'LocalPhotosCtrl'
+                //    })
                 .state('journals_new',{
                     url:'/journals/new',
                     templateUrl:'client/journals/views/journal_new.ng.html' ,
-                    controller:'JournalNewCtrl'
+                    controller:'JournalNewCtrl',
+                    resolve: {
+                        "currentUser": ["$meteor", function($meteor){
+                            return $meteor.requireUser();
+                        }]
+                    }
+                })
+                .state('photo_detail',{
+                    url:'/cfs/files/images/:token',
+                    templateUrl:'client/photos/views/photo_detail.ng.html',
+                    controller: 'PhotoDetailCtrl',
+                    resolve: {
+                        "currentUser": ["$meteor", function($meteor){
+                            return $meteor.requireUser();
+                        }]
+                    }
                 })
                 //.state('home',{
                 //    url: '/',

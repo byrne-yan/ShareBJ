@@ -30,12 +30,18 @@ Meteor.publish(
     }
 );
 
-Meteor.publish('journals',function(babyId){
+Meteor.publish('baby_journals',function(babyId){
     return Journals.find();
 });
 
-Meteor.publish("images",function(babyId){
+//Meteor.publish("images",function(userId){
+//    //check(userId,String);
+//    //check(journalId,String);
+//    return Images.find();
+//});
+
+Meteor.publish("baby_images",function(userId, babyId){
     //check(userId,String);
-    //check(journalId,String);
+    //check(babyId,String);
     return Images.find();
 });

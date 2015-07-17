@@ -1,8 +1,9 @@
-angular.module("shareBJ").controller('JournalNewCtrl', ['$scope',
-    function($scope){
+angular.module("shareBJ").controller('JournalNewCtrl', ['$scope', '$state','$meteor','$q',
+    function($scope, $state, $meteor, $q){
         var plusImage = '/images/plus.jpg';
         $scope.pickedImages = [];
         $scope.images = [];
+
         $scope.pickImages = function($files,$event){
             if($files && $files.length)
             {
@@ -11,7 +12,6 @@ angular.module("shareBJ").controller('JournalNewCtrl', ['$scope',
                 function readFile(index){
                     if(index>=$files.length) return; //done all files
                     var file = $files[index];
-
 
                     fs.onload = function(e){
                         $scope.$apply(function() {
@@ -40,43 +40,82 @@ angular.module("shareBJ").controller('JournalNewCtrl', ['$scope',
 
                     fs.readAsDataURL(file);
                 }
-
-
                 readFile(0);
             }
         };
 
         $scope.publicFor = '公开';
         $scope.uploadImages = [];
-        $scope.send = function(){
-            var journal =　{
-                description:$scope.description,
-                images:[]
-            };
 
-            //upload images
-            var i = 0;
-            _.each($scope.pickedImages, function(image){
-                ++i;
+        var uploadPrepare = function(callback){
+            var deferred = $q.defer();
+            var count = 0;
 
-                fileObj = Images.insert(image,function(error, fileObj){
+            var total = $scope.pickedImages.length;
+            _.each($scope.pickedImages, function(image,index){
+
+                images = [];
+                $meteor.call('insertImage',image,function(error, fileObj){
                     if(error)
                     {
+                        callback(error, index);
                         console.log(error);
+                    }else
+                    {
+                        console.log("uploading image: " + index);
                     }
+                }).then(
+                    function(fileObj){
+                        console.log('Starting uploading image: ' + index, fileObj);
+                        fileObj.name(index+1);
+                        fileObj.name(index+1,{store:'thumbs'});
+                        images.push(fileObj);
 
-                    if(fileObj){
-                        console.log("uploading image " + fileObj.uploadProgress() + '%');
+                        count++;
+                        if(count === total){
+                            deferred.resolve(images);
+                        }
+                    },
+                    function(err){
+                        callback(err, index);
+                        console.log('Uploading image failed', err);
+                        count++;
+                        if(count === total){
+                            deferred.resolve(images);
+                        }
                     }
-                });
-                //fileObj.ownByBaby = currentBaby;
-                //console.log(fileObj);
-                fileObj.name(i);
-                journal.images.push(fileObj);
+                );
             });
+            return deferred.promise;
+        }
+        $scope.send = function(){
+            //upload images
+            uploadPrepare(function(error){
+                console.log(error);
+            }).then(
+                function(images){
+                    var journal =　{
+                        description:$scope.description,
+                        images:[]
+                    };
 
-            console.log(journal.images.length);
-            Meteor.call('journalInsert',journal);
-            //insert a journal
+                    console.log(images.length);
+                    journal.images = images;
+                    //if(images.length < $scope.pickedImages.length){
+                    //    journal.sys_commments = ($scope.pickedImages.length-images.length).toString() + "张照片上传失败";
+                    //}
+                    $meteor.call('insertJournal',journal).then(
+                        function(data){
+                            console.log('Inserting journal done', data);
+                            $state.go('journals');
+                        },
+                        function(err){
+                            console.log('Inserting journal failed', err);
+                        }
+                    );
+
+                }
+            );
+
         }
     }]);

@@ -20,3 +20,4 @@ cfs:gridfs
 cfs:filesystem
 cfs:s3
 cfs:graphicsmagick
+cfs:ejson-file
