@@ -1,0 +1,17 @@
+<ion-view view-title="Journals" ng-controller="JournalsCtrl">
+    <!--<ion-head-bar class="bar bar-header bar-dark">-->
+        <!--<h1 class="title">ShareBJ</h1>-->
+    <!--</ion-head-bar>-->
+    <ion-nav-title><span ng-if = "$root.currentUser !== null">{{$root.currentUser.username}}-</span>Journals</ion-nav-title>
+    <ion-nav-buttons side="secondary">
+        <button class="button" ui_sref="users_login" ng-if="$root.currentUser === null">Login</button>
+        <button class="button" ui_sref="users_logout" ng-if="$root.currentUser !== null">Logout</button>
+    </ion-nav-buttons>
+    <ion-content class="" >
+        <ion-list>
+            <ion-item ng-repeat="journal in journals">
+                {{$index}} - {{journal.desc}}
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

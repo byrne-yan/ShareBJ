@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "libSpec.js",
+  "sourceRoot": "",
+  "sources": [
+    "libSpec.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;EAAA,QAAA,CAAS,SAAT,EAAoB,SAAA;WAClB,EAAA,CAAG,0CAAH,EAA+C,SAAA;aAC7C,MAAA,CAAO,OAAO,CAAC,MAAR,CAAe,aAAf,CAAP,CAAqC,CAAC,WAAtC,CAAA;IAD6C,CAA/C;EADkB,CAApB;AAAA"
+}

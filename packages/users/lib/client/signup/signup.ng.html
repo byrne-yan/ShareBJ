@@ -1,0 +1,96 @@
+<ion-view view-title="注册">
+
+    <!--<ion-nav-back-button></ion-nav-back-button>-->
+    <ion-content ng-controller="SignupCtrl">
+
+        <form name="signupForm"  ng-submit="signup()">
+            <div class="list">
+                <label class="item item-input ">
+                    <input type="text" name="username" placeholder="用户名" ng-model="username"
+                           ng-minlength="4" ng-maxlength="16" required>
+                </label>
+                <div  ng-messages="signupForm.username.$error" class="error-container"
+                      ng-if="signupForm.username.$touched">
+                    <div ng-message="required" class="error" >
+                        <i class="ion-information-circled"></i>
+                        请输入用户名！
+                    </div>
+                    <div ng-message="'minlength', 'maxlength'" class="error">
+                        <i class="ion-information-circled"></i>
+                        用户名必须在４～１６个字符之间
+                    </div>
+                    <ng-messages-include src="errors-messages"> </ng-messages-include>
+                </div>
+
+                <label class="item item-input">
+                    <input type="tel" name="mobile" placeholder="手机号" ng-model="mobile" required >
+                </label>
+                <ng-messages class="error-container" for="signupForm.mobile.$error"
+                             ng-if="signupForm.mobile.$touched">
+                    <div ng-message="required" class="error" >
+                        <i class="ion-information-circled"></i>
+                        请提供手机号，方便接收重要通知！
+                    </div>
+                    <ng-messages-include src="errors-messages"></ng-messages-include>
+                </ng-messages>
+
+                <label class="item item-input">
+                    <input type="text" placeholder="昵称" ng-model="name">
+                </label>
+
+                <label class="item item-input">
+                    <input type="email" name="email" placeholder="EMAIL" ng-model="email">
+                </label>
+                <ng-messages class="error-container" for="signupForm.email.$error" ng-if="signupForm.email.$touched">
+                    <ng-messages-include src="errors-messages"> </ng-messages-include>
+                </ng-messages>
+
+                <label class="item item-input">
+                    <input type="password" name="password" placeholder="密码" ng-model="password" required>
+                </label>
+                <ng-messages class="error-container" for="signupForm.password.$error"
+                             ng-if="signupForm.password.$touched">
+                    <div ng-message="required" class="error" >
+                        <i class="ion-information-circled"></i>
+                        请输入密码！
+                    </div>
+                    <ng-messages-include src="errors-messages"> </ng-messages-include>
+                </ng-messages>
+
+            </div>
+            <div class="padding">
+                <button id="signupButton" type="submit" ng-disabled="signupForm.$invalid" class="button button-full button-balanced ink">发送</button>
+            </div>
+            <div ng-messages="signupError">
+                <ng-messages-include src="errors-messages"> </ng-messages-include>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>
+
+<script id="errors-messages" type="text/ng-template">
+    <div ng-message="required" class="error" >
+        <i class="ion-information-circled"></i>
+        这个字段是必填的！
+    </div>
+    <div ng-message="minlength" class="error">
+        <i class="ion-information-circled"></i>
+        输入太短
+    </div>
+    <div ng-message="maxlength" class="error">
+        <i class="ion-information-circled"></i>
+        输入太长
+    </div>
+    <div ng-message="pattern" class="error">
+        <i class="ion-information-circled"></i>
+        请输入符合pattern的内容
+    </div>
+    <div ng-message="email" class="error">
+        <i class="ion-information-circled"></i>
+        请输入合法email
+    </div>
+    <div ng-message="signup" class="error">
+        <i class="ion-information-circled"></i>
+        {{signupErrorMessage}}
+    </div>
+</script>

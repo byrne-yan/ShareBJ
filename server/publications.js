@@ -31,7 +31,7 @@ Meteor.publish(
 );
 
 Meteor.publish('baby_journals',function(babyId){
-    return Journals.find();
+    return Journals.find({}, {sort: {submitted:-1}});
 });
 
 //Meteor.publish("images",function(userId){

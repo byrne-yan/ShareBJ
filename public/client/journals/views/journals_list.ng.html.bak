@@ -1,0 +1,50 @@
+<div ng-controller="JournalsListCtrl">
+
+    <ion-header-bar class="bar-dark">
+        <button class="button button-clear" ng-click="logout()" ng-if="$root.currentUser">
+            <i class="icon ion-log-out "></i>
+        </button>
+        <button class="button button-clear" ui_sref="login" ng-if="!$root.currentUser">
+            <i class="icon ion-log-in "></i>
+        </button>
+        <button class="button button-clear" ui_sref="enroll" ng-if="!$root.currentUser">
+            <i class="icon ion-person-add"></i>
+        </button>
+        <h1 class="title">{{$root.currentUser.username}}宝宝日记</h1>
+        <button class="button button-clear" ui_sref="journals_new">
+            <i class="icon ion-ios-camera-outline "></i>
+        </button>
+    </ion-header-bar>
+    <ion-content class="has-header" ng-controller="JournalsListCtrl">
+        <div ng-repeat="journal in journals">
+            <h2>{{journal.author}}</h2>
+            <p>{{journal.description}}</p>
+            <div ng-controller="JournalImagesCtrl">
+                <!--{{images}}-->
+                <a href="#" >
+                    <img ng-repeat="image in images"
+                         ng-src="{{image.url({uploading:'images/uploading.jpg',storing:'images/storing.jpg'})}}"
+                         width="120px" height="120px">
+
+                </a>
+            </div>
+        </div>
+    </ion-content>
+
+    <!--<ion-content class="has-header" ng-controller="JournalsListCtrl">-->
+    <!--<ion-list >-->
+    <!--<ion-item ng-repeat="journal in journals">-->
+    <!--<div class="item item-thumbnail-left item-text-wrap" href="#">-->
+    <!--&lt;!&ndash;<img ng-src="{{journal.author.avatar}}"/>&ndash;&gt;-->
+    <!--<h2>{{journal.author}}</h2>-->
+    <!--<p>{{journal.description | limitTo:40}}{{journal.description.length > 40 ? '&hellip;':''}}</p>-->
+    <!--</div>-->
+    <!--<div class="row" >-->
+
+    <!--<img collection-repeat="image in journal.images"-->
+    <!--ng-src="{{image.url}}" item-width="80px" item-height="80px">-->
+    <!--<div>{{postDateAbout(journal.createAt)}}</div>-->
+    <!--</div>-->
+    <!--</ion-item>-->
+    <!--</ion-list>-->
+</div>
