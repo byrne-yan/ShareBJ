@@ -1,4 +1,4 @@
-angular.module('shareBJ.users',['shareBJ.lib','ionic','ionic-material','ngMessages']);
+angular.module('shareBJ.users',['shareBJ.lib']);
 
 
 

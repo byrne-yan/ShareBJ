@@ -1,0 +1,45 @@
+<ion-view view-title="个人信息" ng-controller="UserCtrl">
+    <ion-nav-title>个人信息</ion-nav-title>
+    <ion-nav-buttons side="primary">
+        <a class="button button-clear" ui-sref="journals">
+            <i class="icon ion-arrow-left-c"></i>
+        </a>
+    </ion-nav-buttons>
+    <ion-content class="has-header">
+        <ion-list >
+            <a class="item item-avatar-right" href="#">
+                头像
+                <img ng-src="{{avatar}}">
+            </a>
+            <a class="item" href="#">
+                昵称
+                <span class="item-note">{{name}}</span>
+            </a>
+            <a class="item" href="#">
+                用户名
+                <span class="item-note">{{username}}</span>
+            </a>
+            <a class="item" href="#">
+                手机号
+                <span class="item-note">{{mobile}}</span>
+            </a>
+            <div class="item item-divider"></div>
+            <a class="item" href="#">
+                性别
+                <span class="item-note">{{gender}}</span>
+            </a>
+            <a class="item" href="#">
+                出生日期
+                <span class="item-note">{{birthday}}</span>
+            </a>
+            <a class="item" href="#">
+                地区
+                <span class="item-note">{{city}}</span>
+            </a>
+            <a class="item" href="#">
+                个性签名
+                <span class="item-note">{{signature}}</span>
+            </a>
+        </ion-list>
+    </ion-content>
+</ion-view>

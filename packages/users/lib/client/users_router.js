@@ -9,19 +9,14 @@ angular.module('shareBJ.users')
                 controller: 'LoginCtrl'
             })
             .state('users_signup',{
-                cache:false,
+                //cache:false,
                 url:'/signup',
                 templateUrl: 'sbj_users_lib/client/signup/signup.ng.html',
                 controller: 'SignupCtrl'
             })
             .state('users_logout',{
-                cache:false,
+                //cache:false,
                 url:'/logout',
-                //resvole:{
-                //    logouted: function($meteor){
-                //        return $meteor.logout();
-                //    }
-                //},
                 controller: function($scope, $state, $meteor){
                     $meteor.logout().then(function() {
                         $state.go('users_login');
@@ -29,6 +24,12 @@ angular.module('shareBJ.users')
                             console.log(error);
                     });
                 }
+            })
+            .state('users_edit',{
+                //cache:false,
+                url:'/users/current',
+                templateUrl:'sbj_users_lib/client/user/user.ng.html',
+                controller:'UserCtrl'
             })
         ;
     });

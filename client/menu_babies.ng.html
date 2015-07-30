@@ -1,0 +1,10 @@
+<div ng-controller="BabiesCtrl">
+    <div class="item item-divider">宝宝</div>
+    <a ng-repeat="baby in babies" class="item " menu-close ui_sref="baby.edit">
+        {{baby.name}}
+    </a>
+    <a class="item item-icon-left" menu-close ui-sref="baby.new">
+        <i class="icon ion-person-add"></i>
+        添加新宝宝
+    </a>
+</div>

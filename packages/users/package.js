@@ -37,7 +37,10 @@ Package.onUse(function (api) {
     'lib/client/login/login.ng.html',
 
     'lib/client/signup/signup.ng.js',
-    'lib/client/signup/signup.ng.html'
+    'lib/client/signup/signup.ng.html',
+
+    'lib/client/user/user.ng.js',
+    'lib/client/user/user.ng.html'
 
   ], ['client']);
 

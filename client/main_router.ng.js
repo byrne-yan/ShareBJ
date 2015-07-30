@@ -1,18 +1,15 @@
 angular.module('shareBJ')
-    .config(function($urlRouterProvider,$stateProvider, $locationProvider){
+    .config(function($urlRouterProvider,$stateProvider, $locationProvider){;
         $locationProvider.html5Mode(true);
 
+        ShareBJ.home = 'journals';
         $stateProvider
-            .state('home',{
-                url:'/journals',
-                templateUrl: 'client/journals.ng.html',
-                controller: 'JournalsCtrl',
-                resovle:{
-                    "currentUser": function ($meteor) {
-                        return $meteor.requireUser();
-                    }
-                }
-            });
+            .state('root',{
+                url:'/',
+                templateUrl:'client/index.html',
+                controller:'RootCtrl'
+            })
+        ;
 
         $urlRouterProvider.otherwise('/journals');
     })

@@ -1,0 +1,1 @@
+angular.module('shareBJ.journals',['shareBJ.lib']);

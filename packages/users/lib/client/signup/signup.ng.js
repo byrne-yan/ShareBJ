@@ -1,5 +1,5 @@
 angular.module('shareBJ.users')
-    .controller('SignupCtrl',['$scope','$meteor','$state',function($scope,$meteor,$state){
+    .controller('SignupCtrl',function($scope,$meteor,$state){
         $scope.signup = function(){
             $scope.signupError = {signup:false};
             $meteor.createUser({
@@ -27,4 +27,4 @@ angular.module('shareBJ.users')
                     console.log(error);
                 })
             }
-    }]);
+    });

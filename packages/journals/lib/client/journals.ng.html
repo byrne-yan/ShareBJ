@@ -1,0 +1,35 @@
+<ion-view view-title="Journals" ng-controller="JournalsCtrl">
+    <!--<ion-header-bar >-->
+        <!--<ion-nav-title><span ng-if = "$root.currentUser">{{$root.currentUser.username}}-</span>Journals</ion-nav-title>-->
+    <!--</ion-header-bar>-->
+    <ion-nav-buttons side="primary">
+        <button menu-toggle="left" class="button button-icon icon ion-navicon ">
+        </button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="secondary">
+        <button class="button button-clear " ui_sref="journals.new">
+            <i class="icon ion-ios-camera-outline"></i>
+        </button>
+    </ion-nav-buttons>
+
+    <!--<ion-side-menus>-->
+        <!--<ion-side-menu-content>-->
+            <!--<button class="button button-block button-balanced" ui_sref="baby.edit">Baby Profile</button>-->
+
+        <!--</ion-side-menu-content>-->
+        <!--<ion-side-menu side="left">-->
+            <!--&lt;!&ndash;<button class="button button-balanced" ui_sref="users_login" ng-if="!$root.currentUser">登录</button>&ndash;&gt;-->
+            <!--<button class="button button-block button-balanced" ui_sref="users_logout" ng-if="$root.currentUser">退出</button>-->
+        <!--</ion-side-menu>-->
+        <!--<ion-side-menu side="left">-->
+        <!--</ion-side-menu>-->
+    <!--</ion-side-menus>-->
+    <ion-content class="has-header">
+        <ion-list>
+            <ion-item ng-repeat="journal in journals">
+                {{$index}} - {{journal.desc}}
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

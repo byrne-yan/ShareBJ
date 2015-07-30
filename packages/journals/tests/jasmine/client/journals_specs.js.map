@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "journals_specs.js",
+  "sourceRoot": "",
+  "sources": [
+    "journals_specs.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;EAAA,QAAA,CAAS,cAAT,EAAyB,SAAA;WACvB,EAAA,CAAG,oDAAH,EAAyD,SAAA;aACvD,MAAA,CAAO,OAAO,CAAC,MAAR,CAAe,kBAAf,CAAkC,CAAC,WAAnC,CAAA,CAAP;IADuD,CAAzD;EADuB,CAAzB;AAAA"
+}

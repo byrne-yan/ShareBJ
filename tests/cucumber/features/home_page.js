@@ -25,18 +25,49 @@ this.Given(/^My baby's profile created$/, function (callback) {
 
 this.When(/^I sign in$/, function (callback) {
     // Write code here that turns the phrase above into concrete actions
-    this.client
-        .url(process.env.ROOT_URL)
-        .click('#loginButton')
-        .catch()
+    //callback.pending();
+    return this.client
+        .url(process.env.ROOT_URL+'/login')
+        .waitForExist('body *')
+        .setValue('input[name="username"','test_user')
+        .setValue('input[name="password"','123456')
+        .submitForm('#loginForm')
+        //.then(callback)
+        .pause(500)
     ;
 });
 
 this.Then(/^my baby's basic information\(name,age\) and her\/his recorded history behaviours showed$/, function (callback) {
     // Write code here that turns the phrase above into concrete actions
-    this.client.url()
-        .should.eventually.equals(process.env.ROOT_URL+'/journals')
+    return this.client.url(function(err,res){
+        expect(err).to.be.undefined;
+        expect(res.value).to.equal(process.env.ROOT_URL+'journals');
 
+    });
+});
+this.Then(/^a button to create a new journal$/, function (callback) {
+    // Write code here that turns the phrase above into concrete actions
     callback.pending();
 });
+
+this.Then(/^a button to create new baby$/, function (callback) {
+    // Write code here that turns the phrase above into concrete actions
+    callback.pending();
+});
+
+this.Then(/^a button to switch baby$/, function (callback) {
+    // Write code here that turns the phrase above into concrete actions
+    callback.pending();
+});
+
+this.Then(/^a button to show my profile$/, function (callback) {
+    // Write code here that turns the phrase above into concrete actions
+    callback.pending();
+});
+
+this.Then(/^a button to show baby's profile$/, function (callback) {
+    // Write code here that turns the phrase above into concrete actions
+    callback.pending();
+});
+
 }

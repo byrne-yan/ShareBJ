@@ -1,9 +1,9 @@
 angular.module('shareBJ.users')
-    .controller('LoginCtrl',function($scope,$meteor,$state){
+    .controller('LoginCtrl',function($scope,$meteor,$state,$timeout){
         $scope.login = function(){
             $scope.loginError = {'login':false};
             $meteor.loginWithPassword($scope.username,$scope.password).then(function(){
-                    $state.go('home');
+                    $timeout($state.go(ShareBJ.home));
                 },
                 function(error){
                     $scope.loginError = {'login':true};

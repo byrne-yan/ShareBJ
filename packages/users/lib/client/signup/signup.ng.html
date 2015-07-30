@@ -23,13 +23,18 @@
                 </div>
 
                 <label class="item item-input">
-                    <input type="tel" name="mobile" placeholder="手机号" ng-model="mobile" required >
+                    <input type="tel" name="mobile" placeholder="手机号" ng-model="mobile" required
+                           ng-pattern="/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/">
                 </label>
                 <ng-messages class="error-container" for="signupForm.mobile.$error"
                              ng-if="signupForm.mobile.$touched">
                     <div ng-message="required" class="error" >
                         <i class="ion-information-circled"></i>
                         请提供手机号，方便接收重要通知！
+                    </div>
+                    <div ng-message="pattern" class="error">
+                        <i class="ion-information-circled"></i>
+                        无效手机号，请重新输入正确的手机号码！
                     </div>
                     <ng-messages-include src="errors-messages"></ng-messages-include>
                 </ng-messages>

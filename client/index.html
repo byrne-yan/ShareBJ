@@ -3,10 +3,31 @@
     <base href="/">
 </head>
 <body >
+<ion-side-menus>
+    <ion-side-menu-content>
+        <ion-nav-bar class="bar-dark">
+            <!--<ion-nav-back-button class="button-clear">-->
+                <!--<i class="icon ion-arrow-left-c"></i>-->
+            <!--</ion-nav-back-button>-->
+        </ion-nav-bar>
+        <ion-nav-view></ion-nav-view>
+    </ion-side-menu-content>
 
-    <ion-nav-bar class="bar-dark">
-        <ion-nav-back-button></ion-nav-back-button>
-    </ion-nav-bar>
-    <ion-nav-view></ion-nav-view>
+    <ion-side-menu width="180" side="left">
+        <ion-header-bar class="bar-dark">
+            <h1 class="title">宝宝圈</h1>
+        </ion-header-bar>
+        <ion-content class="has-header">
+            <ion-list>
+                <ng-include src="'client/menu_aboutme.ng.html'"></ng-include>
+                <ng-include src="'client/menu_babies.ng.html'"></ng-include>
+                <div class="item item-divider"></div>
+                <a class="item item-icon-left " menu-close ui-sref="users_logout">
+                    <i class="icon ion-log-out"></i>
+                    <span class="assertive">退出</span></a>
+            </ion-list>
+        </ion-content>
+    </ion-side-menu>
+</ion-side-menus>
 
 </body>
