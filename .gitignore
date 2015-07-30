@@ -16,5 +16,6 @@ node_modules
 
 .idea
 
-/s3.*
+.meteor/local
 
+s3.sh
