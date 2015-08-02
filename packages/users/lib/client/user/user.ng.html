@@ -1,9 +1,8 @@
-<ion-view view-title="个人信息" ng-controller="UserCtrl">
+<ion-view view-title="个人信息">
     <ion-nav-title>个人信息</ion-nav-title>
     <ion-nav-buttons side="primary">
-        <a class="button button-clear" ui-sref="journals">
-            <i class="icon ion-arrow-left-c"></i>
-        </a>
+        <button menu-toggle="left" class="button button-icon icon ion-navicon ">
+        </button>
     </ion-nav-buttons>
     <ion-content class="has-header">
         <ion-list >
@@ -11,7 +10,7 @@
                 头像
                 <img ng-src="{{avatar}}">
             </a>
-            <a class="item" href="#">
+            <a class="item" href="#" ng-click="editName()">
                 昵称
                 <span class="item-note">{{name}}</span>
             </a>
@@ -19,10 +18,30 @@
                 用户名
                 <span class="item-note">{{username}}</span>
             </a>
-            <a class="item" href="#">
+            <a class="item" href="#" ng-click="editMobile()">
                 手机号
-                <span class="item-note">{{mobile}}</span>
+                <span class="item-note assertive" ng-if="!mobile.verified">(未验证)</span>
+                <span class="item-note balanced" ng-if="mobile.verified">(已验证)</span>
+                <span class="item-note">{{mobile.number}}</span>
             </a>
+            <!--<a class="item button button-balanced button-full" ng-if="!mobile.verified" ui-sref=".mobileVerify">-->
+                <!--猛戳此处验证手机号</a>-->
+            <a class="item" href="#" ng-click="editEmail()">
+                EMAIL
+                <span class="item-note assertive" ng-if="!email.verified">(未验证)</span>
+                <span class="item-note balanced" ng-if="email.verified">(已验证)</span>
+                <span class="item-note">{{email.address}}</span>
+            </a>
+            <div class="item item-button-right" ng-if="!email.verified " >
+                未收到验证邮件? 重新发送
+                <button class="button button-balanced" ng-click="sendVerifyEmail()" ng-disabled="sending || blocked">
+                    <i class="icon ion-email" ng-if="!sending"> </i>
+                    <ion-spinner ng-if="sending"></ion-spinner>
+                </button>
+            </div>
+            <!--<div class="item item-complex" ng-if="sending">-->
+                <!--<ion-spinner ></ion-spinner>-->
+            <!--</div>-->
             <div class="item item-divider"></div>
             <a class="item" href="#">
                 性别

@@ -1,12 +1,12 @@
-<ion-view view-title="注册">
+<ion-view view-title="注册" ng-controller="SignupCtrl">
 
     <!--<ion-nav-back-button></ion-nav-back-button>-->
-    <ion-content ng-controller="SignupCtrl">
+    <ion-content class="has-header" >
 
         <form name="signupForm"  ng-submit="signup()">
             <div class="list">
                 <label class="item item-input ">
-                    <input type="text" name="username" placeholder="用户名" ng-model="username"
+                    <input type="text" name="username" placeholder="用户名" ng-model="user.username"
                            ng-minlength="4" ng-maxlength="16" required>
                 </label>
                 <div  ng-messages="signupForm.username.$error" class="error-container"
@@ -23,7 +23,7 @@
                 </div>
 
                 <label class="item item-input">
-                    <input type="tel" name="mobile" placeholder="手机号" ng-model="mobile" required
+                    <input type="tel" name="mobile" placeholder="手机号" ng-model="user.mobile" required
                            ng-pattern="/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/">
                 </label>
                 <ng-messages class="error-container" for="signupForm.mobile.$error"
@@ -40,18 +40,18 @@
                 </ng-messages>
 
                 <label class="item item-input">
-                    <input type="text" placeholder="昵称" ng-model="name">
+                    <input type="text" placeholder="昵称" ng-model="user.name">
                 </label>
 
                 <label class="item item-input">
-                    <input type="email" name="email" placeholder="EMAIL" ng-model="email">
+                    <input type="email" name="email" placeholder="EMAIL" ng-model="user.email">
                 </label>
                 <ng-messages class="error-container" for="signupForm.email.$error" ng-if="signupForm.email.$touched">
                     <ng-messages-include src="errors-messages"> </ng-messages-include>
                 </ng-messages>
 
                 <label class="item item-input">
-                    <input type="password" name="password" placeholder="密码" ng-model="password" required>
+                    <input type="password" name="password" placeholder="密码" ng-model="user.password" required>
                 </label>
                 <ng-messages class="error-container" for="signupForm.password.$error"
                              ng-if="signupForm.password.$touched">
@@ -66,7 +66,7 @@
             <div class="padding">
                 <button id="signupButton" type="submit" ng-disabled="signupForm.$invalid" class="button button-full button-balanced ink">发送</button>
             </div>
-            <div ng-messages="signupError">
+            <div ng-messages="user.signupError">
                 <ng-messages-include src="errors-messages"> </ng-messages-include>
             </div>
         </form>

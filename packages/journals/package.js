@@ -14,8 +14,7 @@ Package.onUse(function(api) {
     api.versionsFrom(['METEOR@1.1']);
 
     var packages =[
-        'sbj:lib',
-        'sbj:users'
+        'sbj:lib'
     ];
 
     api.use(packages);
@@ -23,11 +22,11 @@ Package.onUse(function(api) {
     api.imply(packages);
 
   api.addFiles([
-        'lib/client/app.js',
+        'lib/client/app.ng.js',
+        'lib/client/journals.ng.js',
         'lib/client/router.ng.js',
 
-        'lib/client/journals.ng.html',
-        'lib/client/journals.ng.js',
+        'lib/client/journals.ng.html'
       ], ['client']
   );
   api.addFiles([
@@ -44,7 +43,7 @@ Package.onUse(function(api) {
 
 Package.onTest(function(api) {
   api.use([
-    'sanjo:jasmine@0.15.1',
+    'sanjo:jasmine@0.16.0',
     'coffeescript@1.0.6',
     'angular:angular-mocks@1.4.2',
     'sbj:journals'

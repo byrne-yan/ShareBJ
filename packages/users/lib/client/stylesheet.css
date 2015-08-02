@@ -32,3 +32,18 @@ form input.ng-invalid.ng-touched{
 form input.ng-valid.ng-dirty{
     border-bottom: 3px solid green;
 }
+
+.item.input.field-edit{
+    border-bottom: 1px solid green;
+}
+
+label.field-note{
+    padding: 16px;
+    font-size: 10px;
+    color: #aaaaaa ;
+}
+
+.emailVerifyNotify .popup-head{
+    background-color:chocolate;
+    color: white;
+}

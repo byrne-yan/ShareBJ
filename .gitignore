@@ -19,3 +19,4 @@ node_modules
 .meteor/local
 
 s3.sh
+settings.json

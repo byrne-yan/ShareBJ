@@ -6,6 +6,7 @@
 
 meteor-platform
 launch-screen
-sbj:users
 xolvio:cucumber@0.12.3
 sbj:journals
+sbj:users
+email

@@ -1,13 +1,13 @@
 <ion-view view-title="Login">
 
     <!--<ion-nav-back-button></ion-nav-back-button>-->
-    <ion-content class="has-header" ng-controller="LoginCtrl">
+    <ion-content class="has-header">
 
         <form name="loginForm" id="loginForm" ng-submit="login()">
             <div class="list">
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">用户名:</span>
-                    <input type="text" name="username" id="username" placeholder="张三" ng-model="username" required
+                    <input type="text" name="username" id="username" placeholder="张三" ng-model="user.username" required
                            ng-change="loginError={login:false}">
                 </label>
                 <div ng-messages="loginForm.username.$error" ng-if="loginForm.username.$touched">
@@ -18,7 +18,7 @@
                 </div>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">密码:</span>
-                    <input type="password" name="password" id="password" placeholder="" ng-model="password" required
+                    <input type="password" name="password" id="password" placeholder="" ng-model="user.password" required
                            ng-change="loginError={login:false}">
                 </label>
                 <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$touched">
@@ -31,15 +31,15 @@
                     <button id="loginButton" type="submit" ng-disabled="loginForm.$pristine || loginForm.$invalid"  class="button button-full button-balanced ink">登录</button>
                 </div>
             </div>
-        </form>
-        <div ng-messages="loginError">
-            <div ng-message="login" class="error" >
-                <i class="ion-information-circled"></i>
-                {{loginErrorMessage}}
+            <div ng-messages="user.loginError">
+                <div ng-message="login" class="error" >
+                    <i class="ion-information-circled"></i>
+                    {{loginErrorMessage}}
+                </div>
             </div>
-        </div>
+        </form>
         <a ui_sref="users_forgot" class="button button-clear">忘记密码?</a>
-        <button ui_sref="users_signup" class="button button-clear">注册</button>
+        <button ui_sref="shareBJ.users_signup" class="button button-clear">注册</button>
         <!--<div class="button-bar social-login">-->
             <!--<button class="button button-small button-border icon-left ion-social-google button-assertive-900">Google+</button>-->
             <!--<button class="button button-small button-border icon-left ion-social-twitter button-calm-900">Twitter</button>-->

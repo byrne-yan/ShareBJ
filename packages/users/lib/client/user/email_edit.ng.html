@@ -1,0 +1,29 @@
+<ion-modal-view>
+    <form name="emailForm">
+    <ion-header-bar class="bar-dark">
+        <button class="button button-clear" ng-click="closeEmailEditor()">
+            <i class="icon ion-arrow-left-c"></i>
+        </button>
+        <h1 class="title">更改电子邮件地址</h1>
+        <button class="button button-balanced" ng-click="saveEmail(edit)" ng-disabled="emailForm.$invalid">保存</button>
+    </ion-header-bar>
+    <ion-content class="has-header">
+        <ion-list >
+                <label class="item item-input ">
+
+                    <input type="email" name="email" value="email" class="item-content" ng-model="edit.email" required/>
+                </label>
+
+                <label class="field-note">更改电子邮件地址后，你会收到一封验证邮件，点击邮件里的链接完成最后一步的验证！</label>
+            <ng-messages class="error-container" for="emailForm.email.$error">
+                <div ng-message="required, email" class="error">
+                    <i class="ion-information-circled"></i>
+                    请输入合法email地址
+                </div>
+            </ng-messages>
+
+        </ion-list>
+
+    </ion-content>
+    </form>
+</ion-modal-view>

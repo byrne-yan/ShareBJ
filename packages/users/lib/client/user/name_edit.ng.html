@@ -1,0 +1,32 @@
+<ion-modal-view>
+    <form name="nameForm">
+    <ion-header-bar class="bar-dark">
+        <button class="button button-clear" ng-click="closeNameEditor()">
+            <i class="icon ion-arrow-left-c"></i>
+        </button>
+        <h1 class="title">更改名字</h1>
+        <button class="button button-balanced" ng-click="saveName(edit)" ng-disabled="nameForm.$invalid">保存</button>
+    </ion-header-bar>
+    <ion-content class="has-header">
+        <ion-list >
+            <label class="item item-input ">
+
+                <input type="text" name="name" value="name" class="item-content" ng-model="edit.name"
+                       ng-minlength="4" ng-maxlength="16" required/>
+            </label>
+
+            <label class="field-note">一个好名字更方便朋友记住你哦</label>
+        </ion-list>
+        <div  ng-messages="nameForm.name.$error" class="error-container">
+            <div ng-message="required" class="error" >
+                <i class="ion-information-circled"></i>
+                请输入用户名！
+            </div>
+            <div ng-message="minlength, maxlength" class="error">
+                <i class="ion-information-circled"></i>
+                用户名必须在４～１６个字符之间
+            </div>
+        </div>
+    </ion-content>
+    </form>
+</ion-modal-view>

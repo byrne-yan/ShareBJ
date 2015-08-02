@@ -10,10 +10,7 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.1']);
 
     var packages =[
-        'sbj:lib@0.1.0',
-        'urigo:ionic@1.0.0_1',
-        'jonmc12:ionic-material@0.4.2_1',
-        'angular:angular-messages@1.4.2'
+        'sbj:lib@0.1.0'
     ];
 
   api.use(packages);
@@ -28,8 +25,8 @@ Package.onUse(function (api) {
   ], ['client', 'server']);
 
   api.addFiles([
-     'lib/client/app.js',
-    'lib/client/users_router.js',
+     'lib/client/app.ng.js',
+    'lib/client/users_router.ng.js',
 
     'lib/client/stylesheet.css',
 
@@ -40,13 +37,19 @@ Package.onUse(function (api) {
     'lib/client/signup/signup.ng.html',
 
     'lib/client/user/user.ng.js',
-    'lib/client/user/user.ng.html'
+    'lib/client/user/user.ng.html',
+    'lib/client/user/name_edit.ng.html',
+    'lib/client/user/email.ng.js',
+    'lib/client/user/email_edit.ng.html',
+    'lib/client/user/mobile_edit.ng.html'
+
 
   ], ['client']);
 
   api.addFiles([
+      'lib/server/email.js',
+    'lib/server/users.js',
     'lib/server/publications.js'
-    //'lib/server/create_user.js'
   ], ['server']);
 
   //api.export('Users');
@@ -57,7 +60,7 @@ Package.onTest(function(api){
   //add package dependencies
 
   api.use([
-    'sanjo:jasmine@0.15.1',
+    'sanjo:jasmine@0.16.0',
     'coffeescript@1.0.6',
     'angular:angular-mocks@1.4.2',
     'sbj:users'

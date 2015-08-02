@@ -1,12 +1,15 @@
 angular.module('shareBJ.users')
-    .controller('LoginCtrl',function($scope,$meteor,$state,$timeout){
+    .controller('LoginCtrl',function($scope,$meteor,$state,$ionicHistory){
+        $scope.user ={};
         $scope.login = function(){
-            $scope.loginError = {'login':false};
-            $meteor.loginWithPassword($scope.username,$scope.password).then(function(){
-                    $timeout($state.go(ShareBJ.home));
+            $scope.user.loginError = {'login':false};
+            $meteor.loginWithPassword($scope.user.username,$scope.user.password)
+                .then(function(){
+                    $scope.user.password="";
+                    $state.go(ShareBJ.state.home);
                 },
                 function(error){
-                    $scope.loginError = {'login':true};
+                    $scope.user.loginError = {'login':true};
                     $scope.loginErrorMessage = error.message;
                     switch (error.reason) {
                         case "User not found":
@@ -16,7 +19,7 @@ angular.module('shareBJ.users')
                             $scope.loginErrorMessage = "密码不正确，请重新输入密码！";
                             break;
                     }
-                    //console.log(error);
+                    console.log(error);
                 }
             );
         }
