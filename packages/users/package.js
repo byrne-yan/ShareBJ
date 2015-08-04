@@ -10,7 +10,10 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.1']);
 
     var packages =[
-        'sbj:lib@0.1.0'
+        'sbj:lib@0.1.0',
+        'jonblum:jquery-cropper@0.10.1',
+        'edgee:slingshot@0.7.1',
+        'riaan53:blueimp-canvas-to-blob@0.0.1'
     ];
 
   api.use(packages);
@@ -41,7 +44,8 @@ Package.onUse(function (api) {
     'lib/client/user/name_edit.ng.html',
     'lib/client/user/email.ng.js',
     'lib/client/user/email_edit.ng.html',
-    'lib/client/user/mobile_edit.ng.html'
+    'lib/client/user/mobile_edit.ng.html',
+    'lib/client/user/avatar_edit.ng.html'
 
 
   ], ['client']);
@@ -49,7 +53,8 @@ Package.onUse(function (api) {
   api.addFiles([
       'lib/server/email.js',
     'lib/server/users.js',
-    'lib/server/publications.js'
+    'lib/server/publications.js',
+      'lib/server/upload.js'
   ], ['server']);
 
   //api.export('Users');

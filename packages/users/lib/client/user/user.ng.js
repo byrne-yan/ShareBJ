@@ -1,10 +1,11 @@
 angular.module('shareBJ.users')
-    .controller('UserCtrl',function($rootScope,$scope,$ionicHistory,$ionicModal,$meteor,$timeout){
+    .controller('UserCtrl',function($rootScope,$scope,$ionicHistory,$ionicModal,$meteor,$timeout, $ionicLoading){
         if($rootScope.currentUser)
         {
             Tracker.autorun(function(){
                 $scope.mobile= $rootScope.currentUser.profile.mobiles?
                     $rootScope.currentUser.profile.mobiles[0]:{number:"",verified:false};
+
                 $scope.avatar = $rootScope.currentUser.profile.avatar || "images/hold32X32.png";
                 $scope.username= $rootScope.currentUser.username;
                 $scope.name = $rootScope.currentUser.profile.name;
@@ -37,6 +38,13 @@ angular.module('shareBJ.users')
             focusFirstInput:true
         }).then(function(modal){
             $scope.modals.mobile = modal;
+        });
+        $ionicModal.fromTemplateUrl('sbj_users_lib/client/user/avatar_edit.ng.html',{
+            scope:$scope,
+            animation:'slide-in-up',
+            focusFirstInput:true
+        }).then(function(modal){
+            $scope.modals.avatar = modal;
         });
 
         $scope.saveName = function(edit){
@@ -100,6 +108,7 @@ angular.module('shareBJ.users')
             $scope.modals.mobile.hide();
         };
 
+        //Email verification
         $scope.sending = false;
         $scope.blocked = false;
         $scope.sendVerifyEmail = function () {
@@ -120,6 +129,90 @@ angular.module('shareBJ.users')
                     $scope.sending = false;
                 }
             );
+        };
+
+        //Avatar
+
+
+        $scope.editAvatar = function(){
+            $scope.edit = {};
+            $scope.modals.avatar.show();
+        };
+
+        $scope.closeAvatarEditor = function(){
+            $scope.modals.avatar.hide();
+            $scope.$image.cropper('destroy');
+        };
+        $scope.saveAvatar = function(){
+            var canvas = $scope.$image.cropper('getCroppedCanvas',{
+                width:64,
+                height:64
+            });
+
+            var avatarUploader = new Slingshot.Upload('avatarUploads',{userId:$rootScope.currentUser._id});
+            canvas.toBlob(function(blob){
+                avatarUploader.send(blob,function(error,downloadUrl){
+                    if(error)
+                    {
+                        console.log('Error uploading avatar',avatarUploader.xhr.response);
+
+                    }else{
+                        $ionicLoading.show({
+                            template: "上传中..."
+                        });
+                        if(avatarUploader.progress() === 1)
+                        {
+                            console.log("Uploading progress:" + avatarUploader.progress());
+                            $meteor.call('updateCurrentUserAvatar',$rootScope.currentUser._id,downloadUrl);
+                            $ionicLoading.hide();
+                            $scope.avatar = downloadUrl;
+                            $scope.modals.avatar.hide();
+                            $scope.$image.cropper('destroy');
+                        }
+                    }
+                });
+
+            }, "image/jpeg", 0.8);
+        };
+        $scope.fileSelected =function(input){
+            var reader = new FileReader();
+            reader.onloadend =function(){
+                $scope.$apply(function(){
+                    $scope.edit.fileAsUrl = reader.result;
+                });
+            };
+
+            if(input.files && input.files[0])
+            {
+                 reader.readAsDataURL(input.files[0]);
+            }
+        };
+        $scope.imgChanged = function(){
+            if($scope.$image){
+                $scope.$image.cropper('destroy');
+            }
+            $scope.$image = $('#cropper-container > img');
+            $scope.cropBoxData = null;
+            $scope.cropCanvasData = null;
+
+            var fnSaveCrop = function(){
+                $scope.$apply(function(){
+                    //$scope.$image.cropper('setCropBoxData',$scope.cropBoxData);
+                    $scope.croppedCanvas = $scope.$image.cropper('getCroppedCanvas').toDataURL();
+                });
+            };
+
+            $scope.$image.cropper({
+                autoCropArea: 0.5,
+                rounded:true,
+                //preview:'#previewImage',
+                built: fnSaveCrop,
+                dragmove:fnSaveCrop,
+                dragend: fnSaveCrop,
+                zoomin:fnSaveCrop,
+                zoomout:fnSaveCrop,
+                change:fnSaveCrop
+            });
         }
     })
 ;

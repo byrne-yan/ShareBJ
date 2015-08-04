@@ -1,0 +1,22 @@
+<ion-modal-view>
+        <ion-header-bar class="bar-dark">
+            <button class="button button-clear" ng-click="closeAvatarEditor()">
+                <i class="icon ion-arrow-left-c"></i>
+            </button>
+            <h1 class="title">更换头像</h1>
+            <button class="button button-balanced" ng-click="saveAvatar()" ng-disabled="!croppedCanvas">保存</button>
+        </ion-header-bar>
+        <ion-content class="has-header">
+            <div class="list card" >
+                <div class="item item-avatar item-avatar-right">
+                    <img ng-src="{{croppedCanvas}}">
+                    <input type="file" accept="image/*" onchange="angular.element(this).scope().fileSelected(this)" >
+                </div>
+
+                <div id="cropper-container" class="item item-image">
+                    <img ng-src="{{edit.fileAsUrl}}" onload="angular.element(this).scope().imgChanged()">
+                </div>
+            </div>
+
+        </ion-content>
+</ion-modal-view>

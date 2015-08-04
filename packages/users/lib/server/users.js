@@ -49,6 +49,21 @@ Meteor.methods({
             throw new Meteor.Error("Access Denied");
         }
     },
+    updateCurrentUserAvatar: function(userId,url){
+        check(userId,String);
+        check(url,String);
+        if(this.userId && userId === this.userId)
+        {
+            n = Meteor.users.update({_id:userId},
+                {$set:{'profile.avatar':url}}
+            );
+            if ( n !== 1){
+                throw new Meteor.Error("Updating avatar fails");
+            }
+        }else{
+            throw new Meteor.Error("Access Denied");
+        }
+    },
 
     sendVerificationEmail: function(userId){
         if(this.userId === userId && Meteor.user().emails

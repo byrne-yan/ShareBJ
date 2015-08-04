@@ -47,3 +47,17 @@ label.field-note{
     background-color:chocolate;
     color: white;
 }
+
+.cropper-container{
+    width: 100%;
+}
+
+.cropper-container > img{
+    max-width: 100%;
+}
+
+.avatarPreview{
+    width: 64px;
+    max-width: 64px;
+    display: inline-block;
+}

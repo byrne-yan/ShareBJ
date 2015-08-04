@@ -6,9 +6,10 @@
     </ion-nav-buttons>
     <ion-content class="has-header">
         <ion-list >
-            <a class="item item-avatar-right" href="#">
+            <a class="item item-avatar-right" href="#" ng-click="editAvatar()">
                 头像
                 <img ng-src="{{avatar}}">
+                <!--<spinner ng-if="avatar.status==='uploading'">uploading</spinner>-->
             </a>
             <a class="item" href="#" ng-click="editName()">
                 昵称
