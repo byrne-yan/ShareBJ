@@ -73,27 +73,19 @@ Meteor.methods({
         }else{
             throw new Meteor.Error("Fail to send Verification Email.");
         }
+    },
+    updateCurrentUserMemo: function(userId, memo){
+        check(userId,String);
+        check(memo,String);
+        if(this.userId && userId === this.userId)
+        {
+            n = Meteor.users.update({_id:userId},
+                {$set:{'profile.memo':memo}});
+            if ( n !== 1){
+                throw new Meteor.Error("Updating memo fails");
+            }
+        }else{
+            throw new Meteor.Error("Access Denied");
+        }
     }
-});
-
-Meteor.users.deny({
-    update:function(){
-        return true;
-    }
-});
-
-Accounts.config({
-    sendVerificationEmail:true
-});
-
-Accounts.onCreateUser(function(options, user){
-   //for first account, tag it as a admin
-    if(Meteor.users.find({}).count()===0)
-    {
-        user.isAdmin = true;
-    }
-
-    if(options.profile)
-        user.profile = options.profile;
-    return user;
 });

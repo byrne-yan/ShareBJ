@@ -9,8 +9,8 @@ Feature: Hhome page
     And   My baby's profile created
     When  I sign in
     Then  my baby's basic information(name,age) and her/his recorded history behaviours showed
-    And   a button to create a new journal
     And   a button to create new baby
-    And   a button to switch baby
     And   a button to show my profile
     And   a button to show baby's profile
+    And   a button to create a new journal
+    And   a button to switch baby

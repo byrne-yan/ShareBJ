@@ -12,6 +12,7 @@ angular.module('shareBJ.users')
                 $scope.email = $rootScope.currentUser.emails?$rootScope.currentUser.emails[0]:{address:'',verified:true};
                 $scope.gender = $rootScope.currentUser.profile.gender ;
                 $scope.birthday = $rootScope.currentUser.profile.birthday;
+                $scope.memo = $rootScope.currentUser.profile.memo;
             });
         };
         $scope.goBack = function(){
@@ -45,6 +46,13 @@ angular.module('shareBJ.users')
             focusFirstInput:true
         }).then(function(modal){
             $scope.modals.avatar = modal;
+        });
+        $ionicModal.fromTemplateUrl('sbj_users_lib/client/user/memo_edit.ng.html',{
+            scope:$scope,
+            animation:'slide-in-up',
+            focusFirstInput:true
+        }).then(function(modal){
+            $scope.modals.memo = modal;
         });
 
         $scope.saveName = function(edit){
@@ -86,28 +94,20 @@ angular.module('shareBJ.users')
             $scope.closeMobileEditor();
             edit.mobile = "";
         };
-        $scope.editName = function(){
-            $scope.edit = {name:$scope.name};
-            $scope.modals.name.show();
-        };
-        $scope.closeNameEditor =  function(){
-            $scope.modals.name.hide();
-        };
-        $scope.editEmail = function(){
-            $scope.edit = {email:$scope.email.address};
-            $scope.modals.email.show();
-        };
-        $scope.closeEmailEditor =  function(){
-            $scope.modals.email.hide();
-        };
-        $scope.editMobile = function(){
-            $scope.edit = {mobile:$scope.mobile.number};
-            $scope.modals.mobile.show();
-        };
-        $scope.closeMobileEditor =  function(){
-            $scope.modals.mobile.hide();
-        };
+        $scope.saveMemo = function(edit){
+            $meteor.call('updateCurrentUserMemo',$rootScope.currentUser._id,edit.memo)
+                .then(function(data){
+                    console.log('Updating memo success!');
+                },
+                function(error){
+                    console.log(error);
+                });
 
+            $scope.memo = edit.memo;
+
+            $scope.modals.memo.hide();
+            edit.memo = "";
+        };
         //Email verification
         $scope.sending = false;
         $scope.blocked = false;
@@ -133,16 +133,6 @@ angular.module('shareBJ.users')
 
         //Avatar
 
-
-        $scope.editAvatar = function(){
-            $scope.edit = {};
-            $scope.modals.avatar.show();
-        };
-
-        $scope.closeAvatarEditor = function(){
-            $scope.modals.avatar.hide();
-            $scope.$image.cropper('destroy');
-        };
         $scope.saveAvatar = function(){
             var canvas = $scope.$image.cropper('getCroppedCanvas',{
                 width:64,
@@ -213,6 +203,37 @@ angular.module('shareBJ.users')
                 zoomout:fnSaveCrop,
                 change:fnSaveCrop
             });
-        }
+        };
+
+
+        //Memo
+        $scope.edit = function(field){
+            switch(field){
+                case 'memo':
+                    $scope.edit = {memo:$rootScope.currentUser.profile.memo};
+                    break;
+                case 'name':
+                    $scope.edit = {name:$scope.name};
+                    break;
+                case 'email':
+                    $scope.edit = {email:$scope.email.address};
+                    break;
+                case 'mobile':
+                    $scope.edit = {mobile:$scope.mobile.number};
+                    break;
+                case 'avatar':
+                    $scope.edit = {};
+                    break;
+            }
+
+            $scope.modals.memo.show();
+        };
+        $scope.closeEditor =  function(modal){
+            $scope.modals[modal].hide();
+            if(modal==='avatar'){
+                $scope.$image.cropper('destroy');
+            }
+        };
+
     })
 ;

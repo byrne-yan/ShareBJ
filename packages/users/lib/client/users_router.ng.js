@@ -41,11 +41,11 @@ angular.module('shareBJ.users')
                     }
                 }
             })
-            .state('verifyEmail',{
-                url:'/#/verify-email/:token',
-                templateUrl: 'sbj_users_lib/client/user/email.ng.html',
-                contorller:'EmailVerifyCtrl'
-            })
+            //.state('verifyEmail',{
+            //    url:'/#/verify-email/:token',
+            //    templateUrl: 'sbj_users_lib/client/user/email.ng.html',
+            //    contorller:'EmailVerifyCtrl'
+            //})
 
             //.state(ShareBJ.state.mobileVerify ,{
             //    //cache:false,

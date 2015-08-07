@@ -1,5 +1,3 @@
-
-
 Accounts.emailTemplates.siteName = "Share Baby Journal";
     //from:'no-reply@hy-studio.cn',
 //Accounts.emailTemplates.from = 'ShareBJ <no-reply@hy-studio.cn>';

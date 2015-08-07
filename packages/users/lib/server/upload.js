@@ -8,6 +8,7 @@ Slingshot.createDirective("avatarUploads",Slingshot.S3Storage,{
         if(!this.userId){
             throw new Meteor.err("Login Required");
         }
+        //TODO: limit upload frequency
         return true;
     },
     key: function(file){

@@ -2,7 +2,7 @@ Package.describe({
   name: 'sbj:users',
   summary: 'ShareBJ permissions.',
   version: '0.1.0',
-  git: "https://git.oschina.net/vamp/ShareBJ.git"
+  git: "https://github.com/byrne-yan/ShareBJ.git"
 });
 
 Package.onUse(function (api) {
@@ -42,6 +42,7 @@ Package.onUse(function (api) {
     'lib/client/user/user.ng.js',
     'lib/client/user/user.ng.html',
     'lib/client/user/name_edit.ng.html',
+    'lib/client/user/memo_edit.ng.html',
     'lib/client/user/email.ng.js',
     'lib/client/user/email_edit.ng.html',
     'lib/client/user/mobile_edit.ng.html',
@@ -51,14 +52,15 @@ Package.onUse(function (api) {
   ], ['client']);
 
   api.addFiles([
-      'lib/server/email.js',
-    'lib/server/users.js',
+    'lib/server/email.js',
+    'lib/server/users_security.js',
+    'lib/server/users_methods.js',
     'lib/server/publications.js',
-      'lib/server/upload.js'
+    'lib/server/upload.js'
   ], ['server']);
 
   //api.export('Users');
-    api.export('Babies');
+
 });
 
 Package.onTest(function(api){

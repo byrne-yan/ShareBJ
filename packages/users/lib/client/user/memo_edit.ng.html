@@ -1,0 +1,28 @@
+<ion-modal-view>
+    <form name="memoForm">
+        <ion-header-bar class="bar-dark">
+            <button class="button button-clear" ng-click="closeEditor('memo')">
+                <i class="icon ion-arrow-left-c"></i>
+            </button>
+            <h1 class="title">更改个性签名</h1>
+            <button class="button button-balanced" ng-click="saveMemo(edit)" ng-disabled="memoForm.$invalid">保存</button>
+        </ion-header-bar>
+        <ion-content class="has-header">
+            <ion-list >
+                <label class="item item-input ">
+
+                    <input type="textarea" name="memo" value="memo" class="item-content" ng-model="edit.memo"
+                           ng-maxlength="128"/>
+                </label>
+
+                <!--<label class="field-note">一个好名字更方便朋友记住你哦</label>-->
+            </ion-list>
+            <div  ng-messages="memoForm.memo.$error" class="error-container">
+                <div ng-message="maxlength" class="error">
+                    <i class="ion-information-circled"></i>
+                    个性签名不能超过１２８个个字符
+                </div>
+            </div>
+        </ion-content>
+    </form>
+</ion-modal-view>

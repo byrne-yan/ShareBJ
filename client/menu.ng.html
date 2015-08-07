@@ -19,7 +19,7 @@
                     <div class="item item-divider">我</div>
                     <div ng-if="currentUser">
                         <a class="item item-avatar" menu-close ui_sref=".users_edit">
-                            <img src="images/hold32X32.png">
+                            <img ng-src="{{currentUser.profile.avatar}}">
                             <h2>{{currentUser.username}}</h2>
                             <p>{{currentUser.profile.memo}}</p>
                         </a>
@@ -27,12 +27,15 @@
 
                     <div ng-controller="BabiesCtrl">
                         <div class="item item-divider">宝宝</div>
-                        <a ng-repeat="baby in babies" class="item " menu-close ui_sref="baby.edit">
-                            {{baby.name}}
+                        <a ng-repeat="baby in babies" class="item item-icon-left"
+                                                    menu-close ui_sref="babie.edit{babyId:baby._id}">
+                            <i class="icon ion-male" ng-if="baby.birth.gender === '男' "></i>
+                            <i class="icon ion-female" ng-if="baby.birth.gender === '女' "></i>
+                            {{baby.name || baby.nickname}}
                         </a>
-                        <a class="item item-icon-left" menu-close ui-sref="baby.new">
+                        <a class="item item-icon-left" href="＃" menu-close ui-sref=".babies_new">
                             <i class="icon ion-person-add"></i>
-                            添加新宝宝
+                                添加新宝宝
                         </a>
                     </div>
 

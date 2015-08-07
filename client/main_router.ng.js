@@ -11,12 +11,6 @@ angular.module('shareBJ')
                 templateUrl:'client/menu.ng.html',
                 controller:'AppCtrl'
             })
-            //.state(ShareBJ.state.menu,{
-            //    url:'/',
-            //    abstract:true,
-            //    templateUrl:'client/root.ng.html',
-            //    controller:'RootCtrl'
-            //})
         ;
 
         $urlRouterProvider.otherwise('/journals');

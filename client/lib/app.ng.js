@@ -1,4 +1,4 @@
-angular.module('shareBJ',['shareBJ.users','shareBJ.journals'])
+angular.module('shareBJ',['shareBJ.users','shareBJ.babies','shareBJ.journals'])
     .controller('AppCtrl',function($scope,$state,$meteor,$ionicHistory) {
         $scope.logout = function(){
             $meteor.logout().then(
@@ -14,11 +14,15 @@ angular.module('shareBJ',['shareBJ.users','shareBJ.journals'])
             )
         }
     })
-    .controller('BabiesCtrl',function($scope){
-        $scope.babies = [
-            {name:"芋头１",birthTime:new Date(2015,5,9,11,20)},
-            {name:"芋头2",birthTime:new Date(2014,2,9,18,55)}
-        ]
+    .controller('BabiesCtrl',function($scope,$rootScope){
+        //$scope.babies = [
+        //    {name:"芋头１",birthTime:new Date(2015,5,9,11,20)},
+        //    {name:"芋头2",birthTime:new Date(2014,2,9,18,55)}
+        //]
+        //$scope.$meteorSubscribe('myBabies',$rootScope.currentUser._id).then(function(handle){
+        //    $scope.babies = $scope.$meteorCollection(Babies);
+        //});
+        $scope.babies = $scope.$meteorCollection(Babies).subscribe('myBabies');
     });
 
 
