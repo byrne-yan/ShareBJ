@@ -1,10 +1,10 @@
 <ion-side-menus enable-menu-with-back-views="false">
     <ion-side-menu-content>
         <ion-nav-bar class="bar-dark">
-            <!--<ion-nav-back-button></ion-nav-back-button>-->
-            <!--<ion-nav-buttons side="left">-->
-                <!--<button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>-->
-            <!--</ion-nav-buttons>-->
+            <ion-nav-back-button></ion-nav-back-button>
+            <ion-nav-buttons side="left">
+                <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+            </ion-nav-buttons>
         </ion-nav-bar>
         <ion-nav-view name="menuContent"></ion-nav-view>
     </ion-side-menu-content>
@@ -13,39 +13,20 @@
         <ion-header-bar class="bar-dark">
             <h1 class="title">宝宝圈</h1>
         </ion-header-bar>
+
         <ion-content>
             <ion-list>
+                <div ng-include="menuUserSummary"></div>
+                <div ng-include="menuBabies"></div>
+
                 <div ng-if="currentUser">
-                    <div class="item item-divider">我</div>
-                    <div ng-if="currentUser">
-                        <a class="item item-avatar" menu-close ui_sref=".users_edit">
-                            <img ng-src="{{currentUser.profile.avatar}}">
-                            <h2>{{currentUser.username}}</h2>
-                            <p>{{currentUser.profile.memo}}</p>
-                        </a>
-                    </div>
-
-                    <div ng-controller="BabiesCtrl">
-                        <div class="item item-divider">宝宝</div>
-                        <a ng-repeat="baby in babies" class="item item-icon-left"
-                                                    menu-close ui_sref="babie.edit{babyId:baby._id}">
-                            <i class="icon ion-male" ng-if="baby.birth.gender === '男' "></i>
-                            <i class="icon ion-female" ng-if="baby.birth.gender === '女' "></i>
-                            {{baby.name || baby.nickname}}
-                        </a>
-                        <a class="item item-icon-left" href="＃" menu-close ui-sref=".babies_new">
-                            <i class="icon ion-person-add"></i>
-                                添加新宝宝
-                        </a>
-                    </div>
-
                     <div class="item item-divider"></div>
                     <a class="item" menu_close ui-sref=".journals">日记</a>
                 </div>
 
                 <div class="item item-divider"></div>
                 <div ng-if="!currentUser">
-                    <a class="item item-icon-left balanced " menu_close ui-sref=".users_login" >
+                    <a class="item item-icon-left balanced " menu_close ui-sref=".users.login" >
                         <i class="icon button-small ion-log-in"></i>
                         <span >登录</span></a>
                 </div>

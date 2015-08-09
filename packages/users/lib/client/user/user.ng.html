@@ -1,17 +1,17 @@
 <ion-view view-title="个人信息">
     <ion-nav-title>个人信息</ion-nav-title>
-    <ion-nav-buttons side="primary">
-        <button menu-toggle="left" class="button button-icon icon ion-navicon ">
-        </button>
-    </ion-nav-buttons>
+    <!--<ion-nav-buttons side="primary">-->
+        <!--<button menu-toggle="left" class="button button-icon icon ion-navicon ">-->
+        <!--</button>-->
+    <!--</ion-nav-buttons>-->
     <ion-content class="has-header">
         <ion-list >
-            <a class="item item-avatar-right" href="#" ng-click="edit('avatar')">
+            <a class="item item-avatar-right" href="#" ng-click="fnEdit('avatar')">
                 头像
                 <img ng-src="{{avatar}}">
                 <!--<spinner ng-if="avatar.status==='uploading'">uploading</spinner>-->
             </a>
-            <a class="item" href="#" ng-click="edit('name')">
+            <a class="item" href="#" ng-click="fnEdit('name')">
                 昵称
                 <span class="item-note">{{name}}</span>
             </a>
@@ -19,7 +19,7 @@
                 用户名
                 <span class="item-note">{{username}}</span>
             </a>
-            <a class="item" href="#" ng-click="edit('mobile')">
+            <a class="item" href="#" ng-click="fnEdit('mobile')">
                 手机号
                 <span class="item-note assertive" ng-if="!mobile.verified">(未验证)</span>
                 <span class="item-note balanced" ng-if="mobile.verified">(已验证)</span>
@@ -27,7 +27,7 @@
             </a>
             <!--<a class="item button button-balanced button-full" ng-if="!mobile.verified" ui-sref=".mobileVerify">-->
                 <!--猛戳此处验证手机号</a>-->
-            <a class="item" href="#" ng-click="edit('email')">
+            <a class="item" href="#" ng-click="fnEdit('email')">
                 EMAIL
                 <span class="item-note assertive" ng-if="!email.verified">(未验证)</span>
                 <span class="item-note balanced" ng-if="email.verified">(已验证)</span>
@@ -56,7 +56,7 @@
                 地区
                 <span class="item-note">{{city}}</span>
             </a>
-            <a class="item" href="#" ng-click="edit('memo')">
+            <a class="item" href="#" ng-click="fnEdit('memo')">
                 个性签名
                 <span class="item-note">{{memo}}</span>
             </a>

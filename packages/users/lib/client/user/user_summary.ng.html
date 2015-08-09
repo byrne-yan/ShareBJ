@@ -1,0 +1,14 @@
+<!--<ion-view>-->
+    <!--<ion-content>-->
+        <!--<ion-list>-->
+            <div ng-if="$root.currentUser">
+                <div class="item item-divider">我</div>
+                <a class="item item-avatar" menu-close ui_sref=".users.edit">
+                    <img ng-src="{{currentUser.profile.avatar}}">
+                    <h2>{{currentUser.username}}</h2>
+                    <p>{{currentUser.profile.memo}}</p>
+                </a>
+            </div>
+        <!--</ion-list>-->
+    <!--</ion-content>-->
+<!--</ion-view>-->

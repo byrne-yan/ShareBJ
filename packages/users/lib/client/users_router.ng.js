@@ -1,16 +1,29 @@
+if(!ShareBJ.menu)
+    ShareBJ.menu = {};
+ShareBJ.menu.userSummary = 'sbj_users_lib/client/user/user_summary.ng.html';
+
 angular.module('shareBJ.users')
 .config(  function($urlRouterProvider,$stateProvider, $locationProvider){
         $locationProvider.html5Mode(true);
 
-        ShareBJ.state.login = "shareBJ.users_login";
-        ShareBJ.state.signup = "shareBJ.users_signup";
-        ShareBJ.state.user = 'shareBJ.users_edit';
+        ShareBJ.state.login = "shareBJ.users.login";
+        ShareBJ.state.signup = "shareBJ.users.signup";
+        ShareBJ.state.user = 'shareBJ.users.edit';
         ShareBJ.state.mobileVerify = 'shareBJ.users_edit.mobileVerify';
         $stateProvider
+            .state('shareBJ.users',{
+                url: '/users',
+                views:{
+                    'menuContent':{
+                        template: "<ion-nav-view name='userView'/>",
+                        controller: function($scope){}
+                    }
+                }
+            })
             .state(ShareBJ.state.login,{
                 url:'/login',
                 views:{
-                    'menuContent':{
+                    'userView':{
                         templateUrl: 'sbj_users_lib/client/login/login.ng.html',
                         controller: 'LoginCtrl'
                     }
@@ -20,7 +33,7 @@ angular.module('shareBJ.users')
                 //cache:false,
                 url:'/signup',
                 views:{
-                    'menuContent':{
+                    'userView':{
                         templateUrl: 'sbj_users_lib/client/signup/signup.ng.html',
                         controller: 'SignupCtrl'
                     }
@@ -28,9 +41,9 @@ angular.module('shareBJ.users')
             })
             .state(ShareBJ.state.user ,{
                 //cache:false,
-                url:'/users/current',
+                url:'/current',
                 views:{
-                    'menuContent':{
+                    'userView':{
                         templateUrl:'sbj_users_lib/client/user/user.ng.html',
                         controller:'UserCtrl'
                     }

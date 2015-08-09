@@ -1,0 +1,18 @@
+<!--<ion-view view-title="Babies List">-->
+    <!--<ion-content>-->
+
+    <div ng-controller="BabiesListCtrl" ng-if="$root.currentUser">
+        <div class="item item-divider">宝宝</div>
+        <a ng-repeat="baby in babies" class="item item-icon-left"
+           menu-close ui_sref=".babies.edit({babyId:baby._id})">
+            <i class="icon ion-male" ng-if="baby.birth.gender === '男' "></i>
+            <i class="icon ion-female" ng-if="baby.birth.gender === '女' "></i>
+            {{baby.name || baby.nickname}} - {{age(baby)}}
+        </a>
+        <a class="item item-icon-left" href="＃" menu-close ui-sref=".babies.edit({babyId:'new'})">
+            <i class="icon ion-person-add"></i>
+            添加新宝宝
+        </a>
+    </div>
+    <!--</ion-content>-->
+<!--</ion-view>-->

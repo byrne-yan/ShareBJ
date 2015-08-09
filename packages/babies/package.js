@@ -27,7 +27,9 @@ Package.onUse(function(api) {
       'lib/client/app.ng.js',
       'lib/client/new.ng.js',
       'lib/client/route.ng.js',
-      'lib/client/new.ng.html'
+      'lib/client/new.ng.html',
+    'lib/client/babies_list.ng.html',
+    'lib/client/babies_list.ng.js'
   ],'client');
 
   api.addFiles([

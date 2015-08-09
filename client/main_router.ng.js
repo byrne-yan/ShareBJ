@@ -30,9 +30,31 @@ angular.module('shareBJ')
             console.log("$stateChangeSuccess:",event,toState,toParams,fromState,fromParams);
             console.log($ionicHistory.viewHistory());
             //if done from login to any state, resotre backView setting
-            if(fromState.name==='shareBJ.users_login')
-            {
-                $ionicHistory.nextViewOptions(null);
-            }
+            //if(fromState.name==='shareBJ.users_login')
+            //{
+            //    $ionicHistory.nextViewOptions(null);
+            //}
         });
+        $rootScope.$on('$viewContentLoading',function(event){
+            console.log('$viewContentLoading',event);
+        });
+        $rootScope.$on('$stateNotFound',function(event,unfoundState, fromState, fromParams){
+            console.log('$stateNotFound',event,unfoundState,fromState,fromParams);
+        });
+
+        $rootScope.$on('$routeChangeError',function(current,previous,rejection){
+            console.log('$routeChangeError',current,previous,rejection);
+        });
+
+        $rootScope.$on('$routeChangeStart', function(next,current){
+            console.log('$routeChangeStart',next,current);
+        });
+        $rootScope.$on('$routeChangeSuccess',function(current,previous){
+            console.log('$routeChangeSuccess',current,previous);
+        });
+        $rootScope.$on('$routeUpdate', function(rootScope){
+            console.log('$routeUpdate',rootScope);
+        })
+
+
     });

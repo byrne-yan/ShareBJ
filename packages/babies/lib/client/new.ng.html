@@ -1,9 +1,6 @@
 <ion-view view-title="添加宝宝" >
-    <ion-nav-title>添加宝宝</ion-nav-title>
-    <!--<ion-nav-buttons side="primary">-->
-        <!--<button menu-toggle="left" class="button button-icon icon ion-navicon ">-->
-        <!--</button>-->
-    <!--</ion-nav-buttons>-->
+    <ion-nav-title>{{title}}</ion-nav-title>
+
     <ion-content noinvalidate class="has-header">
         <form name="newBabyForm"  ng-submit="newBaby(baby)">
             <ul class="list" >
@@ -100,18 +97,18 @@
                     </div>
 
                     <label class="item item-input">
-                        <span class="input-label">出生体重</span>
-                        <input type="number" placeholder="单位克，例：2900" max="15000" ng-model="baby.weight">
+                        <span class="input-label">出生体重(克)</span>
+                        <input type="number" placeholder="单位克，例：2900" max="15000" ng-model="baby.birthWeight">
                     </label>
                     <label class="item item-input">
-                        <span class="input-label">出生身长</span>
-                        <input type="number" placeholder="单位厘米,例：49" max="100" ng-model="baby.height">
+                        <span class="input-label">出生身长(厘米)</span>
+                        <input type="number" placeholder="单位厘米,例：49" max="100" ng-model="baby.birthHeight">
                     </label>
                 </div>
 
             </ul>
             <div class="padding">
-                <button id="nebabyButton" type="submit" ng-disabled="newBabyForm.$invalid" class="button button-full button-balanced ink">添加</button>
+                <button id="nebabyButton" type="submit" ng-disabled="newBabyForm.$invalid" class="button button-full button-balanced ink">{{buttonName}}</button>
             </div>
             <div ng-messages="newbabyError">
                 <div ng-message="newbaby" class="error">

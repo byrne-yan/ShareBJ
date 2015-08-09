@@ -78,7 +78,7 @@ angular.module('shareBJ.users')
                 });
 
             $scope.email = {address:edit.email,verified:false};
-            $scope.closeEmailEditor();
+            $scope.closeEditor('email');
             edit.email = "";
         };
         $scope.saveMobile = function(edit){
@@ -91,7 +91,7 @@ angular.module('shareBJ.users')
                 });
 
             $scope.mobile = {number:edit.mobile,verified:false};
-            $scope.closeMobileEditor();
+            $scope.closeEditor('mobile');
             edit.mobile = "";
         };
         $scope.saveMemo = function(edit){
@@ -207,7 +207,7 @@ angular.module('shareBJ.users')
 
 
         //Memo
-        $scope.edit = function(field){
+        $scope.fnEdit = function(field){
             switch(field){
                 case 'memo':
                     $scope.edit = {memo:$rootScope.currentUser.profile.memo};
@@ -226,7 +226,7 @@ angular.module('shareBJ.users')
                     break;
             }
 
-            $scope.modals.memo.show();
+            $scope.modals[field].show();
         };
         $scope.closeEditor =  function(modal){
             $scope.modals[modal].hide();

@@ -46,7 +46,9 @@ Package.onUse(function (api) {
     'lib/client/user/email.ng.js',
     'lib/client/user/email_edit.ng.html',
     'lib/client/user/mobile_edit.ng.html',
-    'lib/client/user/avatar_edit.ng.html'
+    'lib/client/user/avatar_edit.ng.html',
+    'lib/client/user/user_summary.ng.html',
+    'lib/client/user/user_summary.ng.js'
 
 
   ], ['client']);
