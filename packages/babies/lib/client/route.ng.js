@@ -17,15 +17,7 @@ angular.module('shareBJ.babies')
                 url: '/babies',
                 views: {
                     'menuContent':{
-                        template: " <ion-nav-bar class='bar-dark'>\
-                                        <ion-nav-back-button>\
-                                            <i class='ion-arrow-left-c'></i>\
-                                        </ion-nav-back-button>\
-                                        <ion-nav-buttons side='left'>\
-                                            <button class='button button-icon button-clear ion-navicon' menu-toggle='left'></button>\
-                                        </ion-nav-buttons>\
-                                    </ion-nav-bar>\
-                                    <ion-nav-view name='userView'/>",
+                        templateUrl: "sbj_babies_lib/client/babies_main.ng.html",
                         controller: 'BabiesCtrl'
                     }
                 },
@@ -51,7 +43,7 @@ angular.module('shareBJ.babies')
             .state(ShareBJ.state.babyEdit, {
                 url: '/:babyId',
                 views: {
-                    'userView': {
+                    'babyView': {
                         templateUrl: 'sbj_babies_lib/client/new.ng.html',
                         controller: 'NewBabyCtrl'
                     }

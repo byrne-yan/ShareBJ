@@ -1,0 +1,53 @@
+.journal .item{
+    border-width: 0;
+}
+
+.journal > .item:last-child{
+    border-bottom: 2px solid #ddd;
+}
+.journal .item.item-body{
+    padding-left: 72px;
+}
+
+.journal .item.item-body .journal-date{
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 10px;
+}
+
+.journal .tab-item .icon{
+    height: 16px;
+}
+
+.journal .tabs{
+    height:32px
+}
+
+.journal .tabs-icon-left.tabs .tab-item .icon:before,
+.journal .tabs-icon-left > .tabs .tab-item .icon:before,
+.journal .tabs-icon-right.tabs .tab-item .icon:before,
+.journal .tabs-icon-right > .tabs .tab-item .icon:before {
+    font-size: 14px;
+    line-height: 0px;
+}
+
+.journal-img{
+    width:48px;
+    height: 48px;
+}
+
+.journal-imgPicker{
+    display: none;
+}
+
+select.baby{
+    font-size: 10px;
+}
+select.baby > option{
+    font-size: 14px;
+}
+
+input.journal-search{
+    max-width:106px;
+    font-size: 12px;
+}

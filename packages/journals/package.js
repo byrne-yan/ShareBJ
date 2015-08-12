@@ -14,31 +14,41 @@ Package.onUse(function(api) {
     api.versionsFrom(['METEOR@1.1']);
 
     var packages =[
-        'sbj:lib'
+        'sbj:lib',
+        'sbj:babies'
     ];
 
     api.use(packages);
 
     api.imply(packages);
 
+    api.addFiles([
+            'lib/journals.js'
+        ], ['client','server']
+    );
+
   api.addFiles([
         'lib/client/app.ng.js',
         'lib/client/journals.ng.js',
+          'lib/client/new_journal.ng.js',
         'lib/client/router.ng.js',
 
-        'lib/client/journals.ng.html'
+          'lib/client/journals_main.ng.html',
+          'lib/client/new_journal.ng.html',
+        'lib/client/journals.ng.html',
+          'lib/client/style.css'
       ], ['client']
   );
+
   api.addFiles([
-        'lib/server/publications.js'
+          'lib/server/publications.js',
+          'lib/server/journals_securities.js',
+          'lib/server/upload.js'
       ], ['server']
   );
 
-  api.addFiles([
-      'lib/journals.js'
-      ], ['client','server']
-  );
-    //api.export(Journals);
+
+    api.export('Journals');
 });
 
 Package.onTest(function(api) {

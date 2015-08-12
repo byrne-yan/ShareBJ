@@ -12,7 +12,6 @@ Package.onUse(function (api) {
     var packages =[
         'sbj:lib@0.1.0',
         'jonblum:jquery-cropper@0.10.1',
-        'edgee:slingshot@0.7.1',
         'riaan53:blueimp-canvas-to-blob@0.0.1'
     ];
 
@@ -33,6 +32,7 @@ Package.onUse(function (api) {
 
     'lib/client/stylesheet.css',
 
+      'lib/client/users_main.ng.html',
     'lib/client/login/login.ng.js',
     'lib/client/login/login.ng.html',
 

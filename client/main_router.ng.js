@@ -13,7 +13,7 @@ angular.module('shareBJ')
             })
         ;
 
-        $urlRouterProvider.otherwise('/journals');
+        $urlRouterProvider.otherwise('/journals/list');
     })
     .run(function($rootScope,$state,$meteor,$ionicHistory){
         $rootScope.$on('$stateChangeError',function(event,toState,toParams,fromState,fromParams,error){

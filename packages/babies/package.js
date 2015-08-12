@@ -28,11 +28,13 @@ Package.onUse(function(api) {
       'lib/client/new.ng.js',
       'lib/client/route.ng.js',
       'lib/client/new.ng.html',
+      'lib/client/babies_main.ng.html',
     'lib/client/babies_list.ng.html',
     'lib/client/babies_list.ng.js'
   ],'client');
 
   api.addFiles([
+      //'lib/server/upload.js',
     'lib/server/babies_securities.js',
       'lib/server/publications.js'
   ],'server');

@@ -22,7 +22,9 @@ Package.onUse(function(api) {
         'matb33:collection-hooks@0.7.13',
         'urigo:ionic@1.0.0_1',
         //'jonmc12:ionic-material@0.4.2_1',
-        'angular:angular-messages@1.4.2'
+        'edgee:slingshot@0.7.1',
+        'angular:angular-messages@1.4.2',
+        'tmeasday:publish-counts@0.6.0'
 
     ];
 
@@ -35,6 +37,11 @@ Package.onUse(function(api) {
         'lib/callbacks.js',
         'lib/collections.js'
     ],['server','client']);
+
+    api.addFiles([
+        'server/aws.js'//,
+        //'client/helpers/stylesheet.css'
+    ],   ['server']);
 
     api.addFiles([
         'client/lib.ng.js'//,

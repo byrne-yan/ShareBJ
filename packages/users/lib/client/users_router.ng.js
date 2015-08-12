@@ -15,7 +15,7 @@ angular.module('shareBJ.users')
                 url: '/users',
                 views:{
                     'menuContent':{
-                        template: "<ion-nav-view name='userView'/>",
+                        templateUrl: "sbj_users_lib/client/users_main.ng.html",
                         controller: function($scope){}
                     }
                 }

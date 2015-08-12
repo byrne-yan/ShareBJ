@@ -1,0 +1,66 @@
+<ion-view view-title="新日记">
+    <ion-nav-buttons side="secondary">
+        <button type="submit" class="button button-balanced " ng-click="newJournal(journal)">
+            发送
+        </button>
+    </ion-nav-buttons>
+
+    <form name="newJournalForm" noinvalidate ng-submit="newJournal(journal)">
+
+    <ion-content  class="has-header">
+            <ion-list>
+                <label class="item item-input item-select">
+                    <label class="input-label">
+                        记录对象
+                    </label>
+                    <select name="baby" ng-model="journal.baby" required>
+                        <option ng-repeat="baby in babies" value="{{baby._id}}">{{baby.nickname||baby.name}}</option>
+                    </select>
+                </label>
+                <div  ng-messages="newJournalForm.baby.$error" class="error-container"
+                ng-if="newJournalForm.baby.$touched">
+
+                <div ng-message="'required'" class="error">
+                    <i class="ion-information-circled"></i>
+                    请选择要其记录言行的的宝宝
+                    </div>
+                </div>
+
+                <label class="item item-input">
+                    <textarea name="description" placeholder="这一刻的想法..." ng-model="journal.description">
+                    </textarea>
+                </label>
+                <!--<div  ng-messages="newBabyForm.babyname.$error" class="error-container"-->
+                      <!--ng-if="newBabyForm.babyname.$touched">-->
+
+                    <!--<div ng-message="'maxlength'" class="error">-->
+                        <!--<i class="ion-information-circled"></i>-->
+                        <!--字必须在４～１６个字符之间-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;<ng-messages-include src="errors-messages"> </ng-messages-include>&ndash;&gt;-->
+                <!--</div>-->
+
+
+                <input type="file" id="imagePicker" multiple accept="image/*" class="journal-imgPicker" >
+                <a href="#" ng-repeat="image in journal.images track by image.filename" >
+                    <img class="journal-img"  ng-src="{{image.dataAsUrl}}">
+                </a>
+                <a href="#" id="imageFacade" ng-show="journal.images.length < 9">
+                    <img class="journal-img" src="images/plus.jpg"  >
+                </a>
+
+            </ion-list>
+            <!--<div class="padding">-->
+                <!--<button id="newJournalButton" type="submit" ng-disabled="newJournalForm.$invalid"-->
+                        <!--class="button button-full button-balanced ink">发送</button>-->
+            <!--</div>-->
+            <div ng-messages="newJournalError">
+                <div ng-message="newjournal" class="error">
+                    <i class="ion-information-circled"></i>
+                    {{newjournalErrorMessage}}
+                </div>
+            </div>
+
+    </ion-content>
+    </form>
+</ion-view>
