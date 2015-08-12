@@ -3,7 +3,7 @@ angular.module('shareBJ')
         $locationProvider.html5Mode(true);
 
         ShareBJ.state.menu = 'shareBJ';
-        ShareBJ.state.home = 'shareBJ.journals';
+        ShareBJ.state.home = 'shareBJ.journals.list';
         $stateProvider
             .state(ShareBJ.state.menu,{
                 url:'',
