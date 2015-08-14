@@ -1,18 +1,39 @@
-<!--<ion-view view-title="Babies List">-->
-    <!--<ion-content>-->
+<ion-view>
+    <ion-nav-buttons>
+        <div class="item-input-inset">
+            <label class="item-input-wrapper">
+                <i class="icon ion-ios-search placeholder-icon"></i>
+                <input type="search"  class="baby-search" placeholder="查找宝宝" ng-model="filter.search">
+            </label>
+            <button class="button button-icon ion-person-add" ui-sref="shareBJ.babies.edit({babyId:'new'})"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-content class="has-header">
+        <div class="list">
+            <div class="card" ng-repeat="baby in babies">
+                <div class="item item-avatar " >
+                    <img ng-src="{{baby.avatar}}">
+                        <h2>{{baby.name}}</h2>
+                        <h3>{{baby.nickname}}</h3>
+                        <div>监护人:<span ng-repeat="owner in baby.owners">{{userName(owner)}} </span>
+                        </div>
+                </div>
+                <div class="item tabs">
+                    <a class="tab-item balanced" href="#" ng-click="requestGuardian(baby)"
+                       ng-if="!isGuardianOrRequested(baby)">监护</a>
+                    <a class="tab-item balanced" href="#" ng-click="cancelGuardian(baby)"
+                       ng-if="isGuardian(baby)">取消监护</a>
+                    <a class="tab-item balanced" href="#" ng-click="cancelRequestGuardian(baby)"
+                       ng-if="isRequestedGuardian(baby)">撤回监护申请</a>
 
-    <div ng-controller="BabiesListCtrl" ng-if="$root.currentUser">
-        <div class="item item-divider">宝宝</div>
-        <a ng-repeat="baby in babies" class="item item-icon-left"
-           menu-close ui_sref=".babies.edit({babyId:baby._id})">
-            <i class="icon ion-male" ng-if="baby.birth.gender === '男' "></i>
-            <i class="icon ion-female" ng-if="baby.birth.gender === '女' "></i>
-            {{baby.name || baby.nickname}} - {{age(baby)}}
-        </a>
-        <a class="item item-icon-left" href="＃" menu-close ui-sref=".babies.edit({babyId:'new'})">
-            <i class="icon ion-person-add"></i>
-            添加新宝宝
-        </a>
-    </div>
-    <!--</ion-content>-->
-<!--</ion-view>-->
+                    <a class="tab-item balanced" href="#" ng-click="requestFollowing(baby)"
+                       ng-if="!isGuardianOrFollowOrRequested(baby)">关注</a>
+                    <a class="tab-item balanced" href="#" ng-click="cancelFollowing(baby)"
+                       ng-if="isFollow(baby)">取消关注</a>
+                    <a class="tab-item balanced" href="#" ng-click="cancelRequestFollowing(baby)"
+                       ng-if="isRequestedFollow(baby)">撤回关注申请</a>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

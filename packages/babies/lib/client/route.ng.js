@@ -1,7 +1,7 @@
 if(!ShareBJ.menu)
     ShareBJ.menu = {};
 
-ShareBJ.menu.babiesList = 'sbj_babies_lib/client/babies_list.ng.html';
+ShareBJ.menu.babiesList = 'sbj_babies_lib/client/baby_menu.ng.html';
 
 angular.module('shareBJ.babies')
     .config(  function($urlRouterProvider,$stateProvider, $locationProvider) {
@@ -21,25 +21,31 @@ angular.module('shareBJ.babies')
                         controller: 'BabiesCtrl'
                     }
                 },
-                resolve:{
-                    "currentUser":function($meteor){
+                resolve: {
+                    "currentUser": function ($meteor) {
                         return $meteor.requireUser();
-                    },
-                    "babiesSub":
-                        function($meteor,currentUser){
-                            return  $meteor.subscribe('myBabies', currentUser._id);
-                        }
+                    }
                 }
             })
-            //.state(ShareBJ.state.babyNew, {
-            //    url: '/new',
-            //    views: {
-            //        'userView': {
-            //            templateUrl: 'sbj_babies_lib/client/new.ng.html',
-            //            controller: 'NewBabyCtrl'
-            //        }
-            //    }
-            //})
+            .state('shareBJ.babies.list',{
+                url:'/list',
+                views: {
+                    'babyView': {
+                        templateUrl: 'sbj_babies_lib/client/babies_list.ng.html',
+                        controller: 'BabiesListCtrl'
+                    }
+                }
+            })
+            .state('shareBJ.babies.requests',{
+                url:'/requests',
+                views: {
+                    'babyView': {
+                        templateUrl: 'sbj_babies_lib/client/babies_requests.ng.html',
+                        controller: 'BabiesRequestsCtrl'
+                    }
+                }
+
+            })
             .state(ShareBJ.state.babyEdit, {
                 url: '/:babyId',
                 views: {
@@ -47,6 +53,14 @@ angular.module('shareBJ.babies')
                         templateUrl: 'sbj_babies_lib/client/new.ng.html',
                         controller: 'NewBabyCtrl'
                     }
+                },
+                resolve:{
+
+                    "babiesSub":
+                        function($meteor,currentUser){
+                            return  $meteor.subscribe('myBabies', currentUser._id);
+                        }
                 }
-            });
+            })
+        ;
     });

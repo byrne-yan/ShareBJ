@@ -20,6 +20,7 @@ Package.onUse(function(api) {
   api.imply(packkges);
 
   api.addFiles([
+    'lib/requests.js',
     'lib/babies.js'
   ],['client','server']);
 
@@ -30,11 +31,16 @@ Package.onUse(function(api) {
       'lib/client/new.ng.html',
       'lib/client/babies_main.ng.html',
     'lib/client/babies_list.ng.html',
-    'lib/client/babies_list.ng.js'
+    'lib/client/babies_list.ng.js',
+      'lib/client/baby_menu.ng.html',
+    'lib/client/baby_menu.ng.js',
+    'lib/client/babies_requests.ng.js',
+    'lib/client/babies_requests.ng.html'
   ],'client');
 
   api.addFiles([
-      //'lib/server/upload.js',
+      'lib/server/babies_methods.js',
+    'lib/server/requests_methods.js',
     'lib/server/babies_securities.js',
       'lib/server/publications.js'
   ],'server');
@@ -42,6 +48,8 @@ Package.onUse(function(api) {
 
 
   api.export('Babies');
+  api.export('Requests');
+  api.export('Baby');
 });
 
 Package.onTest(function(api) {

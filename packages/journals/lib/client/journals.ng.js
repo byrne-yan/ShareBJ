@@ -1,7 +1,7 @@
 Journals.feedStep= 10;
 
 angular.module('shareBJ.journals')
-    .controller('JournalsCtrl',function($scope,$meteor){
+    .controller('JournalsCtrl',function($scope,$meteor,babies){
         //$scope.page = 1;
         $scope.menu = {dragContent:true};
 
@@ -31,13 +31,6 @@ angular.module('shareBJ.journals')
             false
             );
 
-        $scope.babies = $scope.$meteorCollection(function(){
-            return Babies.find({},{
-                sort: { conceptionDate: -1, "birth.birthTime": -1}
-            })
-            }
-            ,false
-        );
 
         //$scope.selectedBabies = function(journal){
         //    if(!$scope.selectedBaby || $scope.selectdeBaby==='')
