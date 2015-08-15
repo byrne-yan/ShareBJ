@@ -35,7 +35,8 @@ Package.onUse(function(api) {
         'lib/base.js',
         'lib/core.js',
         'lib/callbacks.js',
-        'lib/collections.js'
+        'lib/collections.js',
+        'lib/age.js'
     ],['server','client']);
 
     api.addFiles([
@@ -49,6 +50,8 @@ Package.onUse(function(api) {
         ],   ['client']);
 
     api.export('ShareBJ');
+    api.export('conceptionAge');
+    api.export('ageOf');
 
 });
 

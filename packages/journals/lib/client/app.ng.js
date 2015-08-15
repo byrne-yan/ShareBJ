@@ -1,1 +1,1 @@
-angular.module('shareBJ.journals',['shareBJ.lib']);
+angular.module('shareBJ.journals',['shareBJ.babies']);

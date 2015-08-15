@@ -3,7 +3,36 @@ Meteor.publish('myBabies',function(){
         throw Meteor.Error('Access Denided','Authorization Required');
     }
 
-    return Babies.find({owners:this.userId},{sort:[["conceptionDate","desc"],["birth.birthTime","desc"]]});
+    var uid = this.userId;
+    function transform(doc){
+        doc.guardiansDetail = Meteor.users.find({_id:{$in:doc.owners}},{
+            fields:{username:1, 'profile.name':1, 'profile.avatar':1}}).fetch();
+        doc.followersDetail = Meteor.users.find({_id:{$in:doc.followers}},{
+            fields:{username:1, 'profile.name':1, 'profile.avatar':1}}).fetch();
+        return doc;
+    };
+
+    var selector = {owners:uid};
+    var options = {sort:[["conceptionDate","desc"],["birth.birthTime","desc"]]};
+
+    var self = this;
+
+    var observer =Babies.find(selector,options).observe({
+        added: function (doc) {
+            self.added('babies', doc._id, transform(doc));
+        },
+        changed: function (newDoc, oldDoc) {
+            self.changed('babies',newDoc._id, transform(newDoc));
+        },
+        removed:function(oldDoc){
+            self.removed('babies',oldDoc._id);
+        }
+    }) ;
+    self.onStop(function(){
+        observer.stop();
+    });
+
+    self.ready();
 });
 
 Meteor.publish('allBabies',function(options, extra){
@@ -33,10 +62,7 @@ Meteor.publish('myRequests', function(){
     }
 
     var ownedBabies = Babies.find({owners:this.userId}).fetch();
-    var ownedBabyIds = _.reduce(ownedBabies,function(memo,baby){
-        memo.push(baby._id);
-        return memo
-    },[]);
+    var ownedBabyIds = _.map(ownedBabies,function(baby){return baby._id});
     var selector = {baby:{$in: ownedBabyIds}};
     Counts.publish(this,'numOfMyRequests', Requests.find(selector),{noReady:true});
 
@@ -75,3 +101,6 @@ Meteor.publish('myRequests', function(){
 
     self.ready();
 });
+
+
+

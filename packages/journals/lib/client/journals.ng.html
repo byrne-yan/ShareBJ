@@ -39,7 +39,7 @@
                 <div class="item item-body ">
                     <!--{{journal.images}}-->
                     <img class="journal-img" ng-if="journal.images.length > 0" ng-repeat="image in journal.images" ng-src="{{image.url}}" >
-                    <p class="journal-date">{{journal.createdAt | date: 'yyyy-MM-dd HH:mm:ss'}}</p>
+                    <p class="journal-date">{{timeFromNow(journal.createdAt)}}</p>
                     <div class="item tabs tabs-icon-left " >
                         <a class="tab-item" href="#">
                             <i class="icon ion-heart"></i>

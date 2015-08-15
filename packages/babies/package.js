@@ -35,7 +35,9 @@ Package.onUse(function(api) {
       'lib/client/baby_menu.ng.html',
     'lib/client/baby_menu.ng.js',
     'lib/client/babies_requests.ng.js',
-    'lib/client/babies_requests.ng.html'
+    'lib/client/babies_requests.ng.html',
+    'lib/client/babies_takecareof.ng.html',
+    'lib/client/babies_takecareof.ng.js'
   ],'client');
 
   api.addFiles([

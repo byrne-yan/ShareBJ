@@ -46,6 +46,16 @@ angular.module('shareBJ.babies')
                 }
 
             })
+            .state('shareBJ.babies.guardian',{
+                url:'/guardian',
+                views: {
+                    'babyView': {
+                        templateUrl: 'sbj_babies_lib/client/babies_takecareof.ng.html',
+                        controller: 'BabiesGuardianCtrl'
+                    }
+                }
+
+            })
             .state(ShareBJ.state.babyEdit, {
                 url: '/:babyId',
                 views: {

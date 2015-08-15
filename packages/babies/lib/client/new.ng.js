@@ -66,7 +66,8 @@ angular.module('shareBJ.babies')
             var babyObj = {
                 name: baby.name,
                 nickname:baby.nickname,
-                owners:[$rootScope.currentUser._id]
+                owners:[$rootScope.currentUser._id],
+                followers:[]
             };
 
             if(baby.born){

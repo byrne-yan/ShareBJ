@@ -2,12 +2,10 @@ Journals.feedStep= 10;
 
 angular.module('shareBJ.journals')
     .controller('JournalsCtrl',function($scope,$meteor,babies){
-        //$scope.page = 1;
-        $scope.menu = {dragContent:true};
-
         $scope.numLoads = Journals.feedStep;
         $scope.filter = {};
 
+        $scope.babies = babies;
         $meteor.autorun($scope,function(){
             $meteor.subscribe('myJournals',{
                 limit:parseInt($scope.getReactively('numLoads')),
@@ -18,8 +16,16 @@ angular.module('shareBJ.journals')
                     search:$scope.getReactively('filter.search')
                 }
             ).then(function(){
-                $scope.journalsCount = Counts.get('numOfMyJournals');
+                $scope.journalsCount = $scope.$meteorObject(Counts,'numOfMyJournals',false);
             });
+
+            $scope.timeFromNow = function(date){
+                moment.locale('zh-cn');
+                if(date)
+                {
+                    return moment([date.getFullYear(),date.getMonth(),date.getDate()]).fromNow();
+                }
+            }
         });
 
 
@@ -39,7 +45,7 @@ angular.module('shareBJ.journals')
         //};
 
         $scope.loadOlderJournals = function(){
-            if($scope.numLoads < $scope.journalsCount)
+            if($scope.numLoads < $scope.journalsCount.count)
             {
                 console.log("loading older journals");
                 $scope.numLoads = $scope.numLoads + Journals.feedStep;

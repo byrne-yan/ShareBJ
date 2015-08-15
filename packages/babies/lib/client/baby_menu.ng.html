@@ -1,9 +1,15 @@
 <div ng-controller="BabiesMenuCtrl" ng-if="$root.currentUser">
     <div class="item item-divider">宝宝</div>
-    <a class="item item-icon-left" ui-sref=".babies.requests" ng-show="requestsCount>0">
+    <a class="item item-icon-left" menu-close ui-sref=".babies.requests" ng-if="requestsCount.count > 0">
         <i class="icon ion-email-unread"></i>
         待处理申请
-        <span class="badge badge-assertive">{{requestsCount}}</span>
+        <span class="badge badge-assertive">{{requestsCount.count}}</span>
+    </a>
+    <a class="item" menu-close ui-sref=".babies.guardian">
+        我的宝宝
+    </a>
+    <a class="item" menu-close ui-sref=".babies.following">
+        关注的宝宝
     </a>
     <!--<a ng-repeat="baby in babies" class="item item-icon-left"-->
        <!--menu-close ui_sref=".babies.edit({babyId:baby._id})">-->
@@ -11,8 +17,8 @@
         <!--<i class="icon ion-female" ng-if="baby.birth.gender === '女' "></i>-->
         <!--{{baby.name || baby.nickname}} - {{age(baby)}}-->
     <!--</a>-->
-    <a class="item item-icon-left" href="＃" menu-close ui-sref=".babies.edit({babyId:'new'})">
-        <i class="icon ion-person-add"></i>
-        添加新宝宝
-    </a>
+    <!--<a class="item item-icon-left" href="＃" menu-close ui-sref=".babies.edit({babyId:'new'})">-->
+        <!--<i class="icon ion-person-add"></i>-->
+        <!--添加新宝宝-->
+    <!--</a>-->
 </div>
