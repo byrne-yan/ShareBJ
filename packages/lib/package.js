@@ -36,6 +36,7 @@ Package.onUse(function(api) {
         'lib/core.js',
         'lib/callbacks.js',
         'lib/collections.js',
+        'lib/moment_locale_zh_cn.js',
         'lib/age.js'
     ],['server','client']);
 
@@ -45,7 +46,8 @@ Package.onUse(function(api) {
     ],   ['server']);
 
     api.addFiles([
-        'client/lib.ng.js'//,
+        'client/lib.ng.js',
+        'client/style.css'
         //'client/helpers/stylesheet.css'
         ],   ['client']);
 

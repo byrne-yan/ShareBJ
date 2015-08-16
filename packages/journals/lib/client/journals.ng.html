@@ -8,6 +8,7 @@
         <!--</button>-->
     <!--</ion-nav-buttons>-->
     <ion-nav-buttons side="primary">
+         <img class="SBJ-AVATAR" ng-src="{{$root.currentUser.profile.avatar}}">
         <button class="button button-clear" ui_sref="shareBJ.journals.new">
             <i class="icon ion-ios-camera-outline"></i>
         </button>
@@ -30,7 +31,9 @@
 
                 <div class="item item-avatar item-text-wrap" >
                     <img ng-src="{{journal.authorDetail.profile.avatar}}">
-                    <h2>{{journal.authorDetail.profile.name || journal.authorDetail.username}}</h2>
+                    <p>@{{journal.babyDetail.nickname}}</p>
+                    <!--<img class="SBJ-AVATAR" ng-src="{{journal.babyDetail.avatar}}">-->
+                    <!--<h2>{{journal.authorDetail.profile.name || journal.authorDetail.username}}</h2>-->
                     <p >{{journal.description}}</p>
                     <!--<a class="item-note" href="#" ui-sref="shareBJ.babies.edit({babyId:journal.baby})">-->
                         <!--{{journal.babyDetail.nickname || journal.babyDetail.nickname}}-->
@@ -39,7 +42,7 @@
                 <div class="item item-body ">
                     <!--{{journal.images}}-->
                     <img class="journal-img" ng-if="journal.images.length > 0" ng-repeat="image in journal.images" ng-src="{{image.url}}" >
-                    <p class="journal-date">{{timeFromNow(journal.createdAt)}}</p>
+                    <p class="journal-date">{{journal.authorDetail.profile.name || journal.authorDetail.username}}@{{timeFromNow(journal.createdAt)}}</p>
                     <div class="item tabs tabs-icon-left " >
                         <a class="tab-item" href="#">
                             <i class="icon ion-heart"></i>

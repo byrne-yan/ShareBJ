@@ -1,9 +1,10 @@
 angular.module('shareBJ.babies')
-    .controller('BabiesRequestsCtrl',function($scope,$meteor,$ionicPopup,$rootScope) {
+    .controller('BabiesRequestsCtrl',function($scope,$meteor,$state,$ionicPopup,$ionicNavBarDelegate) {
         $meteor.subscribe('myRequests');
 
         $scope.requests = $scope.$meteorCollection(Requests,false);
 
+        $ionicNavBarDelegate.showBar(false);
         $scope.action = function(request){
             return '于' + request.requestAt.toISOString().slice(0,10) + '向你申请宝宝'
         };
@@ -18,7 +19,9 @@ angular.module('shareBJ.babies')
 
         $scope.approve = function(request){
             $meteor.call('ApproveRequest',request._id).then(function(){
-
+                if($scope.requests.length === 0){
+                    $state.go(ShareBJ.state.home);
+                }
             },function(error){
                 console.log(error);
                 $ionicPopup.alert({
@@ -29,7 +32,9 @@ angular.module('shareBJ.babies')
         };
         $scope.reject = function(request){
             $meteor.call('RejectRequest',request._id).then(function(){
-
+                if($scope.requests.length === 0){
+                    $state.go(ShareBJ.state.home);
+                }
             },function(error){
                 console.log(error);
                 $ionicPopup.alert({

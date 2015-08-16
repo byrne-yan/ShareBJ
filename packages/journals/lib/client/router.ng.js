@@ -30,18 +30,20 @@ angular.module('shareBJ.journals')
                 },
                 resolve:{
                     'babiesSub':function($meteor){
-                        return $meteor.subscribe('myBabies',{sort: { conceptionDate: -1, "birth.birthTime": -1}});
+                        return $meteor.subscribe('myGuardianOrFollowingBabies',{sort: { conceptionDate: -1, "birth.birthTime": -1}});
                     },
-                    'babies': function($meteor){
+                    'currentUser': function($meteor){
+                        return $meteor.requireUser();
+                    },
+                    'babies': function($meteor,currentUser){
                         return $meteor.collection(function(){
-                                return Babies.find({},{
+                                return Babies.find({$or:[{followers:currentUser._id},{owners:currentUser._id}]},{
                                     sort: { conceptionDate: -1, "birth.birthTime": -1}
                                 })
                             }
                             ,false
                         );
                     }
-
                 },
                 onEnter: function(babies,$state){
 

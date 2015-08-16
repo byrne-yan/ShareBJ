@@ -20,9 +20,6 @@ angular.module('shareBJ')
             console.log("$stateChangeError:",event,toState,toParams,fromState,fromParams,error);
             if (error === 'AUTH_REQUIRED'){
                 $state.go(ShareBJ.state.login);
-            }else if( error === 'BABY_GUARD_REQUIRED'){
-                //TODO:transit to guard a baby
-                console.log('BABY_GUARD_REQUIRED');
             }
         });
         $rootScope.$on('$stateChangeStart',function(event,toState,toParams,fromState,fromParams){

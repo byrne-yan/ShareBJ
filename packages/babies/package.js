@@ -37,8 +37,10 @@ Package.onUse(function(api) {
     'lib/client/babies_requests.ng.js',
     'lib/client/babies_requests.ng.html',
     'lib/client/babies_takecareof.ng.html',
-    'lib/client/babies_takecareof.ng.js'
-  ],'client');
+    'lib/client/babies_takecareof.ng.js',
+    'lib/client/babies_following.ng.html',
+    'lib/client/babies_following.ng.js'  ]
+      ,'client');
 
   api.addFiles([
       'lib/server/babies_methods.js',

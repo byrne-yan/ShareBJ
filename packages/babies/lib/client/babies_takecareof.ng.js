@@ -1,7 +1,9 @@
 angular.module('shareBJ.babies')
     .controller('BabiesGuardianCtrl',function($scope,$meteor,$ionicPopup,$rootScope) {
-      $meteor.subscribe('myBabies');
-        $scope.babies = $scope.$meteorCollection(Babies,false);
+      $scope.$meteorSubscribe('myBabies');
+        $scope.babies = $scope.$meteorCollection(function(){
+            return Babies.find({owners:$rootScope.currentUser._id});
+        },false);
 
         $scope.cancelGuardian = function(baby,guardian){
             $meteor.call('CancelGuardian',baby._id,guardian._id).then(function(){

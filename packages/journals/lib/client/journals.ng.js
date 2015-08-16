@@ -23,7 +23,7 @@ angular.module('shareBJ.journals')
                 moment.locale('zh-cn');
                 if(date)
                 {
-                    return moment([date.getFullYear(),date.getMonth(),date.getDate()]).fromNow();
+                    return moment(date).fromNow();
                 }
             }
         });

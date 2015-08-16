@@ -56,6 +56,15 @@ angular.module('shareBJ.babies')
                 }
 
             })
+            .state('shareBJ.babies.following',{
+                url:'/follower',
+                views: {
+                    'babyView': {
+                        templateUrl: 'sbj_babies_lib/client/babies_following.ng.html',
+                        controller: 'BabiesFollowCtrl'
+                    }
+                }
+            })
             .state(ShareBJ.state.babyEdit, {
                 url: '/:babyId',
                 views: {
