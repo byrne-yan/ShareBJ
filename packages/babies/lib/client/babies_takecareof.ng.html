@@ -7,7 +7,7 @@
     <ion-content class="has-header">
         <div class="list">
             <div class="card" ng-repeat="baby in babies">
-                <div class="item item-divider">
+                <div class="item item-positive item-divider">
                     宝宝 #{{$index+1}}：
                 </div>
                 <a class="item item-avatar" href='#' ui-sref="shareBJ.babies.edit({babyId:baby._id})">
@@ -36,7 +36,7 @@
                             ng-if="isOwner(baby,$root.currentUser) && !isOwner(baby,guardian)">取消监护</button>
                 </div>
                 <div class="item button-bar">
-                    <button class="button button-balanced" nk-click="inviteGuardian(baby)">邀请他人一起来监护</button>
+                    <button class="button button-balanced" ui-sref="shareBJ.babies.inviteFor({babyId:baby._id,type:'guard'})">邀请他人一起来监护</button>
                 </div>
                 <div class="item item-divider">
                     当前关注人({{baby.followersDetail.length}}人)：
@@ -47,7 +47,7 @@
                     <button class="button button-assertive" ng-click="cancelFollowing(baby,follower)">取消关注</button>
                 </div>
                 <div class="item button-bar">
-                    <button class="button button-balanced" ng-click="inviteFollowing()">邀请他人一起来关注</button>
+                    <button class="button button-balanced" ui-sref="shareBJ.babies.inviteFor({babyId:baby._id,type:'follow'})">邀请他人一起来关注</button>
                 </div>
             </div>
         </div>

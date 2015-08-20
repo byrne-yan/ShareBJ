@@ -48,7 +48,9 @@ angular.module('shareBJ.babies')
                     $scope.babiesCount = Counts.get('numOfAllBabies');
                 });
         });
-        $meteor.subscribe('myRequests');
+        if($rootScope.currentUser) {
+            $meteor.subscribe('myRequests');
+        }
 
         $scope.babies = $scope.$meteorCollection( function() {
                 return Babies.find({},{

@@ -12,7 +12,7 @@ angular.module('shareBJ.users')
                 $scope.email = $rootScope.currentUser.emails?$rootScope.currentUser.emails[0]:{address:'',verified:true};
                 $scope.gender = $rootScope.currentUser.profile.gender ;
                 $scope.birthday = $rootScope.currentUser.profile.birthday;
-                $scope.memo = $rootScope.currentUser.profile.memo;
+                $scope.motto = $rootScope.currentUser.profile.motto;
             });
         };
         $scope.goBack = function(){
@@ -47,12 +47,12 @@ angular.module('shareBJ.users')
         }).then(function(modal){
             $scope.modals.avatar = modal;
         });
-        $ionicModal.fromTemplateUrl('sbj_users_lib/client/user/memo_edit.ng.html',{
+        $ionicModal.fromTemplateUrl('sbj_users_lib/client/user/motto_edit.ng.html',{
             scope:$scope,
             animation:'slide-in-up',
             focusFirstInput:true
         }).then(function(modal){
-            $scope.modals.memo = modal;
+            $scope.modals.motto = modal;
         });
 
         $scope.saveName = function(edit){
@@ -94,19 +94,19 @@ angular.module('shareBJ.users')
             $scope.closeEditor('mobile');
             edit.mobile = "";
         };
-        $scope.saveMemo = function(edit){
-            $meteor.call('updateCurrentUserMemo',$rootScope.currentUser._id,edit.memo)
+        $scope.saveMotto = function(edit){
+            $meteor.call('updateCurrentUserMotto',$rootScope.currentUser._id,edit.motto)
                 .then(function(data){
-                    console.log('Updating memo success!');
+                    console.log('Updating motto success!');
                 },
                 function(error){
                     console.log(error);
                 });
 
-            $scope.memo = edit.memo;
+            $scope.motto = edit.motto;
 
-            $scope.modals.memo.hide();
-            edit.memo = "";
+            $scope.modals.motto.hide();
+            edit.motto = "";
         };
         //Email verification
         $scope.sending = false;
@@ -206,11 +206,11 @@ angular.module('shareBJ.users')
         };
 
 
-        //Memo
+        //motto
         $scope.fnEdit = function(field){
             switch(field){
-                case 'memo':
-                    $scope.edit = {memo:$rootScope.currentUser.profile.memo};
+                case 'motto':
+                    $scope.edit = {motto:$rootScope.currentUser.profile.motto};
                     break;
                 case 'name':
                     $scope.edit = {name:$scope.name};

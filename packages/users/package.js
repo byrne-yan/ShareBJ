@@ -13,6 +13,7 @@ Package.onUse(function (api) {
         'sbj:lib@0.1.0',
         'jonblum:jquery-cropper@0.10.1',
         'riaan53:blueimp-canvas-to-blob@0.0.1'
+        ,'sbj:notifications'
     ];
 
   api.use(packages);
@@ -21,8 +22,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/users.js',
-      'lib/babies.js'
-    //'lib/publications.js',
+    'lib/user_invitations.js'
     //'lib/methods.js'
   ], ['client', 'server']);
 
@@ -42,13 +42,15 @@ Package.onUse(function (api) {
     'lib/client/user/user.ng.js',
     'lib/client/user/user.ng.html',
     'lib/client/user/name_edit.ng.html',
-    'lib/client/user/memo_edit.ng.html',
+    'lib/client/user/motto_edit.ng.html',
     'lib/client/user/email.ng.js',
     'lib/client/user/email_edit.ng.html',
     'lib/client/user/mobile_edit.ng.html',
     'lib/client/user/avatar_edit.ng.html',
     'lib/client/user/user_summary.ng.html',
     'lib/client/user/user_summary.ng.js'
+     ,'lib/client/user/notifications.ng.js'
+     ,'lib/client/user/notifications.ng.html'
 
 
   ], ['client']);
@@ -61,7 +63,8 @@ Package.onUse(function (api) {
     'lib/server/upload.js'
   ], ['server']);
 
-  //api.export('Users');
+  api.export('Users');
+  api.export('UserInvitations');
 
 });
 

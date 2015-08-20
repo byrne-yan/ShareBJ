@@ -1,0 +1,29 @@
+<ion-view view-title="消息">
+    <ion-content>
+        <div class="list card">
+            <div class="" ng-repeat="notification in notifications">
+
+                <div class="item item-divider item-positive">
+                    {{notification.data.invitor.nickname}}
+                    <span class="item-note">{{moment(notification.timestamp).format('ll')}}</span>
+                </div>
+                <div class="item item-text-wrap" ng-bind-html="msg(notification)"></div>
+
+                <div class="item item-button-right">
+                    <div ng-if="notification.courier==='UserInvitation'">
+                        <a  class="button button-balanced" href="#" ng-click="acceptInvitation(notification)" >
+                            接受邀请
+                        </a>
+                        <a  class="button button-assertive" href="#" ng-click="rejectInvitation(notification)" >
+                            拒绝邀请
+                        </a>
+                    </div>
+                    <div ng-if="notification.courier==='Message'">
+                        <button class="button button-positive" ng-click="markAsRead(notification)">阅</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

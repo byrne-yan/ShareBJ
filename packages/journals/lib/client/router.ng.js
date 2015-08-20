@@ -21,7 +21,7 @@ angular.module('shareBJ.journals')
             })
             .state(ShareBJ.state.journals,{
                 //cache:false,
-                url:'/list',
+                url:'/list?baby',
                 views:{
                     'journalView':{
                         templateUrl: 'sbj_journals_lib/client/journals.ng.html',
@@ -29,11 +29,12 @@ angular.module('shareBJ.journals')
                     }
                 },
                 resolve:{
-                    'babiesSub':function($meteor){
-                        return $meteor.subscribe('myGuardianOrFollowingBabies',{sort: { conceptionDate: -1, "birth.birthTime": -1}});
-                    },
                     'currentUser': function($meteor){
                         return $meteor.requireUser();
+                    },
+                    'babiesSub':function($meteor, currentUser){
+                        if(currentUser)
+                            return $meteor.subscribe('myGuardianOrFollowingBabies',{sort: { conceptionDate: -1, "birth.birthTime": -1}});
                     },
                     'babies': function($meteor,currentUser){
                         return $meteor.collection(function(){

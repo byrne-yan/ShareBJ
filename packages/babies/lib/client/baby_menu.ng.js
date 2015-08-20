@@ -1,11 +1,14 @@
 angular.module('shareBJ.babies')
     .controller('BabiesMenuCtrl',function($scope,$meteor,$rootScope){
-        $scope.babies = $scope.$meteorCollection(Babies).subscribe('myBabies');
 
-        $meteor.subscribe('myRequests')
+        if($rootScope.currentUser)
+        {
+            $scope.babies = $scope.$meteorCollection(Babies).subscribe('myBabies');
+            $meteor.subscribe('myRequests')
                 .then(function () {
                     $scope.requestsCount = $scope.$meteorObject(Counts,'numOfMyRequests',false);
-        });
+                });
+        }
 
         //$scope.requests = $scope.$meteorCollection(Requests,false);
         //Tracker.autorun(function(){

@@ -56,6 +56,16 @@ angular.module('shareBJ.babies')
                 }
 
             })
+            .state('shareBJ.babies.inviteFor',{
+                url:'/invite/:babyId?type',
+                views: {
+                    'babyView': {
+                        templateUrl: 'sbj_babies_lib/client/invitation.ng.html',
+                        controller: 'InvitationCtrl'
+                    }
+                }
+
+            })
             .state('shareBJ.babies.following',{
                 url:'/follower',
                 views: {
@@ -64,6 +74,21 @@ angular.module('shareBJ.babies')
                         controller: 'BabiesFollowCtrl'
                     }
                 }
+            })
+            .state('shareBJ.babies.invitation',{
+                url:'/invitations?token&invitor&baby',
+                views: {
+                    'babyView': {
+                        templateUrl: 'sbj_babies_lib/client/invitations_feedback.ng.html',
+                        controller: 'InvitationsFeedbackCtrl'
+                    }
+                },
+                resolve: {
+                    "currentUser": function($meteor){
+                        return $meteor.requireUser();
+                    }
+                }
+
             })
             .state(ShareBJ.state.babyEdit, {
                 url: '/:babyId',
@@ -74,7 +99,6 @@ angular.module('shareBJ.babies')
                     }
                 },
                 resolve:{
-
                     "babiesSub":
                         function($meteor,currentUser){
                             return  $meteor.subscribe('myBabies', currentUser._id);

@@ -1,6 +1,10 @@
 angular.module('shareBJ.babies')
     .controller('BabiesGuardianCtrl',function($scope,$meteor,$ionicPopup,$rootScope) {
-      $scope.$meteorSubscribe('myBabies');
+        if($rootScope.currentUser)
+        {
+            $scope.$meteorSubscribe('myBabies');
+        };
+
         $scope.babies = $scope.$meteorCollection(function(){
             return Babies.find({owners:$rootScope.currentUser._id});
         },false);
@@ -27,13 +31,6 @@ angular.module('shareBJ.babies')
                 });
             })
         };
-        $scope.inviteGuardian =  function(baby){
-            //TODO: inviteGuardian
-        };
-        $scope.inviteFollowing =  function(baby){
-            //TODO: inviteFollowing
-        };
-
         $scope.isOwner = function(baby,guardian){
             return baby.owners[0] === guardian._id;
         };

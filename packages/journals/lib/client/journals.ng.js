@@ -1,9 +1,11 @@
 Journals.feedStep= 10;
 
 angular.module('shareBJ.journals')
-    .controller('JournalsCtrl',function($scope,$meteor,babies){
+    .controller('JournalsCtrl',function($scope,$meteor,$stateParams,babies){
         $scope.numLoads = Journals.feedStep;
         $scope.filter = {};
+        if($stateParams.baby)
+            $scope.filter.baby = $stateParams.baby;
 
         $scope.babies = babies;
         $meteor.autorun($scope,function(){
@@ -20,7 +22,6 @@ angular.module('shareBJ.journals')
             });
 
             $scope.timeFromNow = function(date){
-                moment.locale('zh-cn');
                 if(date)
                 {
                     return moment(date).fromNow();

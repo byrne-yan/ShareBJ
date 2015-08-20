@@ -74,15 +74,15 @@ Meteor.methods({
             throw new Meteor.Error("Fail to send Verification Email.");
         }
     },
-    updateCurrentUserMemo: function(userId, memo){
+    updateCurrentUserMotto: function(userId, motto){
         check(userId,String);
-        check(memo,String);
+        check(motto,String);
         if(this.userId && userId === this.userId)
         {
             n = Meteor.users.update({_id:userId},
-                {$set:{'profile.memo':memo}});
+                {$set:{'profile.motto':motto}});
             if ( n !== 1){
-                throw new Meteor.Error("Updating memo fails");
+                throw new Meteor.Error("Updating motto fails");
             }
         }else{
             throw new Meteor.Error("Access Denied");

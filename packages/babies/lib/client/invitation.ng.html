@@ -1,0 +1,159 @@
+<ion-view>
+    <ion-content class="has-header">
+        <!--for users in app-->
+        <form name="InvitationForm" ng-submit="queryTarget()">
+            <div class="list">
+                <label class="item item-input item-stacked-label" >
+                    <span class="input label">被邀请人</span>
+                    <input type="text" placeholder="用户名，手机号或者电子邮箱" ng-model="search.text">
+                </label>
+
+                <div class="padding" >
+                    <button type="submit" class=" item button button-positive" ng-disabled="!search.text">检索</button>
+                    <div ng-if="verified">
+                        <div class="list" ng-switch on="queryResult[1]">
+                            <div ng-switch-when="mobile">
+                                <div class="item item-avatar">
+                                    <img ng-src="{{queryResult[0].profile.avatar}}">
+                                    <h2>{{queryResult[0].username}}</h2>
+                                    <h3>{{queryResult[0].profile.name}}</h3>
+                                </div>
+                                <div class="item" >
+                                    {{queryResult[0].profile.mobiles[0].number}}
+                                    <span class="item-note "
+                                          ng-class="{balanced:queryResult[0].profile.mobiles[0].verified,
+                                          assertive:!queryResult[0].profile.mobiles[0].verified}">
+                                        {{verifyStr(queryResult[0].profile.mobiles[0].verified)}}
+                                    </span>
+                                </div>
+                                <div class="item item-divider item-positive">
+                                    我确认选择
+                                </div>
+                                <div ng-switch on="queryResult[0].profile.mobiles[0].verified">
+                                    <div ng-switch-when="true">
+                                        <label class="item item-checkbox" >
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="group" value="registerUser" ng-model="search.confirm">
+                                            </label>
+                                            确认邀请此注册用户！
+                                        </label>
+                                    </div>
+                                    <div ng-switch-when="false">
+                                        <label class="item item-radio  item-icon-left">
+                                            <input type="radio" name="group" value="registerUser" ng-model="search.confirm">
+                                            <i class="radio-icon ion-checkmark-circled"></i>
+                                            <div class="item-content"> 邀请该注册对象</div>
+                                        </label>
+                                        <label class="item item-radio item-icon-left">
+                                            <input type="radio" name="group" value="mobile" ng-model="search.confirm">
+                                            <i class="radio-icon ion-checkmark-circled"></i>
+                                            <div class="item-content">给手机号码发送邀请信息</div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div ng-switch-when="email">
+                                <div class="item item-avatar">
+                                    <img ng-src="{{queryResult[0].profile.avatar}}">
+                                    <h2>{{queryResult[0].username}}</h2>
+                                    <h3>{{queryResult[0].profile.name}}</h3>
+                                </div>
+                                <div class="item" >
+                                    {{queryResult[0].emails[0].address}}
+                                    <span class="item-note" ng-class="{balanced:queryResult[0].emails[0].verified,
+                                          assertive:!queryResult[0].emails[0].verified}">
+                                        {{verifyStr(queryResult[0].emails[0].verified)}}</span>
+                                </div>
+                                <div class="item item-divider item-positive">
+                                    我确认选择
+                                </div>
+                                <div ng-switch on="queryResult[0].emails[0].verified">
+                                    <div ng-switch-when="true">
+                                        <label class="item item-checkbox" >
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="group" value="registerUser" ng-model="search.confirm">
+                                            </label>
+                                            确认邀请此注册用户
+                                        </label>
+                                    </div>
+                                    <div ng-switch-when="false">
+                                        <label class="item item-radio  item-icon-left">
+                                            <input type="radio" name="group" value="registerUser" ng-model="search.confirm">
+                                            <i class="radio-icon ion-checkmark-circled"></i>
+                                            <div class="item-content"> 邀请该注册对象<span class="assertive">(有风险)</span></div>
+                                        </label>
+                                        <label class="item item-radio item-icon-left">
+                                            <input type="radio" name="group" value="email" ng-model="search.confirm">
+                                            <i class="radio-icon ion-checkmark-circled"></i>
+                                            <div class="item-content">给电子邮箱发送邀请信息</div>
+                                        </label>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div ng-switch-when="username">
+                                <div class="item item-avatar">
+                                    <img ng-src="{{queryResult[0].profile.avatar}}">
+                                    <h2>{{queryResult[0].username}}</h2>
+                                    <h3>{{queryResult[0].profile.name}}</h3>
+                                </div>
+                                <div class="item item-divider item-positive">
+                                    我确认
+                                </div>
+                                <div class="item item-checkbox item-text-wrap" >
+                                    <label class="checkbox">
+                                        <input type="checkbox" ng-model="search.confirm">
+                                    </label>
+                                    邀请此注册用户
+                                </div>
+                            </div>
+                            <div ng-switch-when="unregistered">
+                                    <div ng-switch on="queryResult[2]">
+                                        <div ng-switch-when="mobile">
+                                            <div class="item item-icon-left item-text-wrap">
+                                                <i class="icon ion-information-circled assertive"></i>
+                                                未找到拥有手机号码{{queryResult[0]}}的注册用户
+                                            </div>
+                                            <div class="item item-divider item-positive">
+                                                我确认
+                                            </div>
+                                            <div class="item item-checkbox item-text-wrap" >
+                                                <label class="checkbox">
+                                                    <input type="checkbox" ng-model="search.confirm">
+                                                </label>
+                                                向手机{{queryResult[0]}}发送邀请短信
+                                            </div>
+                                        </div>
+                                        <div ng-switch-when="email">
+                                            <div class="item item-icon-left item-text-wrap">
+                                                <i class="icon ion-information-circled assertive"></i>
+                                                未找到拥有电子邮箱{{queryResult[0]}}的注册用户
+                                            </div>
+
+                                            <div class="item item-divider item-positive">
+                                                我确认
+                                            </div>
+                                            <div class="item item-checkbox item-text-wrap" >
+                                                <label class="checkbox">
+                                                    <input type="checkbox" ng-model="search.confirm">
+                                                </label>
+                                                向电子邮箱{{queryResult[0]}}发送邀请邮件
+                                            </div>
+                                        </div>
+                                        <div class="padding" ng-switch-when="unknown">
+                                            <i class="icon ion-information-circled assertive"></i>
+                                            无效邀请人，请提供有效的用户名、手机号或电子邮箱！
+                                        </div>
+                                    </div>
+                            </div>
+
+                        </div>
+                        <button class="item button button-block button-balanced" ng-disabled="!search.confirm" ng-click="invite()">邀请</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </ion-content>
+</ion-view>

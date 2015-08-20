@@ -1,6 +1,13 @@
 angular.module('shareBJ.users')
-    .controller('SignupCtrl',function($scope,$meteor,$state){
+    .controller('SignupCtrl',function($scope,$meteor,$state,$stateParams,$location){
         $scope.user = {};
+        if($stateParams.mobile){
+            $scope.user.mobile = $stateParams.mobile;
+        };
+        if($stateParams.email){
+            $scope.user.email = $stateParams.email;
+        };
+
         $scope.signup = function(){
 
             $scope.user.signupError = {signup:false};
@@ -12,7 +19,8 @@ angular.module('shareBJ.users')
                     name:$scope.user.name || $scope.user.username,
                     mobiles:[{
                         number:$scope.user.mobile,verified:false
-                    }]
+                    }],
+                    token: $stateParams.token?$stateParams.token:null
                 }
             })
                 .then(function(){

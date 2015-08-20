@@ -31,7 +31,7 @@ angular.module('shareBJ.users')
             })
             .state(ShareBJ.state.signup,{
                 //cache:false,
-                url:'/signup',
+                url:'/signup?token&mobile&email',
                 views:{
                     'userView':{
                         templateUrl: 'sbj_users_lib/client/signup/signup.ng.html',
@@ -46,6 +46,21 @@ angular.module('shareBJ.users')
                     'userView':{
                         templateUrl:'sbj_users_lib/client/user/user.ng.html',
                         controller:'UserCtrl'
+                    }
+                },
+                resolve:{
+                    "currentUser": function($meteor){
+                        return $meteor.requireUser();
+                    }
+                }
+            })
+            .state('shareBJ.users.notifications' ,{
+                //cache:false,
+                url:'/notifications',
+                views:{
+                    'userView':{
+                        templateUrl:'sbj_users_lib/client/user/notifications.ng.html',
+                        controller:'NotificationsCtrl'
                     }
                 },
                 resolve:{

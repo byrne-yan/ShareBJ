@@ -1,0 +1,10 @@
+<ion-view>
+    <!--<ion-nav-buttons>-->
+        <!--<ion-nav-back-button></ion-nav-back-button>-->
+    <!--</ion-nav-buttons>-->
+    <ion-content>
+        <div ng-if="!error">{{result}}</div>
+        <div ng-if="error">{{error}}</div>
+        <a class="button" ui-sref="shareBJ.journals.list({baby:baby})" ng-if="!error"></a>
+    </ion-content>
+</ion-view>

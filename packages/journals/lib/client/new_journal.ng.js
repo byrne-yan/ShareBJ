@@ -1,6 +1,8 @@
 angular.module('shareBJ.journals')
     .controller('NewJournalCtrl',function($scope,$rootScope,$state) {
-        $scope.$meteorSubscribe('myGuardianOrFollowingBabies');
+        if($rootScope.currentUser){
+            $scope.$meteorSubscribe('myGuardianOrFollowingBabies');
+        }
         $scope.babies = $scope.$meteorCollection(function(){
             return Babies.find({$or:[{followers:$rootScope.currentUser._id},{owners:$rootScope.currentUser._id}]},
                 {sort: { conceptionDate: -1, "birth.birthTime": -1}});

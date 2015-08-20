@@ -66,27 +66,213 @@ Meteor.methods({
             throw new Meteor.Error("Access Denied","Authorization Required");
         }
     },
-    ApproveRequest: function(requestId){
+    AcceptInvitation: function(token,invitor){
+        check(invitor,String);
+        check(token,String);
+
+        var user = Meteor.users.findOne({_id:invitor,'services.invitation.verificationTokens.token':token},{
+            fields:{'services.invitation.verificationTokens.$': 1}
+        });
+        if(!user){
+            throw  Meteor.Error(404, "Invalid Invitation Token");
+        }
+        console.log(user);
+        //check if token expired
+        var token = user.services.invitation.verificationTokens[0];
+        console.log(token);
+        var now = new Date();
+
+        if( now.getTime() - token.when.getTime() >= 3*24*60*60*1000)
+            throw Meteor.Error(403, "Invitation Token Expired");
+
+        if(token.invitee !== this.userId)
+        {
+            console.log('token.invitee',token.invitee);
+            throw Meteor.Error(403, "Not Invitee");
+        }
+
+        guardianOrFollower = this.userId;
+        var type = token.type;
+        var babyId = token.baby;
+        if(type==='guard'){
+            Babies.update({_id: babyId},{
+                $push: {owners:guardianOrFollower},
+                $pull: {followers: guardianOrFollower}
+            });
+        }else {
+            Babies.update({_id: babyId},{
+                $push: {followers:guardianOrFollower}
+            });
+        }
+        if(user)
+        {
+            var nUpdated = Meteor.users.update(user,{
+                $pull :{ 'services.invitation.verificationTokens': {token:token}}
+            });
+            if(nUpdated===0){
+                throw Meteor.Error(500,'Can not remove invitation token');
+            }
+        }
+    }
+    ,ApproveRequest: function(requestId){
         check(requestId,String);
         var request = Requests.findOne({_id:requestId});
         if(!request || (request.type!='guard' && request.type!='follow') )
         {
-            throw  Meteor.Error("Approval Failure","Invalid Request");
+            throw  Meteor.Error(404,"Invalid Request");
         }
-        if(request.type==='guard'){
-            Babies.update({_id: request.baby},{
-                $push: {owners:request.requester},
-                $pull: {followers: request.requester}
+        guardianOrFollower =request.requester;
+        var babyId = request.baby;
+        var type =request.type;
+
+        if(type==='guard'){
+            Babies.update({_id: babyId},{
+                $push: {owners:guardianOrFollower},
+                $pull: {followers: guardianOrFollower}
             });
         }else {
-            Babies.update({_id: request.baby},{
-                $push: {followers:request.requester}
+            Babies.update({_id: babyId},{
+                $push: {followers:guardianOrFollower}
             });
         }
+
         Requests.remove({_id:requestId});
     },
     RejectRequest: function(requestId){
         check(requestId,String);
         Requests.remove({_id:requestId});
+    }
+    ,InviteFor: function(target,babyId){
+        check(target,String);
+        mobileReg = new RegExp(/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/);
+        emailReg = new RegExp(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/);
+
+        target = target.trim();
+            //try to treat target as a username
+        var targetUser = Meteor.users.findOne({username:target});
+        if(targetUser){
+            return [targetUser,'username',false];
+        }
+
+        //var targetUser = Meteor.users.findOne({'profile.name':target});
+        //if(targetUser){
+        //    return [targetUser,'username',true];
+        //}
+
+
+        var type='unregistered';
+        var subtype = 'unknown';
+
+        //try to treat target as a mobile phone
+        if(target.match(mobileReg))
+        {
+            //check if the mobile is claimed by existing user
+            var m = Meteor.users.findOne({'profile.mobiles.number':target},
+                {'profile.mobiles': {$elemMatch:{number:target}}}
+            );
+            if(m)
+            {
+                return [m,'mobile', m.profile.mobiles[0].verified];
+            }
+            subtype = 'mobile';
+        }
+
+        if(target.match(emailReg)){
+            subtype = 'email';
+
+            var email =  Meteor.users.findOne({'emails.address':target},
+                {'emails': {$elemMatch:{address:target}}}
+            );
+            if(email){
+                return [email,'email',email.emails[0].verified]
+            }
+        }
+
+        return [target,type,subtype];
+    }
+    ,Invite: function(invitee, babyId, type, action){
+        console.log('invitee',invitee);
+
+        if(type==='user' && !invitee)
+            throw  Meteor.Error(400,'Invitee needed');
+
+        if(action !== 'guard' && action !== 'follow' )
+            throw  Meteor.Error(400,'Only guard and follow allowed');
+
+        var baby = Babies.findOne({_id:babyId, owners: this.userId});
+        if(!baby)
+            throw Meteor.Error(404,'Invalid Baby ID');
+
+
+        switch(type){
+            case 'user':
+                var stampedToken = Accounts._generateStampedLoginToken();
+                Meteor.users.update({_id:this.userId},{$push:{'services.invitation.verificationTokens':{
+                    token: stampedToken.token,
+                    when:stampedToken.when,
+                    baby: babyId,
+                    type:action,
+                    invitee: invitee
+                }}});
+                var invitationData = {
+                    invitor:{
+                        userId: this.userId,
+                        name: Meteor.user().username,
+                        nickname: Meteor.user().profile.name
+                    },
+                    baby:{
+                        babyId: baby._id,
+                        name:baby.name,
+                        nickname:baby.nickname,
+                        born: !!baby.birth,
+                        date: baby.birth?baby.birth.birthTime:baby.conceptionDate
+                    },
+                    type:action,
+                    token: stampedToken.token,
+                    when: stampedToken.when
+                };
+                Herald.createNotification( invitee ,{
+                    courier: 'UserInvitation',
+                    data: invitationData,
+                    url:process.env.ROOT_URL+'babies/invitations?token='+stampedToken.token
+                                            + '&invitor=' + this.userId
+                                            + '&baby=' + baby._id
+                });
+                break;
+            case 'email':
+                var stampedToken = Accounts._generateStampedLoginToken();
+                var invitationData = {
+                    token: stampedToken.token,
+                    when: stampedToken.when,
+                    invitor:{
+                        userId: this.userId,
+                        name: Meteor.user().username,
+                        nickname: Meteor.user().profile.name
+                    },
+                    baby:{
+                        babyId: baby._id,
+                        name:baby.name,
+                        nickname:baby.nickname,
+                        born: !!baby.birth,
+                        date: baby.birth?baby.birth.birthTime:baby.conceptionDate
+                    },
+                    type:action, //guard or follow
+                    invitee:invitee
+                };
+
+                UserInvitations.insert(invitationData);
+
+                ShareBJ.emailer.sendUserInvitation(
+                    invitee,
+                    invitationData,
+                    process.env.ROOT_URL+'users/signup?token='+stampedToken.token + '&email=' + invitee
+                );
+
+                break;
+            case 'mobile':
+                //TODO: mobile message sending
+                throw Meteor.Error(500,'To be implemented');
+                break;
+        }
     }
 });

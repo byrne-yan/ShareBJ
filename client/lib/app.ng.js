@@ -1,5 +1,5 @@
 angular.module('shareBJ',['shareBJ.users','shareBJ.babies','shareBJ.journals'])
-    .controller('AppCtrl',function($scope,$state,$meteor,$ionicHistory,$ionicPopover) {
+    .controller('AppCtrl',function($scope,$state,$meteor,$ionicHistory,$rootScope,$ionicPopover) {
         //$scope.popover = $ionicPopover.fromTemplate( '<ion-popover-view>' +
         //    '<ion-content><div class="list">' +
         //        '<div class="item item-button-left">' +
@@ -10,20 +10,30 @@ angular.module('shareBJ',['shareBJ.users','shareBJ.babies','shareBJ.journals'])
         //    '</list></ion-content>' +
         //'</ion-popover-view>'
         //,{scope:$scope});
-
-        $meteor.subscribe('myRequests')
-            .then(function () {
-                $scope.requestsCount = $scope.$meteorObject(Counts,'numOfMyRequests',false);
-                //if($scope.requestsCount.count > 0){
-                //    $scope.popover.show(".request-pop").then(function(){
-                //        console.log('popover show');
-                //    });
-                //};
-                //
-                //if($scope.requestsCount.count === 0){
-                //    $scope.popover.hide();
-                //};
+        if($rootScope.currentUser)
+        {
+            $scope.notifications = $scope.$meteorCollection(function(){
+                return Herald.getNotifications({medium:'onsite'});
             });
+            $scope.notificationCount = $scope.notifications.length;
+        }
+
+
+        if($rootScope.currentUser) {
+            $meteor.subscribe('myRequests')
+                .then(function () {
+                    $scope.requestsCount = $scope.$meteorObject(Counts, 'numOfMyRequests', false);
+                    //if($scope.requestsCount.count > 0){
+                    //    $scope.popover.show(".request-pop").then(function(){
+                    //        console.log('popover show');
+                    //    });
+                    //};
+                    //
+                    //if($scope.requestsCount.count === 0){
+                    //    $scope.popover.hide();
+                    //};
+                });
+        }
 
         $scope.menuBabies = ShareBJ.menu.babiesList;
         $scope.menuUserSummary = ShareBJ.menu.userSummary;

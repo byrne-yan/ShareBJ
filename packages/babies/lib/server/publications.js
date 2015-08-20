@@ -132,7 +132,7 @@ Meteor.publish('allBabies',function(options, extra){
 
 Meteor.publish('myRequests', function(){
     if(!this.userId){
-        throw Meteor.Error('Access Denided','Authorization Required');
+        throw Meteor.Error(403,'Authorization Required');
     }
 
     var ownedBabies = Babies.find({owners:this.userId}).fetch();

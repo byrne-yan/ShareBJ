@@ -6,7 +6,12 @@
                 <a class="item item-avatar" menu-close ui_sref=".users.edit">
                     <img ng-src="{{currentUser.profile.avatar}}">
                     <h2>{{currentUser.profile.name || currentUser.username}}</h2>
-                    <p>{{currentUser.profile.memo}}</p>
+                    <p>{{currentUser.profile.motto}}</p>
+                </a>
+                <a class="item item-icon-left" menu-close ui-sref="shareBJ.users.notifications" ng-show="notificationCount">
+                    <i class="icon ion-email-unread"></i>
+                    消息
+                    <span class="badge badge-assertive">{{notificationCount}}</span>
                 </a>
             </div>
         <!--</ion-list>-->

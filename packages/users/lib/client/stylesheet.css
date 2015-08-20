@@ -61,3 +61,36 @@ label.field-note{
     max-width: 64px;
     display: inline-block;
 }
+
+.invitation{
+
+}
+
+.invitation .invitation-content{
+
+    margin-top: 10px;
+    margin-buttom: 10px;
+}
+
+.invitation .invitation-invitee{
+    font-size:24px;
+}
+
+.invitation .invitation-invitor{
+    margin-left:16px;
+    font-size:18px;
+    padding-right: 8px;
+}
+
+.invitation .invitation-baby {
+    font-size: 16px;
+    margin-left: 6px;
+    margin-right: 6px;
+}
+
+.invitation .invitation-action {
+    margin-left: 6px;
+    margin-right: 6px;
+    color: lime;
+    font-size: 18px;
+}

@@ -13,7 +13,8 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
   var packkges = [
-    'sbj:lib'
+    'sbj:lib',
+      'sbj:notifications'
   ];
 
   api.use(packkges);
@@ -39,7 +40,12 @@ Package.onUse(function(api) {
     'lib/client/babies_takecareof.ng.html',
     'lib/client/babies_takecareof.ng.js',
     'lib/client/babies_following.ng.html',
-    'lib/client/babies_following.ng.js'  ]
+    'lib/client/babies_following.ng.js'
+        ,'lib/client/invitation.ng.html'
+        ,'lib/client/invitation.ng.js'
+        ,'lib/client/invitations_feedback.ng.html'
+        ,'lib/client/invitations_feedback.ng.js'
+      ]
       ,'client');
 
   api.addFiles([

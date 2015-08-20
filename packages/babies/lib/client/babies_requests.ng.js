@@ -1,6 +1,9 @@
 angular.module('shareBJ.babies')
-    .controller('BabiesRequestsCtrl',function($scope,$meteor,$state,$ionicPopup,$ionicNavBarDelegate) {
-        $meteor.subscribe('myRequests');
+    .controller('BabiesRequestsCtrl',function($scope,$rootScope, $meteor,$state,$ionicPopup,$ionicNavBarDelegate) {
+
+        if($rootScope.currentUser){
+            $meteor.subscribe('myRequests');
+        }
 
         $scope.requests = $scope.$meteorCollection(Requests,false);
 
