@@ -1,0 +1,75 @@
+<ion-view view-title="手机号注册" >
+
+    <!--<ion-nav-back-button></ion-nav-back-button>-->
+    <ion-content class="has-header" >
+        <form name="signupForm" >
+            <div class="list list-inset">
+                <label class="item item-input">
+                    <input type="text" id="name" placeholder="昵称" ng-model="user.name">
+                </label>
+
+                <div class="item item-input-inset item-button-right">
+                    <label class="item-input-wraper">
+                        <input type="text" id="mobile" name="mobile" placeholder="手机号" ng-model="user.mobile" required
+                               ng-pattern="/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/">
+                    </label>
+                    <button class="button button-small" id="code_button" ng-click="getCode()"
+                            ng-disabled="!codeRequestReady">{{codeButtonName}}</button>
+                </div>
+
+                <label class="item item-input" >
+                    <input type="text" id="code" placeholder="验证码" ng-model="user.code" ng-disabled="!codeSent">
+                </label>
+
+                <ng-messages class="error-container" for="signupForm.mobile.$error"
+                             ng-if="signupForm.mobile.$touched">
+                    <div ng-message="required" class="error" >
+                        <i class="ion-information-circled"></i>
+                        请提供手机号，方便接收重要通知！
+                    </div>
+                    <div ng-message="pattern" class="error">
+                        <i class="ion-information-circled"></i>
+                        无效手机号，请重新输入正确的手机号码！
+                    </div>
+                    <!--<ng-messages-include src="errors-messages"></ng-messages-include>-->
+                </ng-messages>
+
+            </div>
+            <div class="padding">
+                <button id="signupButton" type="submit" ng-click="signup()"
+                        ng-disabled="!signupReady"
+                        class="button button-full button-balanced ink">发送</button>
+            </div>
+            <div id="errorMessages" ng-messages="user.signupError">
+                <ng-messages-include src="errors-messages-signup－phone"> </ng-messages-include>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>
+
+<script id="errors-messages-signup－phone" type="text/ng-template">
+    <div ng-message="required" class="error" >
+        <i class="ion-information-circled"></i>
+        这个字段是必填的！
+    </div>
+    <div ng-message="minlength" class="error">
+        <i class="ion-information-circled"></i>
+        输入太短
+    </div>
+    <div ng-message="maxlength" class="error">
+        <i class="ion-information-circled"></i>
+        输入太长
+    </div>
+    <div ng-message="pattern" class="error">
+        <i class="ion-information-circled"></i>
+        请输入符合pattern的内容
+    </div>
+    <div ng-message="email" class="error">
+        <i class="ion-information-circled"></i>
+        请输入合法email
+    </div>
+    <div ng-message="signup" class="error">
+        <i class="ion-information-circled"></i>
+        {{signupErrorMessage}}
+    </div>
+</script>

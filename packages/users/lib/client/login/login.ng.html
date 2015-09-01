@@ -7,7 +7,7 @@
             <div class="list">
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">用户名:</span>
-                    <input type="text" name="username" id="username" placeholder="张三" ng-model="user.username" required
+                    <input type="text" name="username" id="username" placeholder="张三 或 18612345678 或 alice@example.com" ng-model="user.username" required
                            ng-change="loginError={login:false}">
                 </label>
                 <div ng-messages="loginForm.username.$error" ng-if="loginForm.username.$touched">
@@ -31,7 +31,7 @@
                     <button id="loginButton" type="submit" ng-disabled="loginForm.$pristine || loginForm.$invalid"  class="button button-full button-balanced ink">登录</button>
                 </div>
             </div>
-            <div ng-messages="user.loginError">
+            <div id="errorMessages" ng-messages="user.loginError">
                 <div ng-message="login" class="error" >
                     <i class="ion-information-circled"></i>
                     {{loginErrorMessage}}

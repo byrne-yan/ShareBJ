@@ -1,5 +1,5 @@
 Package.describe({
-  name: 'sbj:i18n',
+  name: 'sbj:fixtures',
   version: '0.0.1',
   // Brief, one-line summary of the package.
   summary: '',
@@ -11,16 +11,12 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  api.versionsFrom('1.1.0.2');
-
-  api.use([
-    'momentjs:moment@2.10.3'
-  ]);
-  api.addFiles('i18n.js');
+  api.versionsFrom('1.1.0.3');
+  api.addFiles('fixtures.js');
 });
 
 Package.onTest(function(api) {
   api.use('tinytest');
-  api.use('sbj:i18n');
-  api.addFiles('i18n-tests-bak.js');
+  api.use('sbj:fixtures');
+  api.addFiles('fixtures-tests.js');
 });

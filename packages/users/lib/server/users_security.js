@@ -8,7 +8,16 @@ Accounts.config({
     sendVerificationEmail:true
 });
 
-Accounts.onCreateUser(function(options, user){
+Accounts.onCreateUserEx(function(options, user){
+    if(originalOnCreateUser)
+    {
+        try{
+            user = originalOnCreateUser(options,user)
+        }catch(e){
+            throw e;
+        }
+    }
+
     console.log('onCreateUser');
    //for first account, tag it as a admin
     if(Meteor.users.find({}).count()===0)
@@ -19,7 +28,7 @@ Accounts.onCreateUser(function(options, user){
     if(options.profile)
         user.profile = options.profile;
 
-    if(user.profile.token){
+    if(user.profile && user.profile.token){
         //console.log(user.profile.token)
         var invitation = UserInvitations.findOne({token:user.profile.token});
         if(invitation && (invitation.invitee===user.emails[0].address
@@ -61,7 +70,7 @@ Accounts.onCreateUser(function(options, user){
 Accounts.validateNewUser(function(user){
     console.log('validateNewUser');
 
-    if(user.profile.token){
+    if(user.profile && user.profile.token){
         return false;
     };
 

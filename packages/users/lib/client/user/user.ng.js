@@ -108,6 +108,19 @@ angular.module('shareBJ.users')
             $scope.modals.motto.hide();
             edit.motto = "";
         };
+
+        //SMS verification
+        $scope.sms_sending = false;
+        $scope.sms_blocked = false;
+        $scope.sendCode = function () {
+            $meteor.call('sendVerifySMS',$scope.edit.mobile)
+                .then(function(messageId){
+                    $scope.sms_blocked = true;
+                },function(error){
+                    console.log(error);
+                });
+        };
+
         //Email verification
         $scope.sending = false;
         $scope.blocked = false;

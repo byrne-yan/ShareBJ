@@ -3,7 +3,7 @@ Feature: Hhome page
   I want visit my home page
   So that I can review, record, comment and share my babies' behaviours
 
-  @dev
+
   Scenario: Review my baby's history behaviours
     Given I have signed up
     And   My baby's profile created

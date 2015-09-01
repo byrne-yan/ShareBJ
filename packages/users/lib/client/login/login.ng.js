@@ -1,14 +1,11 @@
 angular.module('shareBJ.users')
     .controller('LoginCtrl',function($scope,$meteor,$state,$ionicHistory){
+
         $scope.user ={};
         $scope.login = function(){
             $scope.user.loginError = {'login':false};
-            $meteor.loginWithPassword($scope.user.username,$scope.user.password)
-                .then(function(){
-                    $scope.user.password="";
-                    $state.go(ShareBJ.state.home);
-                },
-                function(error){
+            Meteor.loginWithPasswordEx($scope.user.username,$scope.user.password,function(error){
+                if(error){
                     $scope.user.loginError = {'login':true};
                     $scope.loginErrorMessage = error.message;
                     switch (error.reason) {
@@ -20,7 +17,11 @@ angular.module('shareBJ.users')
                             break;
                     }
                     console.log(error);
+                }else{
+                    $scope.user.password="";
+                    $state.go(ShareBJ.state.home);
+
                 }
-            );
+            });
         }
     });

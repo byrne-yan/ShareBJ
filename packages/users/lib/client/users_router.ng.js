@@ -29,6 +29,16 @@ angular.module('shareBJ.users')
                     }
                 }
             })
+            .state('shareBJ.users.signupByPhone',{
+                //cache:false,
+                url:'/signup_phone?mobile&name',
+                views:{
+                    'userView':{
+                        templateUrl: 'sbj_users_lib/client/signup/signup_with_phone.ng.html',
+                        controller: 'SignupWithPhoneCtrl'
+                    }
+                }
+            })
             .state(ShareBJ.state.signup,{
                 //cache:false,
                 url:'/signup?token&mobile&email',
@@ -54,6 +64,16 @@ angular.module('shareBJ.users')
                     }
                 }
             })
+            .state('shareBJ.users.edit.mobile' ,{
+                //cache:false,
+                url:'/mobile',
+                views:{
+                    'userView':{
+                        templateUrl:'sbj_users_lib/client/user/mobile/mobile_edit.ng.html',
+                        controller:'MobileEditCtrl'
+                    }
+                }
+            })
             .state('shareBJ.users.notifications' ,{
                 //cache:false,
                 url:'/notifications',
@@ -74,10 +94,10 @@ angular.module('shareBJ.users')
             //    templateUrl: 'sbj_users_lib/client/user/email.ng.html',
             //    contorller:'EmailVerifyCtrl'
             //})
-
-            //.state(ShareBJ.state.mobileVerify ,{
+            //
+            //.state('shareBJ.users.mobile',{
             //    //cache:false,
-            //    url:'mobile_verify',
+            //    url:'/verify_mobile/:token',
             //    views:{
             //        'menuContent':{
             //            templateUrl:'sbj_users_lib/client/user/user.ng.html',

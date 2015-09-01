@@ -27,6 +27,14 @@
             </a>
             <!--<a class="item button button-balanced button-full" ng-if="!mobile.verified" ui-sref=".mobileVerify">-->
                 <!--猛戳此处验证手机号</a>-->
+            <!--<div class="item item-button-right" ng-if="!mobile.verified " >-->
+                <!--未收到验证短信? 重新发送-->
+                <!--<button class="button button-balanced" ng-click="sendVerifySMS()" ng-disabled="sms_sending || sms_blocked">-->
+                    <!--<i class="icon ion-android-textsms" ng-if="!sms_sending"> </i>-->
+                    <!--<ion-spinner ng-if="sms_sending"></ion-spinner>-->
+                <!--</button>-->
+            <!--</div>-->
+
             <a class="item" href="#" ng-click="fnEdit('email')">
                 EMAIL
                 <span class="item-note assertive" ng-if="!email.verified">(未验证)</span>

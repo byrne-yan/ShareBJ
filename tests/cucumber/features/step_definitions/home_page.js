@@ -7,7 +7,7 @@ this.Given(/^I have signed up$/, function (callback) {
     return userID = this.server.call('signUp',{
         username:'test_user',
         password:'123456',
-        email:'test@hy-studio.cn',
+        email:'tests@hy-studio.cn',
         profile:{name:'Byrne Yan'}
     });
 });

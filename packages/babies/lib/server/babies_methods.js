@@ -78,7 +78,7 @@ Meteor.methods({
         }
         console.log(user);
         //check if token expired
-        var token = user.services.invitation.verificationTokens[0];
+        var token = user.services.invitation.verification[0];
         console.log(token);
         var now = new Date();
 

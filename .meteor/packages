@@ -4,10 +4,20 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
+# - - MDG Packages
 meteor-platform
+email
+
+# - - 3rd Party Packages
 launch-screen
-xolvio:cucumber@0.12.3
+
+# - - Tesing packages
+xolvio:cucumber@0.13.8
+velocity:helpers
+sbj:fixtures
+
+# - - Internal Packages
 sbj:journals
 sbj:users
-email
 sbj:babies
+sbj:sms

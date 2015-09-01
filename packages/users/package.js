@@ -12,8 +12,11 @@ Package.onUse(function (api) {
     var packages =[
         'sbj:lib@0.1.0',
         'jonblum:jquery-cropper@0.10.1',
-        'riaan53:blueimp-canvas-to-blob@0.0.1'
-        ,'sbj:notifications'
+        'riaan53:blueimp-canvas-to-blob@0.0.1',
+        //'okland:accounts-phone@0.0.21',
+        'sbj:accounts-phone@0.0.21',
+        'sbj:sms',
+        'sbj:notifications'
     ];
 
   api.use(packages);
@@ -38,6 +41,7 @@ Package.onUse(function (api) {
 
     'lib/client/signup/signup.ng.js',
     'lib/client/signup/signup.ng.html',
+    'lib/client/signup/signup_with_phone.ng.html',
 
     'lib/client/user/user.ng.js',
     'lib/client/user/user.ng.html',
@@ -45,7 +49,8 @@ Package.onUse(function (api) {
     'lib/client/user/motto_edit.ng.html',
     'lib/client/user/email.ng.js',
     'lib/client/user/email_edit.ng.html',
-    'lib/client/user/mobile_edit.ng.html',
+    'lib/client/user/mobile/mobile_edit.ng.html',
+    'lib/client/user/mobile/mobile_edit.ng.js',
     'lib/client/user/avatar_edit.ng.html',
     'lib/client/user/user_summary.ng.html',
     'lib/client/user/user_summary.ng.js'

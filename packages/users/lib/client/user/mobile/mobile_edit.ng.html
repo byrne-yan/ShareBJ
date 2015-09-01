@@ -1,0 +1,46 @@
+<ion-modal-view>
+    <form name="mobileForm">
+    <ion-header-bar class="bar-dark">
+        <button class="button button-clear" ng-click="closeEditor('mobile')" >
+            <i class="icon ion-arrow-left-c"></i>
+        </button>
+        <h1 class="title">绑定手机号</h1>
+    </ion-header-bar>
+    <ion-content class="has-header">
+        <ion-list >
+            <label class="item item-input-inset ">
+                <label class="item-input-wrapper">
+                    <input type="tel" name="mobile" class="item-content" placeholder="手机号" ng-model="edit.mobile"
+                           required ng-pattern="/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/"/>
+                </label>
+                <button class="button button-small button-balanced" ng-click="sendCode(edit)" ng-disabled="mobileForm.$invalid">获取验证码</button>
+            </label>
+
+            <!--<label class="field-note">提供一个有效的手机号，可以使得你的账户更安全</label>-->
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">验证码：</span>
+                <input type="text" name="code" class="item-content" min="6" max="6" ng-model="edit.code" />
+            </label>
+            <label class="item item-button-left">
+                <button class="button button-positive" ng-click="saveMobile(edit)" ng-disabled="mobileForm.$invalid">绑定</button>
+            </label>
+
+        </ion-list>
+        <ng-messages class="error-container" for="mobileForm.mobile.$error">
+            <div ng-message="required" class="error" >
+                <i class="ion-information-circled"></i>
+                请提供手机号，方便接收重要通知！
+            </div>
+            <div ng-message="pattern" class="error">
+                <i class="ion-information-circled"></i>
+                无效手机号，请重新输入正确的手机号码！
+            </div>
+            <div ng-message="verify" class="error">
+                <i class="ion-information-circled"></i>
+                发送验证失败，请更正手机号后重新获取验证码！
+            </div>
+            <ng-messages-include src="errors-messages"></ng-messages-include>
+        </ng-messages>
+    </ion-content>
+    </form>
+</ion-modal-view>

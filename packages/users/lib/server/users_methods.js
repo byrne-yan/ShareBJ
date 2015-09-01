@@ -41,10 +41,10 @@ Meteor.methods({
             if ( n !== 1){
                 throw new Meteor.Error("Updating mobile fails");
             }
-            //TODO: sendVerificationSMS
-            //Meteor.setTimeout(function(){
-            //    sendVerificationSMS(userId,mobile);
-            //},2*1000);
+
+            var syncSender  = Meteor.wrapAsync(SMSDeliver.sendMessage,SMSDeliver);
+            var messageId = syncSender('', mobile,{});
+            return messageId;
         }else{
             throw new Meteor.Error("Access Denied");
         }
