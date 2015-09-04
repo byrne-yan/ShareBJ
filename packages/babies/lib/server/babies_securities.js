@@ -9,7 +9,7 @@ Babies.allow ( {
     },
     update:function(userId,doc,fieldNames,modifier){
         //only owners can update baby's info
-        if(!_.contians(doc.owners,userId))
+        if (!_.contains(doc.owners, userId))
             return false;
 
         console.log("Babies update allow:",userId,doc,fieldNames,modifier);

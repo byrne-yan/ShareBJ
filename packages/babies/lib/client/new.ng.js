@@ -115,6 +115,10 @@ angular.module('shareBJ.babies')
 
             $scope.babies.save( babyObj )
                 .then(function(){
+                    $ionicHistory.nextViewOptions({
+                        disableBack: true,
+                        historyRoot: true
+                    });
                     $state.go(ShareBJ.state.home);
                 },
                 function(err){

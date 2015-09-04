@@ -53,7 +53,7 @@ angular.module('shareBJ.journals')
                     {
                         console.log("no baby guarded");
                         //throw "BABY_GUARD_REQUIRED";
-                        $state.go('shareBJ.babies.list');
+                        //$state.go('shareBJ.babies.list');
                     }
                 }
             })

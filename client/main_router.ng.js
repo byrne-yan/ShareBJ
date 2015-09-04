@@ -1,4 +1,4 @@
-angular.module('shareBJ')
+angular.module('ShareBJ')
     .config(function($urlRouterProvider,$stateProvider, $locationProvider){
         $locationProvider.html5Mode(true);
 

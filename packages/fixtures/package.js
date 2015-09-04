@@ -12,7 +12,7 @@ Package.describe({
 
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.3');
-  api.addFiles('fixtures.js');
+  api.addFiles('fixtures.js', 'server');
 });
 
 Package.onTest(function(api) {

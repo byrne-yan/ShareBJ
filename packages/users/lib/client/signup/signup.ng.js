@@ -42,7 +42,7 @@ angular.module('shareBJ.users')
                 })
             }
     })
-    .controller('SignupWithPhoneCtrl',function($scope,$meteor,$state,$stateParams){
+    .controller('SignupWithPhoneCtrl', function ($scope, $meteor, $state, $stateParams, $ionicHistory) {
         $scope.user = {
             mobile:'',//TODO phone'number
             name:'本机号码',
@@ -85,29 +85,34 @@ angular.module('shareBJ.users')
             if(Session.get("CodeWindow")){
                 $scope.codeButtonName += '(' + Session.get("CodeWindow") + ')';
             }
-            console.log($scope.codeButtonName,Session.get("CodeWindow"));
+            //console.log($scope.codeButtonName,Session.get("CodeWindow"));
+            //console.log($scope.getReactively('codeSent'));
         });
         $scope.codeButtonName = '请求验证码';
 
+        var cleanup = function () {
+            Meteor.clearInterval(Session.get('CodeWindow'));
+            Session.set('CodeWindow', 0)
+            $scope.codeSent = false;
+            $scope.user.code = "";
+        };
         $scope.getCode = function() {
             //console.log('getCode');
             $scope.user.signupError = {signup:false};
-            Accounts.requestPhoneVerification($scope.user.mobile,{profile:{name:$scope.user.name}},function (error) {
+            Accounts.requestPhoneVerification($scope.user.mobile, {name: $scope.user.name}, function (error) {
                     if (error) {
                         console.log(error);
                         $scope.user.signupError = {signup:true};
                     } else {
                         $scope.codeSent = true;
-                        Session.set('CodeWindow',30);
-                        Session.set("timer" ,Meteor.setInterval(function(){
-                            if(Session.get('CodeWindow'))
-                                Session.set('CodeWindow',Session.get('CodeWindow')-1);
-                            if(Session.get('CodeWindow')===0){
-                                Meteor.clearInterval(Session.get('CodeWindow'));
-                                $scope.codeSent = false;
-                                $scope.user.code = "";
-                            }
-                        },1000));
+                        Session.set('CodeWindow', 30);
+                        Session.set("timer", Meteor.setInterval(function () {
+                            if (Session.get('CodeWindow'))
+                                Session.set('CodeWindow', Session.get('CodeWindow') - 1);
+                        }, 1000));
+                        if (Session.get('CodeWindow') === 0) {
+                            cleanup();
+                        }
                     }
             });
         };
@@ -123,6 +128,10 @@ angular.module('shareBJ.users')
                         $scope.signupErrorMessage = error.message;
                     })
                 }else{
+                    cleanup();
+                    $ionicHistory.nextViewOptions({
+                        disableBack: true
+                    });
                     $state.go(ShareBJ.state.home);
                 }
             });

@@ -1,6 +1,7 @@
 Meteor.publish('myBabies',function(){
     if(!this.userId){
-        throw Meteor.Error('Access Denided','Authorization Required');
+        //throw Meteor.Error('Access Denided','Authorization Required');
+        return;
     }
 
     var uid = this.userId;
@@ -36,7 +37,8 @@ Meteor.publish('myBabies',function(){
 });
 Meteor.publish('myFollowingBabies',function(){
     if(!this.userId){
-        throw Meteor.Error('Access Denided','Authorization Required');
+        //throw Meteor.Error('Access Denided','Authorization Required');
+        return;
     }
 
     var uid = this.userId;
@@ -73,7 +75,8 @@ Meteor.publish('myFollowingBabies',function(){
 
 Meteor.publish('myGuardianOrFollowingBabies',function(){
     if(!this.userId){
-        throw Meteor.Error('Access Denided','Authorization Required');
+        //throw Meteor.Error('Access Denided','Authorization Required');
+        return;
     }
 
     var uid = this.userId;
@@ -111,7 +114,8 @@ Meteor.publish('myGuardianOrFollowingBabies',function(){
 
 Meteor.publish('allBabies',function(options, extra){
     if(!this.userId){
-        throw Meteor.Error('Access Denided','Authorization Required');
+        //throw Meteor.Error('Access Denided','Authorization Required');
+        return;
     }
 
     var selector = {};
@@ -124,6 +128,9 @@ Meteor.publish('allBabies',function(options, extra){
         })
     }
 
+    //console.log('allBabies sub: %j',selector );
+
+
     Counts.publish(this,'numOfAllBabies', Babies.find(selector),{noReady:true});
 
     return Babies.find(selector,  options);
@@ -132,7 +139,8 @@ Meteor.publish('allBabies',function(options, extra){
 
 Meteor.publish('myRequests', function(){
     if(!this.userId){
-        throw Meteor.Error(403,'Authorization Required');
+        //throw Meteor.Error(403,'Authorization Required');
+        return;
     }
 
     var ownedBabies = Babies.find({owners:this.userId}).fetch();

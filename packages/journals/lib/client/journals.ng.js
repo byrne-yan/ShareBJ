@@ -1,7 +1,13 @@
 Journals.feedStep= 10;
 
 angular.module('shareBJ.journals')
-    .controller('JournalsCtrl',function($scope,$meteor,$stateParams,babies){
+    .controller('JournalsCtrl', function ($scope, $meteor, $stateParams, babies, $state, $ionicHistory) {
+        if (babies.length === 0) {
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+            $state.go('shareBJ.babies.list');
+        }
         $scope.numLoads = Journals.feedStep;
         $scope.filter = {};
         if($stateParams.baby)
