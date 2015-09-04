@@ -21,3 +21,4 @@ node_modules
 s3.sh
 settings.json
 *-compiled.js*
+pkg_test*
