@@ -1,44 +1,13 @@
-function _calcAge(date){
-    var today = new Date();
-    var age = today.getFullYear() - date.getFullYear();
-    var months = today.getMonth() - date.getMonth();
-    var days = today.getDate() - date.getDate();
-    if(days <0  )
-    {
-        months--;
-    }
-
-    if(months <0 || (months ===0 && days < 0 )){
-        age--;
-        months += 12;
-    }
-    if(age>0)
-        return age + '岁';
-
-    if(age<1){
-        if(days===0)
-            return months + '个月';
-        return (months>0?months + '个月':"") + days + "天";
-    }
-
-}
-function _calcWeeks(date) {
-    var today = new Date();
-    var d = parseInt((today.getTime() - date.getTime())/1000/60/60/24);
-    var weeks = parseInt(d/7);
-    var days =d%7
-    if(days==0)
-        return weeks + "周";
-    return (weeks>0?(weeks + "周"):"") + days + "天";
-}
 angular.module('shareBJ.babies')
-    .controller('BabiesListCtrl',function($scope,$rootScope, $meteor,$ionicModal,$ionicPopup){
-
+    .controller('BabiesListCtrl', function ($scope, $rootScope, $meteor, $ionicModal, $ionicPopup/*,$ionicNavBarDelegate,$ionicHistory*/) {
+        //$ionicHistory.clearHistory();
+        //$ionicNavBarDelegate.showBackButton(false);
         $scope.numLoads = 10;
-        $scope.filter = {};
+        $scope.filter = {search: ''};
 
-        $meteor.autorun($scope,function(){
-            $meteor.subscribe('allBabies',{
+
+        $scope.$meteorAutorun(function () {
+            $scope.$meteorSubscribe('allBabies', {
                     limit:parseInt($scope.getReactively('numLoads'))
                 },
                 {
@@ -46,23 +15,33 @@ angular.module('shareBJ.babies')
                 }
             ).then(function(){
                     $scope.babiesCount = Counts.get('numOfAllBabies');
-                });
+                    $scope.babies = $scope.$meteorCollection(function () {
+                            var filter = $scope.getReactively('filter.search')
+                            var selector = {
+                                $or: [
+                                    {'name': {'$regex': '.*' + filter + '.*', '$options': 'i'}},
+                                    {nickname: {'$regex': '.*' + filter + '.*', '$options': 'i'}}
+                                ]
+                            };
+                            return Babies.find(selector, {
+                                transform: function (doc) {
+                                    if (doc.owners)
+                                        Meteor.subscribe('getUser', doc.owners);
+                                    return doc;
+                                }
+                            });
+                        },
+                        false
+                    );
+                }, console.log);
+            console.log("filter:", $scope.getReactively('filter.search'));
+            console.log("$scope.babiesCount", $scope.getReactively('babiesCount'));
         });
         if($rootScope.currentUser) {
-            $meteor.subscribe('myRequests');
+            $scope.$meteorSubscribe('myRequests')
+                .catch(console.log);
         }
 
-        $scope.babies = $scope.$meteorCollection( function() {
-                return Babies.find({},{
-                    transform:function(doc){
-                        if(doc.owners)
-                            Meteor.subscribe('getUser',doc.owners);
-                        return doc;
-                    }
-                });
-            },
-            false
-        );
 
         $scope.requests = $scope.$meteorCollection(Requests,false);
 
@@ -205,11 +184,11 @@ angular.module('shareBJ.babies')
             });
         };
 
-    $scope.age = function(baby){
-        if(baby.birth ){
-            return _calcAge(baby.birth.birthTime);
-        }else{
-            return _calcWeeks(baby.conceptionDate);
-        }
-    }
+        //$scope.age = function(baby){
+        //    if(baby.birth ){
+        //        return _calcAge(baby.birth.birthTime);
+        //    }else{
+        //        return _calcWeeks(baby.conceptionDate);
+        //    }
+        //}
 });

@@ -1,22 +1,27 @@
 <ion-view>
-    <ion-nav-buttons>
+    <ion-nav-buttons side="left">
         <div class="item-input-inset">
             <label class="item-input-wrapper">
                 <i class="icon ion-ios-search placeholder-icon"></i>
-                <input type="search"  class="baby-search" placeholder="查找宝宝" ng-model="filter.search">
+                <input type="search" id="baby-search" placeholder="查找宝宝" ng-model="filter.search">
             </label>
-            <button class="button button-icon ion-person-add" ui-sref="shareBJ.babies.edit({babyId:'new'})"></button>
         </div>
+        <button class="button button-icon ion-person-add" ui-sref="shareBJ.babies.edit({babyId:'new'})"></button>
     </ion-nav-buttons>
+    <ion-nav-title></ion-nav-title>
     <ion-content class="has-header">
         <div class="list">
             <div class="card" ng-repeat="baby in babies">
                 <div class="item item-avatar " >
-                    <img ng-src="{{baby.avatar}}">
-                        <h2>{{baby.name}}</h2>
-                        <h3>{{baby.nickname}}</h3>
-                        <div>监护人:<span ng-repeat="owner in baby.owners">{{userName(owner)}} </span>
-                        </div>
+                    <img ng-src="{{baby.avatar}}" ng-if="baby.avatar">
+                    <ng-letter-avatar class="item-image" data="{{baby.nickname || baby.name }}" charCount="1"
+                                      shape="round" ng-if="!baby.avatar"></ng-letter-avatar>
+                    <h2>{{baby.name}}</h2>
+
+                    <h3>{{baby.nickname}}</h3>
+
+                    <div>监护人:<span ng-repeat="owner in baby.owners">{{userName(owner)}} </span>
+                    </div>
                 </div>
                 <div class="item tabs">
                     <a class="tab-item balanced" href="#" ng-click="requestGuardian(baby)"

@@ -1,4 +1,4 @@
-angular.module('shareBJ',['shareBJ.users','shareBJ.babies','shareBJ.journals'])
+angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'])
     .controller('AppCtrl',function($scope,$state,$meteor,$ionicHistory,$rootScope,$ionicPopover) {
         //$scope.popover = $ionicPopover.fromTemplate( '<ion-popover-view>' +
         //    '<ion-content><div class="list">' +
@@ -10,44 +10,42 @@ angular.module('shareBJ',['shareBJ.users','shareBJ.babies','shareBJ.journals'])
         //    '</list></ion-content>' +
         //'</ion-popover-view>'
         //,{scope:$scope});
-        if($rootScope.currentUser)
-        {
-            $scope.notifications = $scope.$meteorCollection(function(){
-                return Herald.getNotifications({medium:'onsite'});
-            });
-            $scope.notificationCount = $scope.notifications.length;
-        }
 
-
-        if($rootScope.currentUser) {
-            $meteor.subscribe('myRequests')
-                .then(function () {
-                    $scope.requestsCount = $scope.$meteorObject(Counts, 'numOfMyRequests', false);
-                    //if($scope.requestsCount.count > 0){
-                    //    $scope.popover.show(".request-pop").then(function(){
-                    //        console.log('popover show');
-                    //    });
-                    //};
-                    //
-                    //if($scope.requestsCount.count === 0){
-                    //    $scope.popover.hide();
-                    //};
+        //$scope.subs = [];
+        $scope.$meteorAutorun(function () {
+            //console.log("Autorun");
+            if (Meteor.userId()) {
+                //console.log("Autorun with userId");
+                $scope.notifications = $scope.$meteorCollection(function () {
+                    return Herald.getNotifications({medium: 'onsite'});
                 });
-        }
+                $scope.notificationCount = $scope.notifications.length;
+
+                $scope.$meteorSubscribe('myRequests')
+                    .then(function (subId) {
+                        //console.log("myRequests id:",subId);
+                        //$scope.subs.push(subId);
+                        $scope.requestsCount = $scope.$meteorObject(Counts, 'numOfMyRequests', false);
+
+                    }, console.log);
+            }
+        });
 
         $scope.menuBabies = ShareBJ.menu.babiesList;
         $scope.menuUserSummary = ShareBJ.menu.userSummary;
         $scope.logout = function(){
             $meteor.logout().then(
                 function(){
+                    //console.log("UserId after logout:",Meteor.userId());
+                    //_.each($scope.subs,function(sub){
+                    //    sub.stop();
+                    //});
                     $ionicHistory.nextViewOptions({
-                       historyRoot:true
+                        disableBack: true
                     });
                     $state.go(ShareBJ.state.login);
                 },
-                function(error){
-                    console.log(error);
-                }
+                console.log
             )
         }
     })
@@ -58,7 +56,7 @@ angular.module('shareBJ',['shareBJ.users','shareBJ.babies','shareBJ.journals'])
 // to get meteor app on cordova with angular integration
 Meteor.startup(function(){
     function onReady() {
-        angular.bootstrap(document, ['shareBJ']);
+        angular.bootstrap(document, ['ShareBJ']);
     }
 
     if (Meteor.isCordova)

@@ -3,11 +3,8 @@
 
     module.exports = function() {
         this.Before(function(){
-            //console.log(this);
-            return [
-                this.server.call('fixtures/reset')
-                //this.client.url(process.env.ROOT_URL)
-                ];
+            //console.log("Before");
+            this.server.call('fixtures/reset');
         });
     };
 

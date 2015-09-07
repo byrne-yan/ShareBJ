@@ -18,6 +18,7 @@ angular.module('shareBJ.users')
                     }
                     console.log(error);
                 }else{
+                    console.log("login ok, then go to home page");
                     $scope.user.password="";
                     $state.go(ShareBJ.state.home);
 

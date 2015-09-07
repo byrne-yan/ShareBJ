@@ -3,7 +3,6 @@ Feature: Create Account with Phone
   I want enrollment with my mobile phone
 
 
-  @dev
   Scenario: Create Account with Phone
     Given No enrollment with my phone
     When  I visit enrollment page and then input my phone

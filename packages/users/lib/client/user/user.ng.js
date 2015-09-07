@@ -3,16 +3,22 @@ angular.module('shareBJ.users')
         if($rootScope.currentUser)
         {
             Tracker.autorun(function(){
-                $scope.mobile= $rootScope.currentUser.profile.mobiles?
-                    $rootScope.currentUser.profile.mobiles[0]:{number:"",verified:false};
+                $scope.mobile = $rootScope.currentUser.phone ?
+                    $rootScope.currentUser.phone : {number: "", verified: false};
 
-                $scope.avatar = $rootScope.currentUser.profile.avatar || "images/hold32X32.png";
+                //$scope.avatar =  "images/hold32X32.png";
+                $scope.name = $rootScope.currentUser.username;
+                if ($rootScope.currentUser.profile) {
+                    $scope.avatar = $rootScope.currentUser.profile.avatar;
+                    $scope.name = $rootScope.currentUser.profile.name;
+                    if ($rootScope.currentUser.birth) {
+                        $scope.gender = $rootScope.currentUser.profile.gender;
+                        $scope.birthday = $rootScope.currentUser.profile.birthday;
+                    }
+                    $scope.motto = $rootScope.currentUser.profile.motto;
+                }
                 $scope.username= $rootScope.currentUser.username;
-                $scope.name = $rootScope.currentUser.profile.name;
                 $scope.email = $rootScope.currentUser.emails?$rootScope.currentUser.emails[0]:{address:'',verified:true};
-                $scope.gender = $rootScope.currentUser.profile.gender ;
-                $scope.birthday = $rootScope.currentUser.profile.birthday;
-                $scope.motto = $rootScope.currentUser.profile.motto;
             });
         };
         $scope.goBack = function(){

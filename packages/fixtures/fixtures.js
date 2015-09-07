@@ -36,10 +36,10 @@ Meteor.methods({
         return Meteor.users.findOne({'phone.number':phone});
     },
     'fixtures/getSMSCode': function(phone){
-        console.log('fixtures/getSMSCode called,',phone);
-      var user = Meteor.users.findOne({'services.phone.verification.phone':phone});
+        //console.log('fixtures/getSMSCode called');
+        var user = Meteor.users.findOne({'services.phone.verification.phone': phone});
         if(!user)
             throw new Meteor.Error(404,"No sms code for the phone:"+phone);
-      return user && user.services.phone.verification.code;
+        return user && user.services.phone.verification.code;
     }
 });

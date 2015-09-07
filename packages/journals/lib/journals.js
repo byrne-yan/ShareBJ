@@ -7,6 +7,7 @@ Slingshot.fileRestrictions("imageUploads",{
 Slingshot.fileRestrictions("thumbUploads",{
     allowedFileTypes:["image/png","image/jpeg","image/gif"],
     maxSize: 128 * 1024 //128K
+    //maxSize: 4 * 1024 * 1024 //4M
 });
 
 

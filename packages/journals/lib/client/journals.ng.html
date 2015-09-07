@@ -8,8 +8,11 @@
         <!--</button>-->
     <!--</ion-nav-buttons>-->
     <ion-nav-buttons side="primary">
-         <img class="SBJ-AVATAR" ng-src="{{$root.currentUser.profile.avatar}}">
-        <button class="button button-clear" ui_sref="shareBJ.journals.new">
+        <img class="SBJ-AVATAR" ng-src="{{$root.currentUser.profile.avatar}}" ng-if="$root.currentUser.profile.avatar">
+        <ng-letter-avatar class="SBJ-AVATAR" data="{{$root.currentUser.profile.name || $root.currentUser.username}}"
+                          charCount="1" height="32" width="32" shape="round"
+                          ng-if="!$root.currentUser.profile.avatar"></ng-letter-avatar>
+        <button class="button button-clear" ng-click="newJournal()">
             <i class="icon ion-ios-camera-outline"></i>
         </button>
         <div class="item-input-inset">
@@ -30,7 +33,12 @@
             <div ng-repeat="journal in journals track by journal._id" class="journal">
 
                 <div class="item item-avatar item-text-wrap" >
-                    <img ng-src="{{journal.authorDetail.profile.avatar}}">
+                    <img ng-src="{{journal.authorDetail.profile.avatar}}" ng-if="journal.authorDetail.profile.avatar">
+                    <ng-letter-avatar class="item-image"
+                                      data="{{journal.babyDetail.nickname || journal.babyDetail.name}}"
+                                      charCount="1" shape="round"
+                                      ng-if="!journal.authorDetail.profile.avatar"></ng-letter-avatar>
+
                     <p>@{{journal.babyDetail.nickname}}</p>
                     <!--<img class="SBJ-AVATAR" ng-src="{{journal.babyDetail.avatar}}">-->
                     <!--<h2>{{journal.authorDetail.profile.name || journal.authorDetail.username}}</h2>-->

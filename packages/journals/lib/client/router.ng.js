@@ -53,12 +53,12 @@ angular.module('shareBJ.journals')
                     {
                         console.log("no baby guarded");
                         //throw "BABY_GUARD_REQUIRED";
-                        $state.go('shareBJ.babies.list');
+                        //$state.go('shareBJ.babies.list');
                     }
                 }
             })
             .state('shareBJ.journals.new',{
-                url:'/new',
+                url: '/new?baby',
                 views:{
                     'journalView':{
                         templateUrl: 'sbj_journals_lib/client/new_journal.ng.html',

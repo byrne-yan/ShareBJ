@@ -11,7 +11,9 @@
                     宝宝 #{{$index+1}}：
                 </div>
                 <a class="item item-avatar" href='#' ui-sref="shareBJ.babies.edit({babyId:baby._id})">
-                    <img  ng-src="{{baby.avatar}}">
+                    <img ng-src="{{baby.avatar}}" ng-if="baby.avatar">
+                    <ng-letter-avatar class="item-image" data="{{baby.nickname || baby.name}}" charCount="1"
+                                      shape="round" ng-if="!baby.avatar"></ng-letter-avatar>
                     <h2>{{baby.name}}</h2>
                     <h3>{{baby.nickname}}</h3>
                     <div ng-if="baby.birth">
@@ -30,7 +32,11 @@
                     当前监护人({{baby.guardiansDetail.length}}人)：
                 </div>
                 <div class="item item-avatar item-button-right" ng-repeat="guardian in baby.guardiansDetail">
-                    <img ng-src="{{guardian.profile.avatar}}">
+                    <img ng-src="{{guardian.profile.avatar}}" ng-if="guardian.profile.avatar">
+                    <ng-letter-avatar class="item-image" data="{{guardian.profile.name || guardian.username}}"
+                                      charCount="1" shape="round" ng-if="!guardian.profile.avatar">
+
+                    </ng-letter-avatar>
                     <h2>{{guardian.profile.name}}</h2>
                     <button class="button button-assertive" ng-click="cancelGuardian(baby,guardian)"
                             ng-if="isOwner(baby,$root.currentUser) && !isOwner(baby,guardian)">取消监护</button>
