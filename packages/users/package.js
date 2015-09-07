@@ -11,7 +11,7 @@ Package.onUse(function (api) {
 
     var packages =[
         'sbj:lib@0.1.0',
-        'jonblum:jquery-cropper@0.10.1',
+        'jonblum:jquery-cropper@0.11.0',
         'riaan53:blueimp-canvas-to-blob@0.0.1',
         //'okland:accounts-phone@0.0.21',
         'sbj:accounts-phone@0.0.21',
