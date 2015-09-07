@@ -12,7 +12,7 @@ Package.onUse(function(api) {
     api.versionsFrom('1.1.0.2');
     var packages =[
         'meteor-platform@1.2.2',
-        'urigo:angular@0.9.3',
+        'angular',
         'momentjs:moment@2.10.6',
         'accounts-password@1.1.1',
         //'angularui:angular-ui-router@0.2.15',
@@ -20,7 +20,7 @@ Package.onUse(function(api) {
         'aldeed:collection2@2.3.3',
         'sacha:autoform@5.1.2',
         'matb33:collection-hooks@0.7.13',
-        'urigo:ionic@1.0.0_1',
+        'driftyco:ionic@1.1.0',
         //'jonmc12:ionic-material@0.4.2_1',
         'edgee:slingshot@0.7.1',
         'angular:angular-messages@1.4.2',

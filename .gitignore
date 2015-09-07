@@ -1,3 +1,4 @@
+/pkg_test*
 lib-cov
 *.seed
 *.log
