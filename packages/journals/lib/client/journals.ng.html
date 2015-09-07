@@ -12,7 +12,7 @@
         <ng-letter-avatar class="SBJ-AVATAR" data="{{$root.currentUser.profile.name || $root.currentUser.username}}"
                           charCount="1" height="32" width="32" shape="round"
                           ng-if="!$root.currentUser.profile.avatar"></ng-letter-avatar>
-        <button class="button button-clear" ui_sref="shareBJ.journals.new">
+        <button class="button button-clear" ng-click="newJournal()">
             <i class="icon ion-ios-camera-outline"></i>
         </button>
         <div class="item-input-inset">

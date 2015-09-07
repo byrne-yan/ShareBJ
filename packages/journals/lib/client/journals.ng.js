@@ -62,6 +62,21 @@ angular.module('shareBJ.journals')
 
         $scope.cancelSearch = function(){
             $scope.filter.search = "";
-        }
+        };
 
+        $scope.newJournal = function () {
+            console.log("params", $scope.filter, babies.length);
+            console.log("params", $scope.filter, babies);
+            if ($scope.filter.baby) {
+                //current baby
+                $state.go("shareBJ.journals.new", {baby: $scope.filter.baby});
+            } else if (babies.length > 0) {
+                //default first baby
+
+                $state.go("shareBJ.journals.new", {baby: babies[0]._id});
+            } else {
+                //go to add a baby
+                $state.go("shareBJ.babies.list");
+            }
+        }
     });

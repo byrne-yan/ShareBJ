@@ -58,7 +58,7 @@ angular.module('shareBJ.journals')
                 }
             })
             .state('shareBJ.journals.new',{
-                url:'/new',
+                url: '/new?baby',
                 views:{
                     'journalView':{
                         templateUrl: 'sbj_journals_lib/client/new_journal.ng.html',

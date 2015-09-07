@@ -20,7 +20,7 @@ Package.onUse(function(api) {
         'aldeed:simple-schema@1.3.3',
         'aldeed:collection2@2.3.3',
         'sacha:autoform@5.1.2',
-        'matb33:collection-hooks@0.7.13',
+        'matb33:collection-hooks@0.7.15',
         //'urigo:ionic@1.0.0_1',
         'driftyco:ionic@1.1.0',
         //'jonmc12:ionic-material@0.4.2_1',

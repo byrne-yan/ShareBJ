@@ -73,10 +73,11 @@ angular.module('shareBJ.users')
         });
 
         $scope.$meteorAutorun(function() {
-            console.log('buttons status:', $scope.getReactively('codeRequestReady'), $scope.getReactively('signupReady'));
+            console.log('buttons status:%j%j', $scope.getReactively('codeRequestReady'), $scope.getReactively('signupReady'));
         });
         //
 
+        console.log('tag');
         //$meteor.session('CodeWindow').bind($scope,'codeWindow');
         Session.set("CodeWindow",0);
 
@@ -92,18 +93,19 @@ angular.module('shareBJ.users')
 
         var cleanup = function () {
             Meteor.clearInterval(Session.get('CodeWindow'));
-            Session.set('CodeWindow', 0)
+            Session.set('CodeWindow', 0);
             $scope.codeSent = false;
             $scope.user.code = "";
         };
         $scope.getCode = function() {
-            //console.log('getCode');
+            console.log('start getCode');
             $scope.user.signupError = {signup:false};
             Accounts.requestPhoneVerification($scope.user.mobile, {name: $scope.user.name}, function (error) {
                     if (error) {
                         console.log(error);
                         $scope.user.signupError = {signup:true};
                     } else {
+                        console.log('get code done');
                         $scope.codeSent = true;
                         Session.set('CodeWindow', 30);
                         Session.set("timer", Meteor.setInterval(function () {

@@ -1,5 +1,5 @@
 angular.module('shareBJ.journals')
-    .controller('NewJournalCtrl',function($scope,$rootScope,$state) {
+    .controller('NewJournalCtrl', function ($scope, $rootScope, $state, $stateParams) {
         if($rootScope.currentUser){
             $scope.$meteorSubscribe('myGuardianOrFollowingBabies');
         }
@@ -9,6 +9,9 @@ angular.module('shareBJ.journals')
         },false);
         $scope.journals = $scope.$meteorCollection(Journals);
         $scope.journal = {};
+        if ($stateParams.baby) {
+            $scope.journal.baby = $stateParams.baby;
+        }
         $scope.newJournal = function(journal){
 
             var journalObj ={
@@ -21,19 +24,24 @@ angular.module('shareBJ.journals')
 
             $scope.journals.save(journalObj)
                 .then(function(docIds){
+                    console.log("saved journals:", docIds);
                     _.each($scope.journal.images,function(image){
-                        image.uploader = new Slingshot.Upload("imageUploads",{journalId:docIds[0]._id});
+                        image.uploader = new Slingshot.Upload("imageUploads", {journalId: docIds[0]});
+                        console.log("image uploading :", image.filename);
                         image.uploader.send(image.file,function(error,downloadUrl){
                             if(error)
                             {
                                 console.log(error);
                             }else{
-                                Journals.update({_id:docIds[0]._id},
+                                console.log("image uploading :", image.filename, "done and then updating journal", docIds[0]);
+                                Journals.update({_id: docIds[0]},
                                     {$push:{images:{url:downloadUrl}}},
                                     {},
                                     function(error,num){
                                         if(error){
                                             console.log("Error updating uploaded image url",error);
+                                        } else {
+                                            console.log("update journal's images done", docIds[0], num);
                                         }
                                     }
                                 );
@@ -61,6 +69,7 @@ angular.module('shareBJ.journals')
                 {
                     var reader = new FileReader();
                     reader.onloadend =function(){
+                        console.log(reader.result);
                         $scope.$apply(function(){
                             $scope.journal.images.push({filename:image.name,
                                 dataAsUrl:reader.result,
