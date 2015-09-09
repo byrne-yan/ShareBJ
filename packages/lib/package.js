@@ -8,6 +8,14 @@ Package.describe({
   documentation: 'README.md'
 });
 
+Cordova.depends({
+    //"org.apache.cordova.camera": "0.3.0",
+    "cordova-plugin-imagepicker":"1.2.2",
+    "cordova-plugin-camera":'1.2.0',
+    "cordova-plugin-file":"3.0.0",
+    "cordova-plugin-globalization":"1.0.1"
+});
+
 Package.onUse(function(api) {
     api.versionsFrom('1.1.0.2');
     var packages =[
@@ -19,12 +27,14 @@ Package.onUse(function(api) {
         'aldeed:simple-schema@1.3.3',
         'aldeed:collection2@2.3.3',
         'sacha:autoform@5.1.2',
-        'matb33:collection-hooks@0.7.13',
+        'matb33:collection-hooks@0.8.0',
         'driftyco:ionic@1.1.0',
         //'jonmc12:ionic-material@0.4.2_1',
         'edgee:slingshot@0.7.1',
         'angular:angular-messages@1.4.2',
-        'tmeasday:publish-counts@0.6.0'
+        'tmeasday:publish-counts@0.7.1'
+        //'sbj:cordova-file-server@0.1.2'
+        //'natestrauser:cordova-file-server@0.1.1'
 
     ];
 
@@ -47,6 +57,7 @@ Package.onUse(function(api) {
 
     api.addFiles([
         'client/lib.ng.js',
+        'client/ngletteravatar.js',
         'client/style.css'
         //'client/helpers/stylesheet.css'
         ],   ['client']);

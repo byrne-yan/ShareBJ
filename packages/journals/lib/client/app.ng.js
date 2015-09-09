@@ -1,1 +1,1 @@
-angular.module('shareBJ.journals',['shareBJ.babies']);
+angular.module('shareBJ.journals',['shareBJ.babies','ngCordova']);

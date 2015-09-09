@@ -6,23 +6,29 @@
     border-bottom: 2px solid #ddd;
 }
 .journal .item.item-body{
-    padding-left: 72px;
+    padding-left: 64px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    line-height: 0px;
 }
 
 .journal .item.item-body .journal-date{
     margin-top: 0;
     margin-bottom: 0;
+    padding-left: 0;
     font-size: 10px;
 }
 
 .journal .tab-item .icon{
-    height: 16px;
+    /*height: 16px;*/
 }
 
 .journal .tabs{
-    height:32px
+    /*height:24px*/
 }
-
+.journal .tabs .tab-item{
+    text-align: left;
+}
 .journal .tabs-icon-left.tabs .tab-item .icon:before,
 .journal .tabs-icon-left > .tabs .tab-item .icon:before,
 .journal .tabs-icon-right.tabs .tab-item .icon:before,
@@ -32,8 +38,9 @@
 }
 
 .journal-img{
-    width:48px;
-    height: 48px;
+    margin: 2px;
+    width: 80px;
+    height: 80px;
 }
 
 .journal-imgPicker{
@@ -50,4 +57,36 @@ select.baby > option{
 input.journal-search{
     max-width:106px;
     font-size: 12px;
+}
+
+.image-action-sheet .action-sheet-wrapper{
+    bottom: 40%;
+    width: 96%;
+    background: transparent;
+}
+
+.image-action-sheet .action-sheet-wrapper .action-sheet{
+    /*background: black;*/
+}
+
+.image-action-sheet .action-sheet-wrapper .action-sheet .action-sheet-group{
+    border-radius:5px;
+    background: transparent;
+}
+.image-action-sheet .action-sheet-wrapper .action-sheet .action-sheet-group .action-sheet-title{
+    margin-bottom: 2px;
+}
+.image-action-sheet .action-sheet-wrapper .action-sheet .action-sheet-group .action-sheet-title,
+.image-action-sheet .action-sheet-wrapper .action-sheet .action-sheet-group .action-sheet-option{
+    text-align: center !important;
+    background: #fafafa;
+}
+
+.image-action-sheet .action-sheet .button{
+    padding: 0 10px;
+    margin-top: 2px;
+}
+
+.image-action-sheet .action-sheet .button i{
+    margin-right: 16px;
 }

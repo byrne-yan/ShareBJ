@@ -50,8 +50,8 @@
                 <div class="item item-body ">
                     <!--{{journal.images}}-->
                     <img class="journal-img" ng-if="journal.images.length > 0" ng-repeat="image in journal.images" ng-src="{{image.url}}" >
-                    <p class="journal-date">{{journal.authorDetail.profile.name || journal.authorDetail.username}}@{{timeFromNow(journal.createdAt)}}</p>
-                    <div class="item tabs tabs-icon-left " >
+                    <div class="item journal-date">{{journal.authorDetail.profile.name || journal.authorDetail.username}}@{{timeFromNow(journal.createdAt)}}</div>
+                    <div class="item tabs tabs-secondary tabs-icon-left " >
                         <a class="tab-item" href="#">
                             <i class="icon ion-heart"></i>
                             赞

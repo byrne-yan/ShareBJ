@@ -15,7 +15,8 @@ Package.onUse(function(api) {
 
     var packages =[
         'sbj:lib',
-        'sbj:babies'
+        'sbj:babies',
+        'sbj:ng-cordova'
     ];
 
     api.use(packages);

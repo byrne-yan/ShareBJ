@@ -9,14 +9,14 @@ Accounts.config({
 });
 
 Accounts.onCreateUserEx(function(options, user){
-    if(originalOnCreateUser)
-    {
-        try{
-            user = originalOnCreateUser(options,user)
-        }catch(e){
-            throw e;
-        }
-    }
+    //if(originalOnCreateUser)
+    //{
+    //    try{
+    //        user = originalOnCreateUser(options,user)
+    //    }catch(e){
+    //        throw e;
+    //    }
+    //}
 
     console.log('onCreateUser');
    //for first account, tag it as a admin

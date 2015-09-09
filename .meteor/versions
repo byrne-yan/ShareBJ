@@ -54,7 +54,7 @@ launch-screen@1.0.3-rc.1
 livedata@1.0.14-rc.0
 localstorage@1.0.4-rc.0
 logging@1.0.8-rc.1
-matb33:collection-hooks@0.7.15
+matb33:collection-hooks@0.8.0
 meteor@1.1.7-rc.1
 meteor-base@1.0.1-rc.0
 meteor-platform@1.2.3-rc.0
@@ -84,6 +84,7 @@ sbj:babies@0.0.1
 sbj:fixtures@0.0.1
 sbj:journals@0.1.0
 sbj:lib@0.1.0
+sbj:ng-cordova@0.0.1
 sbj:notifications@0.0.1
 sbj:sms@0.0.1
 sbj:users@0.1.0
@@ -96,7 +97,7 @@ srp@1.0.4-rc.0
 standard-minifiers@1.0.0-rc.1
 templating@1.1.2-rc.4
 templating-tools@1.0.0-rc.0
-tmeasday:publish-counts@0.6.0
+tmeasday:publish-counts@0.7.1
 tracker@1.0.8-rc.0
 ui@1.0.7-rc.0
 underscore@1.0.4-rc.0
