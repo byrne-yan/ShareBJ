@@ -59,6 +59,8 @@ Package.onUse(function(api) {
         'client/lib.ng.js',
         'client/ngletteravatar.js',
         'client/photos.js',
+        'client/avatar_directive.ng.js',
+        'client/avatar_directive.ng.html',
         'client/style.css'
         ],   ['client']);
 

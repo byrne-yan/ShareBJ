@@ -52,6 +52,7 @@ Package.onUse(function(api) {
       'lib/server/babies_methods.js',
     'lib/server/requests_methods.js',
     'lib/server/babies_securities.js',
+    'lib/server/uploads.js',
       'lib/server/publications.js'
   ],'server');
 

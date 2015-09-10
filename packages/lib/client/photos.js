@@ -61,3 +61,16 @@ ShareBJ.uri2DataURL = function (uri){
         })
     })
 };
+
+ShareBJ.blob2DataURL = function(blob){
+    return new Promise(function(resolve,reject) {
+        var reader = new FileReader();
+        reader.onloadend = function (result) {
+            if (reader.error) {
+                return reject(reader.error);
+            }
+            return resolve(reader.result);
+        };
+        reader.readAsDataURL(blob);
+    });
+}

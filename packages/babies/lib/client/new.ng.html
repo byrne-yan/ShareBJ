@@ -6,6 +6,11 @@
     <ion-content  class="has-header">
         <form name="newBabyForm" noinvalidate ng-submit="newBaby(baby)">
             <ul class="list" >
+                <a class="item item-avatar-right"  ng-click="editAvatar()">
+                    <img ng-src="{{avatar}}">
+                    <h2>头像</h2>
+                </a>
+
                 <label class="item item-input ">
                     <span class="input-label">名字</span>
                     <input type="text" name="babyname" placeholder="张三" ng-model="baby.name"

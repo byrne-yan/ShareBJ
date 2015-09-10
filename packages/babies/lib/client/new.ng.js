@@ -55,15 +55,15 @@ angular.module('shareBJ.babies')
         $scope.beforeNow =  (new　Date()).toISOString().slice(0,19);
         $scope.dateBeforeNow =  (new　Date()).toISOString().slice(0,10);
 
-        $scope.newBaby = function(baby){
-            $scope.newbabyError = {newbaby:false};
+        function constructBabyObj(baby){
             if(!baby.name && !baby.nickname){
                 $scope.newbabyError.newbaby = true;
                 $scope.newbabyErrorMessage ="名字和昵称至少要有一个";
-                return;
+                return null;
             };
 
             var babyObj = {
+                avatar: $scope.avatar,
                 name: baby.name,
                 nickname:baby.nickname,
                 owners:[$rootScope.currentUser._id],
@@ -86,45 +86,59 @@ angular.module('shareBJ.babies')
             if(!$scope.newMode){
                 babyObj._id = $scope.babies[0]._id;
             }
-            //if($scope.newMode){
-            //    Babies.insert(babyObj,function(error,babyId){
-            //        if(error){
-            //            $scope.newbabyError.newbaby = true;
-            //            $scope.newbabyErrorMessage = err.reason;
-            //            console.log(err);
-            //        }else{
-            //
-            //            $state.go(ShareBJ.state.home);
-            //        }
-            //    });
-            //}else{
-            //    Babies.update({_id:}babyObj,function(error,babyId){
-            //        if(error){
-            //            $scope.newbabyError.newbaby = true;
-            //            $scope.newbabyErrorMessage = err.reason;
-            //            console.log(err);
-            //        }else{
-            //
-            //            $state.go(ShareBJ.state.home);
-            //        }
-            //    });
-            //
-            //}
-
-
-
-            $scope.babies.save( babyObj )
-                .then(function(){
-                    $ionicHistory.nextViewOptions({
-                        disableBack: true,
-                        historyRoot: true
-                    });
-                    $state.go(ShareBJ.state.home);
-                },
-                function(err){
-                    $scope.newbabyError.newbaby = true;
-                    $scope.newbabyErrorMessage = err.reason;
-                    console.log(err);
-                });
+            return babyObj;
         }
+        $scope.newBaby = function(baby){
+            $scope.newbabyError = {newbaby:false};
+
+            var babyObj = constructBabyObj(baby);
+
+            var avatarUploader = new Slingshot.Upload('avatarBabyUploads',{babyId:$stateParams.babyId});
+            avatarUploader.send($scope.avatarBlob,function(error,downloadUrl){
+                if(error){
+                    callback(error);
+                }else{
+                    babyObj.avatar = downloadUrl;
+                    $scope.babies.save( babyObj )
+                        .then(function(){
+                            $ionicHistory.nextViewOptions({
+                                disableBack: true,
+                                historyRoot: true
+                            });
+                            $state.go(ShareBJ.state.home);
+                        },
+                        function(err){
+                            $scope.newbabyError.newbaby = true;
+                            $scope.newbabyErrorMessage = err.message();
+                            console.log(err);
+                        });
+                }
+            })
+        };
+
+        $scope.avatarModal = $ionicModal.fromTemplate(
+            '<sbj-avatar save="saveAvatar"  onclose="closeAvatarEditor()"></sbj-avatar>',
+            {
+                scope:$scope,
+                animation:'slide-in-up'
+            }
+        );
+        console.log($scope.avatarModal);
+        $scope.editAvatar = function(){
+            $scope.avatarModal.show();
+        };
+        $scope.closeAvatarEditor =function(){
+            $scope.avatarModal.hide();
+        };
+        $scope.saveAvatar = function(blob,dataURL,callback){
+            $scope.avatarBlob = blob;
+            $timeout(function(){
+                $scope.$apply(function(){
+                    $scope.avatar = dataURL;
+                })
+            });
+            callback();
+        };
+
+
     });

@@ -46,11 +46,10 @@ angular.module('shareBJ.users')
         }).then(function(modal){
             $scope.modals.mobile = modal;
         });
-        $ionicModal.fromTemplateUrl('sbj_users_lib/client/user/avatar_edit.ng.html',{
+        $scope.modals.avatar = $ionicModal.fromTemplate(
+            '<sbj-avatar save="saveAvatar" saving-message="正在上传头像..." onclose="closeAvatarEditor()"></sbj-avatar>',{
             scope:$scope,
             animation:'slide-in-up'
-        }).then(function(modal){
-            $scope.modals.avatar = modal;
         });
         $ionicModal.fromTemplateUrl('sbj_users_lib/client/user/motto_edit.ng.html',{
             scope:$scope,
@@ -171,11 +170,39 @@ angular.module('shareBJ.users')
 
             $scope.modals[field].show();
         };
+
+        //avatar
+        $scope.closeAvatarEditor = function(){
+            $scope.modals.avatar.hide();
+        };
+        $scope.saveAvatar = function(blob,dataURL,callback){
+            var avatarUploader = new Slingshot.Upload('avatarUploads',{userId:$rootScope.currentUser._id});
+            avatarUploader.send(blob,function(error,downloadUrl){
+                if(error)
+                {
+                    //$ionicLoading.hide();
+                    callback(error);
+                }else{
+                    console.log("Uploading progress:" + avatarUploader.progress());
+                    $meteor.call('updateCurrentUserAvatar',$rootScope.currentUser._id,downloadUrl)
+                        .then(function(){
+                            $timeout(function(){
+                                $scope.$apply(function(){
+                                    $scope.avatar = downloadUrl;
+                                });
+                            },0);
+
+                            callback();
+                            $scope.closeAvatarEditor();
+                        },function(err){
+                            callback(error);
+                        });
+                }
+            });
+        };
+
         $scope.closeEditor =  function(modal){
             $scope.modals[modal].hide();
-            if(modal==='avatar'){
-                $scope.$image.cropper('destroy');
-            }
         };
 
     })

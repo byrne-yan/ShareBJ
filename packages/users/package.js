@@ -51,8 +51,6 @@ Package.onUse(function (api) {
     'lib/client/user/email_edit.ng.html',
     'lib/client/user/mobile/mobile_edit.ng.html',
     'lib/client/user/mobile/mobile_edit.ng.js',
-    'lib/client/user/avatar_edit.ng.html',
-    'lib/client/user/avatar_edit.ng.js',
     'lib/client/user/user_summary.ng.html',
     'lib/client/user/user_summary.ng.js'
      ,'lib/client/user/notifications.ng.js'

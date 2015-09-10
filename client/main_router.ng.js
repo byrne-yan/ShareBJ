@@ -17,7 +17,7 @@ angular.module('ShareBJ')
     })
     .run(function($rootScope,$state,$meteor,$ionicHistory){
         $rootScope.$on('$stateChangeError',function(event,toState,toParams,fromState,fromParams,error){
-            console.log("$stateChangeError:",event,toState,toParams,fromState,fromParams,error);
+            //console.log("$stateChangeError:",event,toState,toParams,fromState,fromParams,error);
             if (error === 'AUTH_REQUIRED'){
                 $state.go(ShareBJ.state.login);
             }
@@ -27,8 +27,8 @@ angular.module('ShareBJ')
         //    console.log($ionicHistory.viewHistory());
         //});
         $rootScope.$on('$stateChangeSuccess',function(event,toState,toParams,fromState,fromParams,error){
-            console.log("$stateChangeSuccess:",event,toState,toParams,fromState,fromParams);
-            console.log($ionicHistory.viewHistory());
+            //console.log("$stateChangeSuccess:",event,toState,toParams,fromState,fromParams);
+            //console.log($ionicHistory.viewHistory());
             //if done from login to any state, resotre backView setting
             //if(fromState.name==='shareBJ.users_login')
             //{
