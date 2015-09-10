@@ -48,8 +48,7 @@ angular.module('shareBJ.users')
         });
         $ionicModal.fromTemplateUrl('sbj_users_lib/client/user/avatar_edit.ng.html',{
             scope:$scope,
-            animation:'slide-in-up',
-            focusFirstInput:true
+            animation:'slide-in-up'
         }).then(function(modal){
             $scope.modals.avatar = modal;
         });
@@ -150,81 +149,6 @@ angular.module('shareBJ.users')
             );
         };
 
-        //Avatar
-
-        $scope.saveAvatar = function(){
-            var canvas = $scope.$image.cropper('getCroppedCanvas',{
-                width:64,
-                height:64
-            });
-
-            var avatarUploader = new Slingshot.Upload('avatarUploads',{userId:$rootScope.currentUser._id});
-            canvas.toBlob(function(blob){
-                avatarUploader.send(blob,function(error,downloadUrl){
-                    if(error)
-                    {
-                        console.log('Error uploading avatar',avatarUploader.xhr.response);
-
-                    }else{
-                        $ionicLoading.show({
-                            template: "上传中..."
-                        });
-                        if(avatarUploader.progress() === 1)
-                        {
-                            console.log("Uploading progress:" + avatarUploader.progress());
-                            $meteor.call('updateCurrentUserAvatar',$rootScope.currentUser._id,downloadUrl);
-                            $ionicLoading.hide();
-                            $scope.avatar = downloadUrl;
-                            $scope.modals.avatar.hide();
-                            $scope.$image.cropper('destroy');
-                        }
-                    }
-                });
-
-            }, "image/jpeg", 0.8);
-        };
-        $scope.fileSelected =function(input){
-            var reader = new FileReader();
-            reader.onloadend =function(){
-                $scope.$apply(function(){
-                    $scope.edit.fileAsUrl = reader.result;
-                });
-            };
-
-            if(input.files && input.files[0])
-            {
-                 reader.readAsDataURL(input.files[0]);
-            }
-        };
-        $scope.imgChanged = function(){
-            if($scope.$image){
-                $scope.$image.cropper('destroy');
-            }
-            $scope.$image = $('#cropper-container > img');
-            $scope.cropBoxData = null;
-            $scope.cropCanvasData = null;
-
-            var fnSaveCrop = function(){
-                $scope.$apply(function(){
-                    //$scope.$image.cropper('setCropBoxData',$scope.cropBoxData);
-                    $scope.croppedCanvas = $scope.$image.cropper('getCroppedCanvas').toDataURL();
-                });
-            };
-
-            $scope.$image.cropper({
-                autoCropArea: 0.5,
-                rounded:true,
-                //preview:'#previewImage',
-                built: fnSaveCrop,
-                dragmove:fnSaveCrop,
-                dragend: fnSaveCrop,
-                zoomin:fnSaveCrop,
-                zoomout:fnSaveCrop,
-                change:fnSaveCrop
-            });
-        };
-
-
         //motto
         $scope.fnEdit = function(field){
             switch(field){
@@ -241,7 +165,7 @@ angular.module('shareBJ.users')
                     $scope.edit = {mobile:$scope.mobile.number};
                     break;
                 case 'avatar':
-                    $scope.edit = {};
+                    $scope.croppedCanvas = $scope.avatar;
                     break;
             }
 

@@ -64,11 +64,11 @@ angular.module('shareBJ.journals')
                         };
                         if(Meteor.isCordova){
                             if(image.dataAsUrl){
-                                return uploading(dataURL2Blob(image.dataAsUrl));
+                                return uploading(ShareBJ.dataURL2Blob(image.dataAsUrl));
                             }else
                             if(!image.file && image.filename)
                             {
-                                uri2Blob(image.filename)
+                                ShareBJ.uri2Blob(image.filename)
                                     .then(function(blob){
                                         return uploading(blob);
                                     })
@@ -148,7 +148,7 @@ angular.module('shareBJ.journals')
                 imagesPicker.click();
             }else{
 
-                pictureSource()
+                ShareBJ.pictureSource($ionicActionSheet)
                     .then(function(source){
                         switch (source){
                             case 0:　//camera
@@ -187,7 +187,7 @@ angular.module('shareBJ.journals')
                                             console.log('Image URI: ' + results[i]);
                                             //var url = CordovaFileServer.httpUrl +
                                             //    results[i].substring(cordova.file.applicationStorageDirectory.length-1,results[i].length);
-                                            uri2DataURL(results[i])
+                                            ShareBJ.uri2DataURL(results[i])
                                                 .then(function(res){
                                                     //var uri = results[i];
                                                     console.log("uri:",res.filename);
@@ -211,69 +211,4 @@ angular.module('shareBJ.journals')
                     })
             }
         },false);
-
-        //helpers
-        function pictureSource(){
-            return new Promise(function(resolve,reject){
-                $ionicActionSheet.show({
-                    buttons:[
-                        {text:'<span class="positive">拍摄照片</span>'},
-                        {text:'<span class="positive">从相册中选取</span>'}
-                    ],
-                    //titleText:'获取照片',
-                    buttonClicked: function(index){
-                        resolve(index);
-                        return true;
-                    },
-                    cssClass:'image-action-sheet'
-                })
-            })
-        };
-
-        function uri2Blob(uri){
-            return new Promise(function(resolve,reject){
-                window.resolveLocalFileSystemURL(uri,function(fileEntry){
-                    fileEntry.file(function(file){
-                        return resolve(file);
-                    },function(error){
-                        return reject(error);
-                    })
-                },function(error){
-                    return reject(error)
-                })
-            })
-        };
-
-        function dataURL2Blob(dataurl){
-            var arr = dataurl.split(','),
-                mime= arr[0].match(/:(.*?);/)[1],
-                bstr = atob(arr[1]),
-                n = bstr.length,
-                u8arr = new Uint8Array(n);
-            while(n--){
-                u8arr[n] = bstr.charCodeAt(n);
-            }
-            return new Blob([u8arr],{type:mime});
-        };
-
-        function uri2DataURL(uri){
-            return new Promise(function(resolve,reject){
-                window.resolveLocalFileSystemURL(uri,function(fileEntry){
-                    fileEntry.file(function(file){
-                        var reader = new FileReader();
-                        reader.onloadend = function(result){
-                            if(reader.error){
-                                return reject(reader.error);
-                            }
-                            return resolve({dataURL:reader.result,filename:file.name});
-                        };
-                        reader.readAsDataURL(file);
-                    },function(error){
-                        return reject(error);
-                    })
-                },function(error){
-                    return reject(error)
-                })
-            })
-        };
     });

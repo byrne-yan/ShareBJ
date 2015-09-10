@@ -28,7 +28,7 @@ Package.onUse(function(api) {
         'aldeed:collection2@2.3.3',
         'sacha:autoform@5.1.2',
         'matb33:collection-hooks@0.8.0',
-        'driftyco:ionic@1.1.0',
+        'driftyco:ionic@1.1.0_1',
         //'jonmc12:ionic-material@0.4.2_1',
         'edgee:slingshot@0.7.1',
         'angular:angular-messages@1.4.2',
@@ -58,13 +58,14 @@ Package.onUse(function(api) {
     api.addFiles([
         'client/lib.ng.js',
         'client/ngletteravatar.js',
+        'client/photos.js',
         'client/style.css'
-        //'client/helpers/stylesheet.css'
         ],   ['client']);
 
     api.export('ShareBJ');
     api.export('conceptionAge');
     api.export('ageOf');
+
 
 });
 

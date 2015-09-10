@@ -31,7 +31,7 @@ ddp-rate-limiter@1.0.0-rc.0
 ddp-server@1.2.1-rc.1
 deps@1.0.8-rc.0
 diff-sequence@1.0.1-rc.0
-driftyco:ionic@1.1.0
+driftyco:ionic@1.1.0_1
 ecmascript@0.1.3-rc.2
 ecmascript-collections@0.1.5-rc.1
 edgee:slingshot@0.7.1
@@ -101,6 +101,7 @@ tmeasday:publish-counts@0.7.1
 tracker@1.0.8-rc.0
 ui@1.0.7-rc.0
 underscore@1.0.4-rc.0
+urigo:cancel-fastclick@0.0.1
 url@1.0.5-rc.0
 velocity:helpers@0.3.0
 webapp@1.2.2-rc.2
