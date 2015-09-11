@@ -8,3 +8,25 @@
 .sharebj-imgPicker{
     display: none;
 }
+
+.full-slider.slider{
+    position: absolute;
+    top: 0;
+    height: 100% !important;
+    width: 100% !important;
+    min-height: 100% !important;
+    background-color: black;
+}
+
+.full-slider .slider-slide-image > img{
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.full-slider .slider-pager .slider-pager-page{
+    color: #fafafa;
+}

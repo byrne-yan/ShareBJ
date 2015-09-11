@@ -32,6 +32,7 @@ Package.onUse(function(api) {
         //'jonmc12:ionic-material@0.4.2_1',
         'edgee:slingshot@0.7.1',
         'angular:angular-messages@1.4.2',
+        //'ccorcos:clientside-image-manipulation@1.0.4',
         'tmeasday:publish-counts@0.7.1'
         //'sbj:cordova-file-server@0.1.2'
         //'natestrauser:cordova-file-server@0.1.1'
@@ -59,8 +60,10 @@ Package.onUse(function(api) {
         'client/lib.ng.js',
         'client/ngletteravatar.js',
         'client/photos.js',
-        'client/avatar_directive.ng.js',
-        'client/avatar_directive.ng.html',
+        'client/directive/avatar_directive.ng.js',
+        'client/directive/avatar_directive.ng.html',
+        'client/directive/slidebox_directive.ng.html',
+        'client/directive/slidebox_directive.ng.js',
         'client/style.css'
         ],   ['client']);
 

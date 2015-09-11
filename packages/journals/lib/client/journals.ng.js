@@ -1,7 +1,7 @@
 Journals.feedStep= 10;
 
 angular.module('shareBJ.journals')
-    .controller('JournalsCtrl', function ($scope, $meteor, $stateParams, babies, $state, $ionicHistory) {
+    .controller('JournalsCtrl', function ($scope, $meteor, $stateParams, babies, $state, $ionicHistory,$ionicModal) {
         if (babies.length === 0) {
             $ionicHistory.nextViewOptions({
                 disableBack: true
@@ -78,5 +78,21 @@ angular.module('shareBJ.journals')
                 //go to add a baby
                 $state.go("shareBJ.babies.list");
             }
+        };
+
+        $scope.closeSlides = function(){
+            $scope.slideModal.hide();
+            $scope.slideModal.remove();
+        };
+
+        $scope.showSlides = function(images,index){
+            $scope.currentImages = images;
+            $scope.slideStart = index;
+            $scope.slideModal = $ionicModal.fromTemplate(
+                '<sbj-slide-box images="currentImages" src="url" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
+                    scope: $scope,
+                    animation: 'slide-in-up'
+                });
+            $scope.slideModal.show();
         }
     });

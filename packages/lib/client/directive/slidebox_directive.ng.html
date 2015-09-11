@@ -1,0 +1,7 @@
+<ion-modal-view>
+        <ion-slide-box class="full-slider" on-slide-changed="slideHasChanged($index)" ng-click="closeModal()">
+            <ion-slide class="slider-slide-image" ng-repeat="image in slideImages">
+                <img ng-src="{{image}}">
+            </ion-slide>
+        </ion-slide-box>
+</ion-modal-view>

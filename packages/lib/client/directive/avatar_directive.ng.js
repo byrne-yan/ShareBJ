@@ -25,7 +25,7 @@
                 save: '&'
             },
             replace:"true",
-            templateUrl: "sbj_lib_client/avatar_directive.ng.html",
+            templateUrl: "sbj_lib_client/directive/avatar_directive.ng.html",
             controller:function($scope,$rootScope,$meteor,$ionicLoading,$ionicActionSheet,$cordovaCamera,$timeout,$ionicModal){
                 $scope.sbjError = {
                     sharebj:false,

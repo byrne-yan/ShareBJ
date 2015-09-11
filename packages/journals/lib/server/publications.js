@@ -1,6 +1,6 @@
 Meteor.publish('myJournals',function(options, extra){
 
-    console.log("extra:",extra);
+    //console.log("extra:",extra);
    var selector = {
        author:this.userId
    };

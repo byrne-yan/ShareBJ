@@ -1,5 +1,6 @@
 angular.module('shareBJ.journals')
-    .controller('NewJournalCtrl', function ($scope, $rootScope, $state, $stateParams,$cordovaImagePicker,$cordovaCamera
+    .controller('NewJournalCtrl', function ($scope, $rootScope, $state, $stateParams,
+                                            $cordovaImagePicker,$cordovaCamera,$ionicModal
         ,$ionicActionSheet) {
         if($rootScope.currentUser){
             $scope.$meteorSubscribe('myGuardianOrFollowingBabies');
@@ -117,7 +118,7 @@ angular.module('shareBJ.journals')
                         if(moreImages<0)
                             return resolve(null);
 
-                        console.log("read image:",image);
+                        //console.log("read image:",image);
                         reader.readAsDataURL(image);
                     })
                 })
@@ -125,7 +126,7 @@ angular.module('shareBJ.journals')
             .then(function(results){
                 $scope.$apply(function(){
                     _.each(results,function(result){
-                        console.log(result);
+                        //console.log(result);
                         if(result)
                             $scope.journal.images.push(result);
                     })
@@ -211,4 +212,20 @@ angular.module('shareBJ.journals')
                     })
             }
         },false);
+
+        $scope.closeSlides = function(){
+            $scope.slideModal.hide();
+            $scope.slideModal.remove();
+        };
+
+        $scope.showSlides = function(index){
+            //console.log($scope.journal.images);
+            $scope.slideStart = index;
+            $scope.slideModal = $ionicModal.fromTemplate(
+                '<sbj-slide-box images="journal.images" src="dataAsUrl" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
+                    scope: $scope,
+                    animation: 'slide-in-up'
+                });
+            $scope.slideModal.show();
+        }
     });
