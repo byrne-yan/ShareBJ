@@ -2,8 +2,8 @@ angular.module('shareBJ.babies')
     .controller('BabiesCtrl',function(){
 
     })
-    .controller('NewBabyCtrl',function($rootScope,$scope,$state,$stateParams,$ionicHistory,$ionicModal,$meteor,$timeout, $ionicLoading,
-    babiesSub) {
+    .controller('NewBabyCtrl',function($rootScope,$scope,$state,$stateParams,$ionicHistory,
+                                       $ionicModal,$meteor,$timeout, $ionicLoading, babiesSub) {
         $scope.newMode = $stateParams.babyId==='new';
 
 
@@ -15,6 +15,7 @@ angular.module('shareBJ.babies')
         if($scope.newMode)
         {
             $scope.babies = $scope.$meteorCollection(Babies);
+            $scope.baby.avatar = null;
             $scope.baby.name = "";
             $scope.baby.nickname = "";
             $scope.baby.born = true;
@@ -30,6 +31,7 @@ angular.module('shareBJ.babies')
 
             if($scope.babies.length > 0 )
             {
+                $scope.baby.avatar = $scope.babies[0].avatar;
                 $scope.baby.name = $scope.babies[0].name;
                 $scope.baby.nickname = $scope.babies[0].nickname;
                 $scope.baby.born = $scope.babies[0].birth;
@@ -42,14 +44,7 @@ angular.module('shareBJ.babies')
                     $scope.baby.conceptionDate = $scope.babies[0].conceptionDate;
                 }
             }
-
-            //if($scope.babies.count!==1){
-            //    $scope.newbabyError.newbaby = true;
-            //    $scope.newbabyErrorMessage ="无效宝宝ID,无法修改";
-            //    return;
-            //}
-
-        }
+       }
 
 
         $scope.beforeNow =  (new　Date()).toISOString().slice(0,19);
@@ -63,7 +58,7 @@ angular.module('shareBJ.babies')
             };
 
             var babyObj = {
-                avatar: $scope.avatar,
+                avatar: $scope.baby.avatar,
                 name: baby.name,
                 nickname:baby.nickname,
                 owners:[$rootScope.currentUser._id],
@@ -89,6 +84,7 @@ angular.module('shareBJ.babies')
             return babyObj;
         }
         $scope.newBaby = function(baby){
+            $ionicLoading.show({template:"正在保存宝宝信息..."});
             $scope.newbabyError = {newbaby:false};
 
             var babyObj = constructBabyObj(baby);
@@ -96,11 +92,13 @@ angular.module('shareBJ.babies')
             var avatarUploader = new Slingshot.Upload('avatarBabyUploads',{babyId:$stateParams.babyId});
             avatarUploader.send($scope.avatarBlob,function(error,downloadUrl){
                 if(error){
+                    $ionicLoading.hide();
                     callback(error);
                 }else{
                     babyObj.avatar = downloadUrl;
                     $scope.babies.save( babyObj )
                         .then(function(){
+                            $ionicLoading.hide();
                             $ionicHistory.nextViewOptions({
                                 disableBack: true,
                                 historyRoot: true
@@ -108,6 +106,7 @@ angular.module('shareBJ.babies')
                             $state.go(ShareBJ.state.home);
                         },
                         function(err){
+                            $ionicLoading.hide();
                             $scope.newbabyError.newbaby = true;
                             $scope.newbabyErrorMessage = err.message();
                             console.log(err);
@@ -134,7 +133,7 @@ angular.module('shareBJ.babies')
             $scope.avatarBlob = blob;
             $timeout(function(){
                 $scope.$apply(function(){
-                    $scope.avatar = dataURL;
+                    $scope.baby.avatar = dataURL;
                 })
             });
             callback();

@@ -1,6 +1,6 @@
 (function(){
     var directive = function(){
-        function takePhoto(source,$scope){
+        function takePhoto(source,$scope,$cordovaCamera){
             var options = {
                 destinationType: Camera.DestinationType.DATA_URL,
                 targetWidth: 480,
@@ -50,7 +50,7 @@
                                 switch (source){
                                     case 0:　//camera
                                     case 1:
-                                        takePhoto(source,$scope);
+                                        takePhoto(source,$scope,$cordovaCamera);
                                         break;
                                 }
                             })
@@ -81,10 +81,13 @@
 
                     $scope.cropCanvasData = null;
                     var fnSaveCrop = function(){
-                        $scope.$apply(function(){
-                            //console.log("croppedCanvas updated");
-                            $scope.croppedCanvas = $scope.$image.cropper('getCroppedCanvas').toDataURL();
-                        });
+                        if($scope.$image)
+                        {
+                            $scope.$apply(function(){
+                                //console.log("croppedCanvas updated");
+                                $scope.croppedCanvas = $scope.$image.cropper('getCroppedCanvas').toDataURL();
+                            });
+                        }
                     };
 
                     $scope.$image.cropper({
