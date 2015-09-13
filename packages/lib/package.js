@@ -12,11 +12,12 @@ Cordova.depends({
     //"org.apache.cordova.camera": "0.3.0",
     "cordova-plugin-imagepicker":"1.2.2",
     "cordova-plugin-camera":'1.2.0',
-    "cordova-plugin-file":"3.0.0"
+    "cordova-plugin-file":"3.0.0",
     //"cordova-plugin-globalization":"1.0.1"
     //"cordova-plugin-sim":"1.0.2",
     //"cordova-plugin-contacts":"1.1.0",
     //"cordova-plugin-device":"1.0.1"
+    'cordova-plugin-crosswalk-webview': '1.3.1'
 });
 
 Package.onUse(function(api) {

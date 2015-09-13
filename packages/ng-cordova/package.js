@@ -14,7 +14,7 @@ Package.onUse(function(api) {
   api.versionsFrom('1.2-rc.12');
   api.use('ecmascript');
   api.addFiles('ng-cordova.js','client');
-  api.export('Image')
+  //api.export('Image')
 });
 
 Package.onTest(function(api) {

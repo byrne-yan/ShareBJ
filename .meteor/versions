@@ -22,7 +22,6 @@ caching-compiler@1.0.0-rc.0
 caching-html-compiler@1.0.1-rc.0
 callback-hook@1.0.4-rc.0
 check@1.0.6-rc.0
-crosswalk@1.2.0-rc.0
 dburles:mongo-collection-instances@0.3.4
 ddp@1.2.1-rc.0
 ddp-client@1.2.1-rc.1
