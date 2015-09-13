@@ -31,12 +31,16 @@
 
                 <div class="item item-divider"></div>
                 <div ng-if="!currentUser">
-                    <a class="item item-icon-left balanced " menu_close ui-sref=".users.login" >
+                    <a class="item item-icon-left balanced " menu_close ui-sref="login" >
                         <i class="icon button-small ion-log-in"></i>
                         <span >登录</span></a>
                 </div>
 
                 <div ng-if="currentUser">
+                    <a class="item item-icon-left assertive " menu_close ui-sref="changePassword" >
+                        <i class="icon ion-edit"></i>
+                        <span>修改密码</span>
+                    </a>
                     <a class="item item-icon-left assertive " menu_close ng-click="logout()" >
                         <i class="icon ion-log-out"></i>
                         <span>退出</span>

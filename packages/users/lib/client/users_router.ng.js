@@ -5,10 +5,7 @@ ShareBJ.menu.userSummary = 'sbj_users_lib/client/user/user_summary.ng.html';
 angular.module('shareBJ.users')
 .config(  function($urlRouterProvider,$stateProvider, $locationProvider){
         $locationProvider.html5Mode(true);
-
         ShareBJ.state.login = "login";
-        ShareBJ.state.signup = "signup";
-        ShareBJ.state.recover = "signup";
         ShareBJ.state.user = 'shareBJ.users.edit';
         ShareBJ.state.mobileVerify = 'shareBJ.users_edit.mobileVerify';
         $stateProvider
@@ -55,7 +52,11 @@ angular.module('shareBJ.users')
                 templateUrl: 'sbj_users_lib/client/login/login.ng.html',
                 controller: 'LoginCtrl'
             })
-
+            .state("changePassword",{
+                url:'/users/current/changepwd',
+                templateUrl: 'sbj_users_lib/client/user/user_change_password.ng.html',
+                controller: 'ChangePasswordCtrl'
+            })
             .state('shareBJ.users.signupByPhone',{
                 //cache:false,
                 url:'/signup_phone?mobile&name',
@@ -66,15 +67,11 @@ angular.module('shareBJ.users')
                     }
                 }
             })
-            .state(ShareBJ.state.signup,{
+            .state('signup',{
                 //cache:false,
                 url:'/signup?token&mobile&email',
-                views:{
-                    'userView':{
-                        templateUrl: 'sbj_users_lib/client/signup/signup.ng.html',
-                        controller: 'SignupCtrl'
-                    }
-                }
+                templateUrl: 'sbj_users_lib/client/signup/signup.ng.html',
+                controller: 'SignupCtrl'
             })
             .state(ShareBJ.state.user ,{
                 //cache:false,

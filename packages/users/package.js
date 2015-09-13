@@ -55,6 +55,8 @@ Package.onUse(function (api) {
     'lib/client/user/user_summary.ng.js'
      ,'lib/client/user/notifications.ng.js'
      ,'lib/client/user/notifications.ng.html'
+    ,'lib/client/user/user_change_password.ng.html'
+    ,'lib/client/user/user_change_password.ng.js'
     ,'lib/client/recover/recover.ng.js'
     ,'lib/client/recover/recover.ng.html'
     ,'lib/client/recover/recover_select.ng.html'
