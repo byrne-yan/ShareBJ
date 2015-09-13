@@ -57,6 +57,26 @@ angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'
 Meteor.startup(function(){
     function onReady() {
         angular.bootstrap(document, ['ShareBJ']);
+        //if(Meteor.isCordova){
+        //    window.plugins.sim.getSimInfo(function(info){
+        //        ShareBJ.phoneInfo = info;
+        //        console.log(info);
+        //    },function(err){
+        //        console.log(err);
+        //    });
+        //    ShareBJ.contacts =  navigator.contacts;
+        //    console.log(ShareBJ.contacts);
+        //    ShareBJ.contacts.find([
+        //        "name",
+        //        "displayname",
+        //        "nickname"
+        //    ],function(contacts){
+        //        console.log(contacts);
+        //    },function(err){
+        //        console.log(err);
+        //    },{filter:"本机号码",multiple:true});
+        //    console.log(device);
+        //}
     }
 
     if (Meteor.isCordova)

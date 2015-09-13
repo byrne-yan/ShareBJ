@@ -1,0 +1,22 @@
+<ion-view view-title="查找你的账户">
+    <ion-content class="has-header">
+        <div class="" ng-messages="error.sbjError" >
+            <div ng-message="sharebj" class="error" >
+                <i class="ion-information-circled"></i>
+                {{error.sbjError.sharebjErrorMessage}}
+            </div>
+        </div>
+        <ion-list>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">手机号码，电子邮件地址或者用户名</span>
+                <input type="text" name="identify" id="identify" placeholder="15012345678, abc@example.com 或 张三"
+                       ng-model="input.identity" required
+                       ng-change="error.sbjError={sharebj:false}">
+            </label>
+        </ion-list>
+        <div class="padding text-right">
+            <button class="button button-small button-balanced" ng-click="searchAccount()" ng-disabled="!input.identity">搜索</button>
+            <button class="button button-small button-calm" ng-click="back()">取消</button>
+        </div>
+    </ion-content>
+</ion-view>

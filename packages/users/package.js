@@ -55,6 +55,12 @@ Package.onUse(function (api) {
     'lib/client/user/user_summary.ng.js'
      ,'lib/client/user/notifications.ng.js'
      ,'lib/client/user/notifications.ng.html'
+    ,'lib/client/recover/recover.ng.js'
+    ,'lib/client/recover/recover.ng.html'
+    ,'lib/client/recover/recover_select.ng.html'
+    ,'lib/client/recover/recover_email.ng.html'
+    ,'lib/client/recover/recover_phone.ng.html'
+    ,'lib/client/recover/recover_set_password.ng.html'
 
 
   ], ['client']);
@@ -63,6 +69,7 @@ Package.onUse(function (api) {
     'lib/server/email.js',
     'lib/server/users_security.js',
     'lib/server/users_methods.js',
+    'lib/server/recover_methods.js',
     'lib/server/publications.js',
     'lib/server/upload.js'
   ], ['server']);

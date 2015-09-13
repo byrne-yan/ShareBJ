@@ -6,8 +6,9 @@ angular.module('shareBJ.users')
 .config(  function($urlRouterProvider,$stateProvider, $locationProvider){
         $locationProvider.html5Mode(true);
 
-        ShareBJ.state.login = "shareBJ.users.login";
-        ShareBJ.state.signup = "shareBJ.users.signup";
+        ShareBJ.state.login = "login";
+        ShareBJ.state.signup = "signup";
+        ShareBJ.state.recover = "signup";
         ShareBJ.state.user = 'shareBJ.users.edit';
         ShareBJ.state.mobileVerify = 'shareBJ.users_edit.mobileVerify';
         $stateProvider
@@ -20,15 +21,41 @@ angular.module('shareBJ.users')
                     }
                 }
             })
-            .state(ShareBJ.state.login,{
-                url:'/login',
-                views:{
-                    'userView':{
-                        templateUrl: 'sbj_users_lib/client/login/login.ng.html',
-                        controller: 'LoginCtrl'
-                    }
+            .state('recoverPassword',{
+                url:'/login/recover/password?userId&verify',
+                templateUrl: 'sbj_users_lib/client/recover/recover_set_password.ng.html',
+                controller: 'RecoverPasswordCtrl'
+            })
+
+            .state('recoverPhone',{
+                url:'/login/recover/phone?userId&phone',
+                templateUrl: 'sbj_users_lib/client/recover/recover_phone.ng.html',
+                controller: 'RecoverVerifyCtrl'
+            })
+            .state('recoverEmail',{
+                url:'/login/recover/email?userId&email',
+                templateUrl: 'sbj_users_lib/client/recover/recover_email.ng.html',
+                controller: 'RecoverVerifyCtrl'
+            })
+            .state('recoverConfirm',{
+                url:'/login/recover/confirm',
+                templateUrl: 'sbj_users_lib/client/recover/recover_select.ng.html',
+                controller: 'RecoverConfirmCtrl',
+                params:{
+                    user:null
                 }
             })
+            .state('recover',{
+                url:'/login/recover',
+                templateUrl: 'sbj_users_lib/client/recover/recover.ng.html',
+                controller: 'RecoverCtrl'
+            })
+            .state("login",{
+                url:'/login',
+                templateUrl: 'sbj_users_lib/client/login/login.ng.html',
+                controller: 'LoginCtrl'
+            })
+
             .state('shareBJ.users.signupByPhone',{
                 //cache:false,
                 url:'/signup_phone?mobile&name',
@@ -89,6 +116,7 @@ angular.module('shareBJ.users')
                     }
                 }
             })
+
             //.state('verifyEmail',{
             //    url:'/#/verify-email/:token',
             //    templateUrl: 'sbj_users_lib/client/user/email.ng.html',

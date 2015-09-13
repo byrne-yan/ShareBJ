@@ -1,0 +1,27 @@
+<ion-view view-title="检查你的短信">
+    <ion-content class="has-header">
+        <div class="" ng-messages="error.sbjError" >
+            <div ng-message="sharebj" class="error" >
+                <i class="ion-information-circled"></i>
+                {{error.sbjError.sharebjErrorMessage}}
+            </div>
+        </div>
+        <ion-list>
+            <label class="item item-input item-stacked-label item-text-wrap">
+                <p class="padding-right">
+                    <span >请检查你的短信</span>
+                    <small>－我们已经发送给６位数字的确认码到</small>
+                    <strong>{{phone}}</strong>
+                    <small>。将确认码填入下面输入框来复位你的密码。</small>
+                </p>
+                <input type="text" name="verifycode" id="verifycode" placeholder="######"
+                       ng-model="input.verifycode" required
+                       ng-change="error.sbjError={sharebj:false}">
+            </label>
+        </ion-list>
+        <div class="padding text-right">
+            <button class="button button-small button-balanced" ng-click="next()" ng-disabled="input.verifycode.length<6">继续</button>
+            <button class="button button-small button-calm" ui-sref="login">取消</button>
+        </div>
+    </ion-content>
+</ion-view>

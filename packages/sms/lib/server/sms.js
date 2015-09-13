@@ -29,7 +29,7 @@ SMSManger.prototype = {
                         updatedAt: date
                     });
                 }
-                callback(err,messageId);
+                callback && callback(err,messageId);
                 //2 seconds later, check if delivered
 
                 Meteor.setTimeout( Meteor.bindEnvironment(function(){
@@ -40,6 +40,14 @@ SMSManger.prototype = {
                     }))
                 }),2000)
             });
+        }else{
+            console.log('======BEGIN SMS ======');
+            console.log("SMS not sent due to no SMS provider set, work as development mode!");
+            console.log(mobile);
+            console.log(template);
+            console.log(options);
+            console.log('======END SMS ======');
+            callback(null,"fake id");
         }
     },
     queryStatus: function(messageId, callback){

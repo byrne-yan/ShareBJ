@@ -13,10 +13,11 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.3');
   var packages = [
+      'meteor-base',
+      'mongo',
       'http@1.1.0',
       'random@1.0.3',
-    'abhiaiyer:meteor-twilio@0.0.5',
-    'sbj:lib'
+      'abhiaiyer:meteor-twilio@0.0.5'
   ];
 
   api.use(packages);
