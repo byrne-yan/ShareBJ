@@ -49,7 +49,7 @@
                 </div>
                 <div class="item item-body ">
                     <img class="journal-img" ng-if="journal.images.length > 0" ng-repeat="image in journal.images"
-                         ng-src="{{image.url}}" ng-click="showSlides(journal.images,$index)">
+                         ng-src="{{image.thumb}}" crossorigin="anonymous" ng-click="showSlides(journal.images,$index)">
                     <div class="item journal-date">{{journal.authorDetail.profile.name || journal.authorDetail.username}}@{{timeFromNow(journal.createdAt)}}</div>
                     <div class="item tabs tabs-secondary tabs-icon-left " >
                         <a class="tab-item" href="#">

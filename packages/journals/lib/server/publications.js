@@ -21,14 +21,19 @@ Meteor.publish('myJournals',function(options, extra){
    var transform = function(doc){
       //replace private url by pre-signed url
       doc.images = _.map(doc.images,function(image){
-         if(image.url)
+         if(image.url || image.thumb)
          {
             return {
-               url: ShareBJ.get_temp_url(Meteor.settings.s3.image.KEY, Meteor.settings.s3.image.SECRET,
+               thumb: image.thumb?ShareBJ.get_temp_url(Meteor.settings.s3.image.KEY, Meteor.settings.s3.image.SECRET,
+                    Meteor.settings.s3.image.bucket,
+                    60 * 60, //one hour expires
+                    image.thumb
+               ):null,
+               url: image.url?ShareBJ.get_temp_url(Meteor.settings.s3.image.KEY, Meteor.settings.s3.image.SECRET,
                    Meteor.settings.s3.image.bucket,
                    60 * 60, //one hour expires
                    image.url
-               )
+               ):null
             }
          }
          return image;

@@ -7,7 +7,7 @@
         <h1 class="title">更换头像</h1>
         <button class="button button-balanced" ng-click="saveAvatar()" ng-disabled="!croppedCanvas">保存</button>
     </ion-header-bar>
-    <ion-content class="has-header" >
+    <ion-content class="has-header" scroll="false">
         <div class="list card" >
             <div class="item" ng-messages="sbjError" ng-show="sbjError.sharebj">
                 <div ng-message="sharebj" class="error" >
@@ -24,12 +24,11 @@
                             ng-click="pick()">选择照片</button>
                 </div>
             </div>
-            <div id="cropper-container" class="item item-image" ng-show="edit.fileAsUrl">
-                <!--{{edit.fileAsUrl}}-->
-                <img ng-src="{{edit.fileAsUrl}}" onload="angular.element(this).scope().imgChanged()">
-
+            <div id="cropper-container" class="item item-image" ng-show="edit.fileAsUrl" >
+                <img id="cropper-origin-img">
             </div>
-            <div class="item text-center" ng-show="edit.fileAsUrl"><button class="button icon-left ion-refresh center" ng-click="rotate()"></button></div>
+            <!--<div class="item item-divider"></div>-->
+            <!--<div class="item text-center" ng-show="edit.fileAsUrl"><button class="button icon-left ion-refresh center" ng-click="rotate()"></button></div>-->
         </div>
 
     </ion-content>

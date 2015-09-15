@@ -44,6 +44,7 @@ Package.onUse(function(api) {
   api.addFiles([
           'lib/server/publications.js',
           'lib/server/journals_securities.js',
+          'lib/server/journals_methods.js',
           'lib/server/upload.js'
       ], ['server']
   );

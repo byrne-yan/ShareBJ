@@ -22,6 +22,7 @@ caching-compiler@1.0.0-rc.0
 caching-html-compiler@1.0.1-rc.0
 callback-hook@1.0.4-rc.0
 check@1.0.6-rc.0
+coffeescript@1.0.8-rc.3
 dburles:mongo-collection-instances@0.3.4
 ddp@1.2.1-rc.0
 ddp-client@1.2.1-rc.1
@@ -80,6 +81,7 @@ routepolicy@1.0.6-rc.0
 sacha:autoform@5.1.2
 sbj:accounts-phone@0.0.21
 sbj:babies@0.0.1
+sbj:clientside-image-manipulation@1.0.4
 sbj:fixtures@0.0.1
 sbj:journals@0.1.0
 sbj:lib@0.1.0

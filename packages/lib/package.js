@@ -37,9 +37,10 @@ Package.onUse(function(api) {
         'edgee:slingshot@0.7.1',
         'angular:angular-messages@1.4.2',
         //'ccorcos:clientside-image-manipulation@1.0.4',
+        'sbj:clientside-image-manipulation@1.0.4',
         'tmeasday:publish-counts@0.7.1'
-        //'sbj:cordova-file-server@0.1.2'
-        //'natestrauser:cordova-file-server@0.1.1'
+        //,'sbj:cordova-file-server@0.1.3'
+        //'natestrauser:cordova-file-server@0.1.2'
 
     ];
 
@@ -75,7 +76,7 @@ Package.onUse(function(api) {
     api.export('ShareBJ');
     api.export('conceptionAge');
     api.export('ageOf');
-
+    api.export('clone');
 
 });
 

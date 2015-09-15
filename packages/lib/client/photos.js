@@ -29,7 +29,8 @@ ShareBJ.uri2Blob = function (uri){
     })
 };
 
-ShareBJ.dataURL2Blob = function (dataurl){
+ShareBJ.dataURL2Blob = function (dataurl,name){
+    //console.log(dataurl);
     var arr = dataurl.split(','),
         mime= arr[0].match(/:(.*?);/)[1],
         bstr = atob(arr[1]),
@@ -38,7 +39,7 @@ ShareBJ.dataURL2Blob = function (dataurl){
     while(n--){
         u8arr[n] = bstr.charCodeAt(n);
     }
-    return new Blob([u8arr],{type:mime});
+    return new Blob([u8arr],{type:mime,name:name || ''});
 };
 
 ShareBJ.uri2DataURL = function (uri){

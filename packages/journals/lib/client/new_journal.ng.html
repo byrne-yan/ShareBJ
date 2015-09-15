@@ -42,12 +42,14 @@
 
 
                 <input type="file" id="imagePicker" multiple accept="image/*" class="sharebj-imgPicker" >
-                <a href="#" ng-repeat="image in journal.images track by image.filename" ng-click="showSlides($index)">
-                    <img class="journal-img"  ng-src="{{image.dataAsUrl}}">
-                </a>
-                <a href="#" id="imageFacade" ng-show="journal.images.length < 9">
-                    <img class="journal-img" src="images/plus.jpg"  >
-                </a>
+                <div class="item item-text-wrap">
+                    <a class="subdued" href="#" ng-repeat="image in journal.images track by image.filename" ng-click="showSlides($index)">
+                        <img class="journal-img "  ng-src="{{image.dataAsUrl}}">
+                    </a>
+                    <a class="subdued" href="#" id="imageFacade" ng-show="journal.images.length < 9">
+                        <img class="journal-img" src="images/plus.jpg"  >
+                    </a>
+                </div>
 
             </ion-list>
             <!--<div class="padding">-->

@@ -1,6 +1,6 @@
 angular.module('shareBJ.journals')
     .controller('NewJournalCtrl', function ($scope, $rootScope, $state, $stateParams,
-                                            $cordovaImagePicker,$cordovaCamera,$ionicModal
+                                            $cordovaImagePicker,$cordovaCamera,$ionicModal,$ionicLoading
         ,$ionicActionSheet) {
         if($rootScope.currentUser){
             $scope.$meteorSubscribe('myGuardianOrFollowingBabies');
@@ -30,60 +30,89 @@ angular.module('shareBJ.journals')
                 createdAt: new Date()
             };
 
+            var uploading = function(uploader,blob,docId,no,options){
+                return new Promise(function(resolve,reject){
+                    uploader.send(blob,function(error,downloadUrl){
+                        if(error)
+                        {
+                            return reject(error);
+                        }else{
+                            console.log("image uploaded :", blob.name,blob.size,blob.type,
+                                "done and then updating journal", docId,"downloadurl",downloadUrl);
+                            function handler(error,num){
+                                if(error){
+                                    return reject(error);
+                                } else {
+                                    console.log("update journal's images done", docId, num);
+                                    return resolve({docId:docId,no:no});
+                                }
+                            }
+                            console.log("options:",options);
+                            if(options && options.thumb==false){
+                                console.log("done uploading image:",docId,no);
+                                Meteor.call('updateJournalImageURL',docId,no,downloadUrl,handler);
+                            }else{
+                                Journals.update({_id: docId},
+                                    {$push:{images:{
+                                        no:no,
+                                        thumb:downloadUrl,
+                                        url:null
+                                    }}},
+                                    {},
+                                    handler
+                                );
+                            }
+                        }
+                    })
+                })
+            };
+
             $scope.journals.save(journalObj)
                 .then(function(docIds){
                     console.log("saved journals:", docIds);
-                    return Promise.all(_.map($scope.journal.images,function(image){
-                        image.uploader = new Slingshot.Upload("imageUploads", {journalId: docIds[0]});
-                        console.log("image uploading :", image.filename);
+                    $ionicLoading.show('上传照片中...');
+                    return Promise.all(_.map($scope.journal.images,function(image,idx){
+                        var uploaderThumb = new Slingshot.Upload("thumbUploads", {journalId: docIds[0]});
+                        console.log("image uploading #"+idx, image.filename,image.file);
 
-                        var uploading = function(blob){
-                            return new Promise(function(resolve,reject){
-                                image.uploader.send(blob,function(error,downloadUrl){
-                                    if(error)
-                                    {
-                                        console.log(error);
-                                        return reject(error);
-                                    }else{
-                                        console.log("image uploading :", blob.name,blob.size,blob.type, "done and then updating journal", docIds[0]);
-                                        Journals.update({_id: docIds[0]},
-                                            {$push:{images:{url:downloadUrl}}},
-                                            {},
-                                            function(error,num){
-                                                if(error){
-                                                    console.log("Error updating uploaded image url",error);
-                                                    return reject(error);
-                                                } else {
-                                                    console.log("update journal's images done", docIds[0], num);
-                                                    return resolve();
-                                                }
-                                            }
-                                        );
-                                    }
-                                })
-                            })
-                        };
-                        if(Meteor.isCordova){
-                            if(image.dataAsUrl){
-                                return uploading(ShareBJ.dataURL2Blob(image.dataAsUrl));
-                            }else
-                            if(!image.file && image.filename)
-                            {
-                                ShareBJ.uri2Blob(image.filename)
-                                    .then(function(blob){
-                                        return uploading(blob);
-                                    })
-                            }else{
-                                return uploading(image.file);
-                            }
-                        }else{
-                            return uploading(image.file);
-                        }
+                        return uploading(uploaderThumb,ShareBJ.dataURL2Blob(image.dataAsUrl),docIds[0],idx,{thumb:true});
                     }))
-                }).then(function(){
+                }).then(function(res){
+                    console.log(res);
+                    $ionicLoading.hide();
                     $scope.sending = false;
+                    //upload original photo
+                    var startUpload = function(){
+                        var uploaderPromise = Promise.all(_.map($scope.journal.images,function(image,idx){
+                            var uploaderImage = new Slingshot.Upload("imageUploads", {journalId: res[idx].docId});
+                            console.log("image uploading :", image.filename);
+
+                            processImage(image.file,450,800,1,function(dataURI){
+                                return uploading(uploaderImage,ShareBJ.dataURL2Blob(dataURI),res[idx].docId,idx,{thumb:false});
+                            });
+                        }));
+                        console.log('push into session:',uploaderPromise);
+                        Session.set('ImageUploaderPromise',uploaderPromise);
+                        return uploaderPromise;
+                    };
+
+                    var uploaderPromise = Session.get('ImageUploaderPromise');//check last upload done
+                    console.log(uploaderPromise);
+                    if(!uploaderPromise || !(uploaderPromise instanceof Promise))
+                    {
+                        startUpload().then(function(res){
+                            console.log(res);
+                        });
+                    }else{
+                        console.log(uploaderPromise);
+                        uploaderPromise.then(startUpload,startUpload).then(function(res){
+                            console.log(res);
+                        });
+                    }
+
                     $state.go(ShareBJ.state.journals);
                 }).catch(function(error){
+                    $ionicLoading.hide();
                     console.log(error);
                     $scope.sending = false;
                 })
@@ -98,28 +127,21 @@ angular.module('shareBJ.journals')
             Promise.all(
                 _.map(dedup, function(image){
                     //console.log(image);
+
                     return new Promise(function(resolve,reject){
-                        var reader = new FileReader();
-
-                        reader.onloadend =function(){
-                            if(reader.error)
-                            {
-                                console.log("FilerReader error:",reader.error);
-                                return reject(reader.error);
-                            }else{
-                                return resolve({
-                                    filename:image.name,
-                                    dataAsUrl:reader.result,
-                                    file:image
-                                })
-                            }
-                        };
+                        //get thumbnail
+                        processImage(image,96,96,1,function(data){
+                            console.log("processed image:",data);
+                            return resolve({
+                                category:"File",
+                                filename:image.name,
+                                dataAsUrl:data,
+                                file:image
+                            })
+                        });
                         moreImages --;
-                        if(moreImages<0)
+                        if(moreImages<0)//ignore rest
                             return resolve(null);
-
-                        //console.log("read image:",image);
-                        reader.readAsDataURL(image);
                     })
                 })
             )
@@ -162,10 +184,12 @@ angular.module('shareBJ.journals')
                                 };
                                 $cordovaCamera.getPicture(options)
                                     .then(function(imageData){
+                                        var dataURI = "data:image/jpeg;base64," + imageData;
                                         $scope.journal.images.push({
+                                            category:"DataURL",
                                             filename:"camera"+ (new Date()),//unique name
-                                            dataAsUrl:"data:image/jpeg;base64," + imageData,
-                                            file:null
+                                            dataAsUrl:dataURI,
+                                            file:dataURI
                                         });
                                     }, function(error) {
                                             $scope.picking = false;
@@ -177,30 +201,29 @@ angular.module('shareBJ.journals')
 
                                 var options = {
                                     maxImages: moreImages,
-                                    width: 480,
-                                    height: 480,
-                                    quality: 80
+                                    width: 450,
+                                    height: 800,
+                                    quality: 100
                                 };
                                 $scope.picking = true;
                                 $cordovaImagePicker.getPictures(options)
                                     .then(function (results) {
                                         for (var i = 0; i < results.length; i++) {
-                                            console.log('Image URI: ' + results[i]);
-                                            //var url = CordovaFileServer.httpUrl +
-                                            //    results[i].substring(cordova.file.applicationStorageDirectory.length-1,results[i].length);
-                                            ShareBJ.uri2DataURL(results[i])
-                                                .then(function(res){
-                                                    //var uri = results[i];
-                                                    console.log("uri:",res.filename);
-                                                    console.log("dataUrl:",res.dataURL);
+                                            function read(uri){
+                                                console.log('Image URI: ' + uri);
+                                                processImage(uri,96,96,1,function(data){
+                                                    console.log("processed image:",data);
                                                     $scope.$apply(function(){
                                                         $scope.journal.images.push({
-                                                            filename:res.filename,
-                                                            dataAsUrl:res.dataURL,
-                                                            file:null
+                                                            category:"URI",
+                                                            filename:uri,
+                                                            dataAsUrl:data,
+                                                            file:uri
                                                         });
                                                     })
-                                                })
+                                                });
+                                            };
+                                            read(results[i]);
                                         }
                                         $scope.picking = false;
                                     }, function(error) {
@@ -222,7 +245,7 @@ angular.module('shareBJ.journals')
             //console.log($scope.journal.images);
             $scope.slideStart = index;
             $scope.slideModal = $ionicModal.fromTemplate(
-                '<sbj-slide-box images="journal.images" src="dataAsUrl" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
+                '<sbj-slide-box images="journal.images" thumb="dataAsUrl" src="file" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
                     scope: $scope,
                     animation: 'slide-in-up'
                 });

@@ -89,45 +89,56 @@ angular.module('shareBJ.babies')
 
             var babyObj = constructBabyObj(baby);
 
-            var avatarUploader = new Slingshot.Upload('avatarBabyUploads',{babyId:$stateParams.babyId});
-            avatarUploader.send($scope.avatarBlob,function(error,downloadUrl){
-                if(error){
-                    $ionicLoading.hide();
-                    callback(error);
-                }else{
-                    babyObj.avatar = downloadUrl;
-                    $scope.babies.save( babyObj )
-                        .then(function(){
-                            $ionicLoading.hide();
-                            $ionicHistory.nextViewOptions({
-                                disableBack: true,
-                                historyRoot: true
-                            });
-                            $state.go(ShareBJ.state.home);
-                        },
-                        function(err){
-                            $ionicLoading.hide();
-                            $scope.newbabyError.newbaby = true;
-                            $scope.newbabyErrorMessage = err.message();
-                            console.log(err);
+            var save = function(){
+                $scope.babies.save( babyObj )
+                    .then(function(){
+                        $ionicLoading.hide();
+                        $ionicHistory.nextViewOptions({
+                            disableBack: true,
+                            historyRoot: true
                         });
-                }
-            })
+                        $state.go(ShareBJ.state.home);
+                    },
+                    function(err){
+                        $ionicLoading.hide();
+                        $scope.newbabyError.newbaby = true;
+                        $scope.newbabyErrorMessage = err.message();
+                        console.log(err);
+                    });
+            };
+
+            if($scope.avatarBlob) {
+                var avatarUploader = new Slingshot.Upload('avatarBabyUploads', {babyId: $stateParams.babyId});
+                avatarUploader.send($scope.avatarBlob, function (error, downloadUrl) {
+                    if (error) {
+                        $ionicLoading.hide();
+                        $scope.newbabyError.newbaby = true;
+                        $scope.newbabyErrorMessage = err.message();
+                        console.log(err);
+                    } else {
+                        babyObj.avatar = downloadUrl;
+                        save();
+                    }
+                })
+            }else{
+                babyObj.avatar = null;
+                save();
+            }
         };
 
-        $scope.avatarModal = $ionicModal.fromTemplate(
-            '<sbj-avatar save="saveAvatar"  onclose="closeAvatarEditor()"></sbj-avatar>',
-            {
-                scope:$scope,
-                animation:'slide-in-up'
-            }
-        );
-        console.log($scope.avatarModal);
         $scope.editAvatar = function(){
+            $scope.avatarModal = $ionicModal.fromTemplate(
+                '<sbj-avatar save="saveAvatar"  onclose="closeAvatarEditor()"></sbj-avatar>',
+                {
+                    scope:$scope,
+                    animation:'slide-in-up'
+                }
+            );
             $scope.avatarModal.show();
         };
         $scope.closeAvatarEditor =function(){
             $scope.avatarModal.hide();
+            $scope.avatarModal.destroy();
         };
         $scope.saveAvatar = function(blob,dataURL,callback){
             $scope.avatarBlob = blob;

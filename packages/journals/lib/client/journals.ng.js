@@ -37,7 +37,7 @@ angular.module('shareBJ.journals')
 
 
         $scope.journals = $scope.$meteorCollection( function() {
-                return Journals.find({},{
+                    return Journals.find({},{
                     sort: {createdAt: -1}
                 })
             },
@@ -86,10 +86,11 @@ angular.module('shareBJ.journals')
         };
 
         $scope.showSlides = function(images,index){
+            console.log('showSlides:',images)
             $scope.currentImages = images;
             $scope.slideStart = index;
             $scope.slideModal = $ionicModal.fromTemplate(
-                '<sbj-slide-box images="currentImages" src="url" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
+                '<sbj-slide-box images="currentImages" thumb="thumb" src="url" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
                     scope: $scope,
                     animation: 'slide-in-up'
                 });

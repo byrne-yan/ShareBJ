@@ -33,13 +33,44 @@
                 };
 
 
-                function connect(){
+
+                $scope.$on('modal.shown', function(){
+                    $scope.edit = {};
+                    $scope.croppedCanvas = null;
+
                     $scope.imagesFacade = document.getElementById("imageFacade");
                     $scope.imagesPicker = document.getElementById("imagePicker");
-                };
-                $scope.$on('modal.shown',connect);
 
-                $scope.edit = {};
+                    $scope.cropperImage = $('#cropper-origin-img');
+                    $scope.cropperImage.cropper({
+                        aspectRatio: 1 / 1,
+                        autoCropArea: 0.5,
+                        rounded:true,
+                        strict:true,
+                        minCanvasWidth:32,
+                        minCanvasHeight:32,
+                        minCropBoxWidth:32,
+                        minCropBoxHeight:32,
+                        crop:function(){
+                            if($scope.cropperImage ){
+
+                                $timeout(function(){
+                                    $scope.$apply(function(){
+                                        var croppedCanvas = $scope.cropperImage.cropper('getCroppedCanvas');
+                                        $scope.croppedCanvas = croppedCanvas.width?croppedCanvas.toDataURL():null;
+                                    });
+                                })
+                            }
+                        }
+                    });
+                });
+                $scope.$on('modal.hide',function(){
+                    if($scope.$image)
+                        $scope.$image.cropper('destroy');
+                    $scope.edit = {};
+                    $scope.croppedCanvas = null;
+                });
+
                 $scope.pick = function(){
                     if(!Meteor.isCordova)
                     {
@@ -58,60 +89,32 @@
                 };
 
                 $scope.fileSelected =function(input){
-                    var reader = new FileReader();
-                    reader.onloadend =function(){
-                        $scope.$apply(function(){
-                            $scope.edit.fileAsUrl = reader.result;
-                        });
-                    };
-
+                    //console.log(input);
                     if(input.files && input.files[0])
                     {
-                        reader.readAsDataURL(input.files[0]);
-                    }
-                };
+                        console.log(input.files[0]);
+                        processImage(input.files[0],800,800,1,function(dataURL){
 
-                $scope.imgChanged = function(){
-                    //console.log("imgChanged called");
-                    if($scope.$image){
-                        $scope.$image.cropper('reset');
-                    }
-
-                    $scope.$image = $('#cropper-container > img');
-
-                    $scope.cropCanvasData = null;
-                    var fnSaveCrop = function(){
-                        if($scope.$image)
-                        {
                             $scope.$apply(function(){
-                                //console.log("croppedCanvas updated");
-                                $scope.croppedCanvas = $scope.$image.cropper('getCroppedCanvas').toDataURL();
+                                $scope.edit.fileAsUrl = dataURL;
                             });
-                        }
-                    };
-
-                    $scope.$image.cropper({
-                        autoCropArea: 0.5,
-                        rounded:true,
-                        //cropstart:fnSaveCrop,
-                        //cropmove:fnSaveCrop,
-                        //cropend: fnSaveCrop,
-                        //zoom:fnSaveCrop,
-                        crop:fnSaveCrop
-                    });
+                        })
+                    }
                 };
 
-                $scope.rotate = function(){
-                    $timeout(function(){
-                        $scope.$image.cropper("rotate",90);
-                    },0);
-                };
+
+                $scope.$meteorAutorun(function(){
+                    var newUrl = $scope.getReactively('edit.fileAsUrl');
+                    //console.log('replace url '+newUrl);
+                    if($scope.cropperImage)
+                        $scope.cropperImage.cropper('replace',newUrl);
+                });
 
                 $scope.saveAvatar = function(){
                     if($scope.savingMessage)
                         $ionicLoading.show({template:$scope.savingMessage});
 
-                    var canvas = $scope.$image.cropper('getCroppedCanvas',{
+                    var canvas = $scope.cropperImage.cropper('getCroppedCanvas',{
                         width:64,
                         height:64
                     });
@@ -124,8 +127,7 @@
                                 $scope.sbjError.sharebj = true;
                                 $scope.sbjError.sharebjErrorMessage = error.message();
                             }else{
-                                $scope.$image.cropper('destroy');
-                                $scope.onclose();
+                                $scope.close();
                             }
                         });
                     },"image/jpeg", 0.8);
@@ -134,6 +136,8 @@
                 $scope.close =  function(){
                     if($scope.$image)
                         $scope.$image.cropper('destroy');
+                    $scope.edit = {};
+                    $scope.croppedCanvas = null;
                     $scope.onclose();
                 };
             }
