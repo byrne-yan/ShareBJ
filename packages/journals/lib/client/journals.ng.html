@@ -29,6 +29,12 @@
     </ion-nav-buttons>
 
     <ion-content class="has-header">
+        <div class="" ng-messages="error.sbjError" >
+            <div ng-message="sharebj" class="error" >
+                <i class="ion-information-circled"></i>
+                {{error.sbjError.sharebjErrorMessage}}
+            </div>
+        </div>
         <div class="list ">
             <div ng-repeat="journal in journals track by journal._id" class="journal">
 
@@ -51,8 +57,12 @@
                     <img class="journal-img" ng-if="journal.images.length > 0" ng-repeat="image in journal.images"
                          ng-src="{{image.thumb}}" crossorigin="anonymous" ng-click="showSlides(journal.images,$index)">
                     <div class="item journal-date">{{journal.authorDetail.profile.name || journal.authorDetail.username}}@{{timeFromNow(journal.createdAt)}}</div>
+                    <div class="item item-upvoter item-icon-left item-text-wrap item-stable ">
+                        <i class="icon ion-heart icon-calm"></i>
+                        <span class="h6" ng-repeat="voter in journal.upvoters">{{voter.profile.name || voter.username}}</span>
+                    </div>
                     <div class="item tabs tabs-secondary tabs-icon-left " >
-                        <a class="tab-item" href="#">
+                        <a class="tab-item" href="#" ng-click="upvote(journal)">
                             <i class="icon ion-heart"></i>
                             赞
                         </a>

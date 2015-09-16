@@ -2,6 +2,8 @@ Journals.feedStep= 10;
 
 angular.module('shareBJ.journals')
     .controller('JournalsCtrl', function ($scope, $meteor, $stateParams, babies, $state, $ionicHistory,$ionicModal) {
+        $scope.error = {};
+
         if (babies.length === 0) {
             $ionicHistory.nextViewOptions({
                 disableBack: true
@@ -95,5 +97,18 @@ angular.module('shareBJ.journals')
                     animation: 'slide-in-up'
                 });
             $scope.slideModal.show();
+        };
+
+        $scope.upvote = function(journal){
+          $meteor.call('upvote',journal._id,Meteor.userId())
+              .then(function(){
+
+              },function(err){
+                  console.log(err);
+                  $scope.error.sbjError = {
+                      sharebj:true,
+                    sharebjErrorMessage: err.message
+                  }
+              })
         }
     });

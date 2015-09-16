@@ -91,3 +91,27 @@ input.journal-search{
 .image-action-sheet .action-sheet .button i{
     margin-right: 16px;
 }
+.item .item-upvoter{
+    padding-top: 0;
+    padding-left: 24px;
+    padding-bottom: 0;
+    padding-right: 2px;
+    margin-right: 0;
+}
+.item-upvoter.item-icon-left .icon{
+    font-size: 16px;
+    left: 0px;
+}
+.item-upvoter.item-icon-left .icon:before {
+    width: 16px;
+}
+
+.item-upvoter .h6 {
+    padding-left: 2px;
+    padding-right: 2px;
+    color: blue;
+}
+.item.item-upvoter {
+    border-color: #b2b2b2;
+    background-color: #f8f8f8;
+    color: blue; }

@@ -38,6 +38,9 @@ Meteor.publish('myJournals',function(options, extra){
          }
          return image;
       });
+       if(doc.upvoters){
+           doc.upvoters = Meteor.users.find({_id:{$in:doc.upvoters}}, {fields:{username:1,'profile.name':1} }).fetch();
+       }
       return doc;
    };
    var self = this;
