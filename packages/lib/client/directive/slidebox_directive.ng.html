@@ -1,7 +1,7 @@
 <ion-modal-view>
         <ion-slide-box class="full-slider" on-slide-changed="slideHasChanged($index)" ng-click="closeModal()">
             <ion-slide class="slider-slide-image" ng-class="{'slider-slide-thumb':image.thumb}" ng-repeat="image in slideImages">
-                <img ng-src="{{image.src}}" crossorigin="anonymous">
+                <img ng-src="{{image.src}}">
                 <ion-spinner class="spinner-balanced " ng-show="{{image.thumb}}"></ion-spinner>
             </ion-slide>
         </ion-slide-box>

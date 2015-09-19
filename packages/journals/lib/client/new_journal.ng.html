@@ -43,8 +43,8 @@
 
                 <input type="file" id="imagePicker" multiple accept="image/*" class="sharebj-imgPicker" >
                 <div class="item item-text-wrap">
-                    <a class="subdued" href="#" ng-repeat="image in journal.images track by image.filename" ng-click="showSlides($index)">
-                        <img class="journal-img "  ng-src="{{image.dataAsUrl}}">
+                    <a class="subdued " href="#" ng-repeat="image in journal.images track by image.filename" ng-click="showSlides($index)">
+                        <sbj-thumbnail thumb-width="80" thumb-height="80" ng-src="image.dataAsUrl"></sbj-thumbnail>
                     </a>
                     <a class="subdued" href="#" id="imageFacade" ng-show="journal.images.length < 9">
                         <img class="journal-img" src="images/plus.jpg"  >

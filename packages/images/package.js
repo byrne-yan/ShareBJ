@@ -12,11 +12,26 @@ Package.describe({
 
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
-  api.addFiles('images.js');
+  api.use([
+      'meteor-base',
+      'mongo',
+    'edgee:slingshot@0.7.1'
+  ]);
+
+  api.addFiles('lib/images.js');
+
+  api.addFiles('lib/client/upload_client.js','client');
+
+  api.addFiles([
+    'lib/server/s3_upload.js',
+    'lib/server/s3_security.js'
+    ],'server');
+  api.export('Images');
+
 });
 
-Package.onTest(function(api) {
-  api.use('tinytest');
-  api.use('sbj:images');
-  api.addFiles('images-tests-bak.js');
-});
+//Package.onTest(function(api) {
+//  api.use('tinytest');
+//  api.use('sbj:images');
+//  //api.addFiles('images-tests-bak.js');
+//});

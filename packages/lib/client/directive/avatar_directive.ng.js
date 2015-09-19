@@ -3,8 +3,8 @@
         function takePhoto(source,$scope,$cordovaCamera){
             var options = {
                 destinationType: Camera.DestinationType.DATA_URL,
-                targetWidth: 480,
-                targetWidth: 480,
+                targetWidth: 800,
+                targetWidth: 800,
                 sourceType:source?Camera.PictureSourceType.PHOTOLIBRARY:Camera.PictureSourceType.CAMERA
             };
             $cordovaCamera.getPicture(options)
@@ -93,8 +93,8 @@
                     if(input.files && input.files[0])
                     {
                         console.log(input.files[0]);
-                        processImage(input.files[0],800,800,1,function(dataURL){
-
+                        processImage(input.files[0],Images.NormalQualityWidth,Images.NormalQualityHeight,1,function(dataURL){
+                            console.log(dataURL);
                             $scope.$apply(function(){
                                 $scope.edit.fileAsUrl = dataURL;
                             });
@@ -115,8 +115,8 @@
                         $ionicLoading.show({template:$scope.savingMessage});
 
                     var canvas = $scope.cropperImage.cropper('getCroppedCanvas',{
-                        width:64,
-                        height:64
+                        width:40,
+                        height:40
                     });
 
                     canvas.toBlob(function(blob) {

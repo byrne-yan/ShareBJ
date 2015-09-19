@@ -65,3 +65,13 @@
 .cropper-container img{
     max-height: 100% !important;
 }
+
+.thumbnail-container{
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+}
+.thumbnail-container > img {
+    position: absolute;
+    display: inline-block;
+}

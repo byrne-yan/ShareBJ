@@ -30,86 +30,47 @@ angular.module('shareBJ.journals')
                 createdAt: new Date()
             };
 
-            var uploading = function(uploader,blob,docId,no,options){
-                return new Promise(function(resolve,reject){
-                    uploader.send(blob,function(error,downloadUrl){
-                        if(error)
-                        {
-                            return reject(error);
-                        }else{
-                            console.log("image uploaded :", blob.name,blob.size,blob.type,
-                                "done and then updating journal", docId,"downloadurl",downloadUrl);
-                            function handler(error,num){
-                                if(error){
-                                    return reject(error);
-                                } else {
-                                    console.log("update journal's images done", docId, num);
-                                    return resolve({docId:docId,no:no});
-                                }
-                            }
-                            console.log("options:",options);
-                            if(options && options.thumb==false){
-                                console.log("done uploading image:",docId,no);
-                                Meteor.call('updateJournalImageURL',docId,no,downloadUrl,handler);
-                            }else{
-                                Journals.update({_id: docId},
-                                    {$push:{images:{
-                                        no:no,
-                                        thumb:downloadUrl,
-                                        url:null
-                                    }}},
-                                    {},
-                                    handler
-                                );
-                            }
-                        }
-                    })
-                })
-            };
-
             $scope.journals.save(journalObj)
                 .then(function(docIds){
                     console.log("saved journals:", docIds);
                     $ionicLoading.show('上传照片中...');
-                    return Promise.all(_.map($scope.journal.images,function(image,idx){
-                        var uploaderThumb = new Slingshot.Upload("thumbUploads", {journalId: docIds[0]});
-                        console.log("image uploading #"+idx, image.filename,image.file);
-
-                        return uploading(uploaderThumb,ShareBJ.dataURL2Blob(image.dataAsUrl),docIds[0],idx,{thumb:true});
-                    }))
-                }).then(function(res){
+                    return Images.uploadThumbs($scope.journal.images,docIds[0],function(resolve,reject,docId,no,downloadUrl){
+                        Journals.update({_id: docId},
+                            {$push:{images:{
+                                no:no,
+                                thumb:downloadUrl,
+                                url:null
+                            }}},
+                            {},
+                            function(error,affected){
+                                if(error){
+                                    return reject(error);
+                                } else {
+                                    console.log("update journal's images done", docId, affected);
+                                    return resolve({docId:docId,no:no});
+                                }
+                            }
+                        );
+                    });
+                }).then(function(res){ //once all thumbs uploade, starting upload images and then go to journal list
                     console.log(res);
                     $ionicLoading.hide();
-                    $scope.sending = false;
-                    //upload original photo
-                    var startUpload = function(){
-                        var uploaderPromise = Promise.all(_.map($scope.journal.images,function(image,idx){
-                            var uploaderImage = new Slingshot.Upload("imageUploads", {journalId: res[idx].docId});
-                            console.log("image uploading :", image.filename);
 
-                            processImage(image.file,450,800,1,function(dataURI){
-                                return uploading(uploaderImage,ShareBJ.dataURL2Blob(dataURI),res[idx].docId,idx,{thumb:false});
-                            });
-                        }));
-                        console.log('push into session:',uploaderPromise);
-                        Session.set('ImageUploaderPromise',uploaderPromise);
-                        return uploaderPromise;
-                    };
+                    Images.uploadImages($scope.journal.images,res[0].docId,function(resolve,reject,docId,no,downloadUrl){
 
-                    var uploaderPromise = Session.get('ImageUploaderPromise');//check last upload done
-                    console.log(uploaderPromise);
-                    if(!uploaderPromise || !(uploaderPromise instanceof Promise))
-                    {
-                        startUpload().then(function(res){
-                            console.log(res);
+                        Meteor.call('updateJournalImageURL', docId, no, downloadUrl, function (error, num) {
+                            if (error) {
+                                return reject(error);
+                            } else {
+                                console.log("update journal's images done", docId, num);
+                                return resolve({docId: docId, no: no});
+                            }
                         });
-                    }else{
-                        console.log(uploaderPromise);
-                        uploaderPromise.then(startUpload,startUpload).then(function(res){
-                            console.log(res);
-                        });
-                    }
-
+                    }).then(function(res){
+                        console.log('Images upload done:',res);
+                    },function(err){
+                        console.log(err);
+                    });
                     $state.go(ShareBJ.state.journals);
                 }).catch(function(error){
                     $ionicLoading.hide();
@@ -130,7 +91,7 @@ angular.module('shareBJ.journals')
 
                     return new Promise(function(resolve,reject){
                         //get thumbnail
-                        processImage(image,96,96,1,function(data){
+                        processImage(image,Images.ThumbWidth, Images.ThumbHeight,1,function(data){
                             console.log("processed image:",data);
                             return resolve({
                                 category:"File",
@@ -178,8 +139,8 @@ angular.module('shareBJ.journals')
                                 //using $cordovaCamera
                                 var options = {
                                     destinationType: Camera.DestinationType.DATA_URL,
-                                    targetWidth: 480,
-                                    targetWidth: 480,
+                                    targetWidth: Images.HighQualityWidth,
+                                    targetWidth: Images.HighQualityHeight,
                                     sourceType:Camera.PictureSourceType.CAMERA
                                 };
                                 $cordovaCamera.getPicture(options)
@@ -201,8 +162,8 @@ angular.module('shareBJ.journals')
 
                                 var options = {
                                     maxImages: moreImages,
-                                    width: 450,
-                                    height: 800,
+                                    width: Images.NormalQualityWidth,
+                                    height: Images.NormalQualityHeight,
                                     quality: 100
                                 };
                                 $scope.picking = true;
@@ -211,7 +172,7 @@ angular.module('shareBJ.journals')
                                         for (var i = 0; i < results.length; i++) {
                                             function read(uri){
                                                 console.log('Image URI: ' + uri);
-                                                processImage(uri,96,96,1,function(data){
+                                                processImage(uri,Images.ThumbWidth,Images.ThumbHeight,1,function(data){
                                                     console.log("processed image:",data);
                                                     $scope.$apply(function(){
                                                         $scope.journal.images.push({
@@ -245,7 +206,7 @@ angular.module('shareBJ.journals')
             //console.log($scope.journal.images);
             $scope.slideStart = index;
             $scope.slideModal = $ionicModal.fromTemplate(
-                '<sbj-slide-box images="journal.images" thumb="dataAsUrl" src="file" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
+                '<sbj-slide-box images="journal.images" thumb="dataAsUrl" src="file" orientation-fix="true" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
                     scope: $scope,
                     animation: 'slide-in-up'
                 });

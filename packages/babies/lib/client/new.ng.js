@@ -138,7 +138,7 @@ angular.module('shareBJ.babies')
         };
         $scope.closeAvatarEditor =function(){
             $scope.avatarModal.hide();
-            $scope.avatarModal.destroy();
+            $scope.avatarModal.remove();
         };
         $scope.saveAvatar = function(blob,dataURL,callback){
             $scope.avatarBlob = blob;

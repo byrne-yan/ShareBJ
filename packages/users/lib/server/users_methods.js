@@ -1,3 +1,4 @@
+
 Meteor.methods({
     updateCurrentUserName: function(userId, name){
         check(userId,String);
@@ -86,6 +87,12 @@ Meteor.methods({
             }
         }else{
             throw new Meteor.Error("Access Denied");
+        }
+    },
+    'limits/uploadImages':function(userId){
+        check(userId,String);
+        if(this.userId && userId === this.userId){
+            return getUploadLimits(userId);
         }
     }
 });

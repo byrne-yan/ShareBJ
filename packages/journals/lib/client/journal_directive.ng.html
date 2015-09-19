@@ -1,0 +1,61 @@
+<div class="journal">
+    <div class="" ng-messages="error.sbjError" >
+        <div ng-message="sharebj" class="error" >
+            <i class="ion-information-circled"></i>
+            {{error.sbjError.sharebjErrorMessage}}
+        </div>
+    </div>
+    <div class="item item-avatar item-text-wrap" >
+        <img ng-src="{{journal.author.profile.avatar}}" ng-if="journal.author.profile.avatar">
+        <ng-letter-avatar class="item-image"
+                          data="{{journal.baby.nickname || journal.baby.name}}"
+                          charCount="1" shape="round"
+                          ng-if="!journal.author.profile.avatar"></ng-letter-avatar>
+
+        <p>@{{journal.baby.nickname}}</p>
+        <p >{{journal.description}}</p>
+    </div>
+    <div class="journal-image-list">
+        <sbj-thumbnail class="journal-thumb rounded" thumb-width="80" thumb-height="80"
+                       ng-repeat="image in journal.images" ng-src="image.thumb"
+                       ng-click="showSlides(journal.images,$index)"></sbj-thumbnail>
+
+        <!--<img class="journal-img" ng-repeat="image in journal.images"-->
+             <!--ng-src="{{image.thumb}}" crossorigin="anonymous" ng-click="showSlides(journal.images,$index)">-->
+        <div class="journal-date">{{journal.author.profile.name || journal.author.username}}@{{timeFromNow(journal.createdAt)}}</div>
+    </div>"
+    <div class="journal-upvoter item-text-wrap stable">
+        <i class="icon ion-ios-heart-outline icon-calm"></i>
+        <span class="h6" ng-repeat="voter in journal.upvoters">{{voter.profile.name || voter.username}}</span>
+    </div>
+
+    <div class="journal-comment-list">
+        <div class="journal-comment" ng-repeat="comment in journal.comments">
+            <div class="comment-author">{{comment.commenterName}}:</div>
+            <div class="comment-content">{{comment.comment}}</div>
+        </div>
+    </div>
+    <div class="journal-actions" >
+        <a class="comment-action subdued" href="#" ng-click="upvote(journal)">
+            <i class="icon ion-heart"></i>
+            赞
+        </a>
+        <a class="comment-action subdued" href="#" ng-click="toggleComment($event)">
+            <i class="icon ion-chatbox"></i>
+            评论
+        </a>
+    </div>
+    <div class="journal-input item-input-inset" >
+        <label class="item-input-wrapper">
+            <textarea  placeholder="说点什么" ng-model="edit.saying"></textarea>
+        </label>
+        <button class="button button-small button-balanced" ng-click="comment(journal)">发送</button>
+    </div>
+
+    <!--<div class="journal-input item-input-inset" >-->
+        <!--<label class="item-input-wrapper">-->
+            <!--<textarea  placeholder="说点什么" ng-model="journal.comment"></textarea>-->
+        <!--</label>-->
+        <!--<button class="button button-small button-balanced" ng-click="comment(journal)">发送</button>-->
+    <!--</div>-->
+</div>

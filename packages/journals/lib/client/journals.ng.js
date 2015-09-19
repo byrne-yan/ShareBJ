@@ -44,14 +44,7 @@ angular.module('shareBJ.journals')
                 })
             },
             false
-            );
-
-
-        //$scope.selectedBabies = function(journal){
-        //    if(!$scope.selectedBaby || $scope.selectdeBaby==='')
-        //        return true;
-        //    return journal.baby===$scope.selectedBaby;
-        //};
+        );
 
         $scope.loadOlderJournals = function(){
             if($scope.numLoads < $scope.journalsCount.count)
@@ -81,34 +74,4 @@ angular.module('shareBJ.journals')
                 $state.go("shareBJ.babies.list");
             }
         };
-
-        $scope.closeSlides = function(){
-            $scope.slideModal.hide();
-            $scope.slideModal.remove();
-        };
-
-        $scope.showSlides = function(images,index){
-            console.log('showSlides:',images)
-            $scope.currentImages = images;
-            $scope.slideStart = index;
-            $scope.slideModal = $ionicModal.fromTemplate(
-                '<sbj-slide-box images="currentImages" thumb="thumb" src="url" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
-                    scope: $scope,
-                    animation: 'slide-in-up'
-                });
-            $scope.slideModal.show();
-        };
-
-        $scope.upvote = function(journal){
-          $meteor.call('upvote',journal._id,Meteor.userId())
-              .then(function(){
-
-              },function(err){
-                  console.log(err);
-                  $scope.error.sbjError = {
-                      sharebj:true,
-                    sharebjErrorMessage: err.message
-                  }
-              })
-        }
     });

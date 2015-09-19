@@ -19,28 +19,24 @@ Meteor.publish('myJournals',function(options, extra){
 
 
    var transform = function(doc){
-      //replace private url by pre-signed url
-      doc.images = _.map(doc.images,function(image){
-         if(image.url || image.thumb)
-         {
-            return {
-               thumb: image.thumb?ShareBJ.get_temp_url(Meteor.settings.s3.image.KEY, Meteor.settings.s3.image.SECRET,
-                    Meteor.settings.s3.image.bucket,
-                    60 * 60, //one hour expires
-                    image.thumb
-               ):null,
-               url: image.url?ShareBJ.get_temp_url(Meteor.settings.s3.image.KEY, Meteor.settings.s3.image.SECRET,
-                   Meteor.settings.s3.image.bucket,
-                   60 * 60, //one hour expires
-                   image.url
-               ):null
-            }
-         }
-         return image;
-      });
+       doc.author = Meteor.users.findOne({_id:doc.author},{fields:{username:1,'profile.name':1,'profile.avatar':1}});
+       doc.baby = Babies.findOne({_id:doc.baby});
+
+       doc.images = Images.getPresignedUrls(doc.images);
+
        if(doc.upvoters){
            doc.upvoters = Meteor.users.find({_id:{$in:doc.upvoters}}, {fields:{username:1,'profile.name':1} }).fetch();
+       };
+       if(doc.comments){
+
+           doc.comments =  _.map(doc.comments,
+               function(comment) {
+                   commenter = Meteor.users.findOne({_id:comment.commenter}, {fields:{username:1,'profile.name':1}});
+                   comment.commenterName = commenter.profile.name ||commenter.username;
+                   return comment;
+               })
        }
+
       return doc;
    };
    var self = this;

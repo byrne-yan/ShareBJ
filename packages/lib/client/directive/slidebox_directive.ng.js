@@ -7,6 +7,7 @@
                 thumb:'@',
                 src:'@',
                 start:'@',
+                orientationFix:'@',
                 onclose:'&'
             },
             replace:"true",
@@ -19,30 +20,36 @@
                         thumb:true
                     };
 
-
                     var imgSrc = $scope.images[i][$scope.src];
-                    function getImage(img,idx){
-                        console.log('getImage:',img);
-                        processImage(img,function(data){
-                            //console.log(data);
-                            $scope.$apply(function() {  //change to original picture
-                                console.log("Image loaded:"+idx);
-                                $scope.slideImages[idx] = {
-                                    src:data,
-                                    thumb:false
-                                };
-                            });
-                            $timeout(function(){
-                                $ionicSlideBoxDelegate.update();
-                            });
+                    if($scope.orientationFix){
+                        function getImage(img,idx){
+                            console.log('getImage:',img);
+                            processImage(img,function(data){
+                                //console.log(data);
+                                $scope.$apply(function() {  //change to original picture
+                                    console.log("Image loaded:"+idx);
+                                    $scope.slideImages[idx] = {
+                                        src:data,
+                                        thumb:false
+                                    };
+                                });
+                                $timeout(function(){
+                                    $ionicSlideBoxDelegate.update();
+                                });
 
-                            //if(idx===$ionicSlideBoxDelegate.currentIndex())
-                            //{
-                            //    $ionicSlideBoxDelegate.update();
-                            //}
-                        })
-                    };
-                    getImage(imgSrc,i);
+                                //if(idx===$ionicSlideBoxDelegate.currentIndex())
+                                //{
+                                //    $ionicSlideBoxDelegate.update();
+                                //}
+                            })
+                        };
+                        getImage(imgSrc,i);
+                    }else{
+                        $scope.slideImages[i] = {
+                            src:imgSrc,
+                            thumb:false
+                        };
+                    }
                     //$scope.slideImages[i] = {src:imgSrc,thumb:false};
                 };
 

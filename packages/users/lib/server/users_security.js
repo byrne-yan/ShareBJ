@@ -76,3 +76,11 @@ Accounts.validateNewUser(function(user){
 
     return true;
 });
+
+getUploadLimits = function(userId){
+    if(!userId || !Users.findOne({_id:userId}))
+        throw  new Meteor(404,"User not found");
+
+    //TODO: no limits yet
+    return {counts: 0, size: 0, quality:"high"}
+};

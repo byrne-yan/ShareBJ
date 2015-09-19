@@ -25,8 +25,8 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/users.js',
-    'lib/user_invitations.js'
-    //'lib/methods.js'
+    'lib/user_invitations.js',
+    'lib/user_limits.js'
   ], ['client', 'server']);
 
   api.addFiles([
