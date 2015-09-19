@@ -19,33 +19,31 @@
         <sbj-thumbnail class="journal-thumb rounded" thumb-width="80" thumb-height="80"
                        ng-repeat="image in journal.images" ng-src="image.thumb"
                        ng-click="showSlides(journal.images,$index)"></sbj-thumbnail>
-
-        <!--<img class="journal-img" ng-repeat="image in journal.images"-->
-             <!--ng-src="{{image.thumb}}" crossorigin="anonymous" ng-click="showSlides(journal.images,$index)">-->
         <div class="journal-date">{{journal.author.profile.name || journal.author.username}}@{{timeFromNow(journal.createdAt)}}</div>
-    </div>"
-    <div class="journal-upvoter item-text-wrap stable">
+    </div>
+    <div class="journal-upvoter item-text-wrap stable" ng-show="journal.upvoters.length>0">
         <i class="icon ion-ios-heart-outline icon-calm"></i>
-        <span class="h6" ng-repeat="voter in journal.upvoters">{{voter.profile.name || voter.username}}</span>
+        <span class="h5" ng-repeat="voter in journal.upvoters">{{voter.profile.name || voter.username}}</span>
     </div>
 
     <div class="journal-comment-list">
         <div class="journal-comment" ng-repeat="comment in journal.comments">
             <div class="comment-author">{{comment.commenterName}}:</div>
-            <div class="comment-content">{{comment.comment}}</div>
+            <div class="comment-content item-text-wrap">{{comment.comment}}</div>
         </div>
     </div>
     <div class="journal-actions" >
-        <a class="comment-action subdued" href="#" ng-click="upvote(journal)">
+        <a class="comment-action"></a>
+        <a class="comment-action" href="#" ng-click="upvote(journal)">
             <i class="icon ion-heart"></i>
             赞
         </a>
-        <a class="comment-action subdued" href="#" ng-click="toggleComment($event)">
+        <a class="comment-action" href="#" ng-click="toggleComment($event)">
             <i class="icon ion-chatbox"></i>
             评论
         </a>
     </div>
-    <div class="journal-input item-input-inset" >
+    <div class="journal-input item-input-inset" ng-if="commenting">
         <label class="item-input-wrapper">
             <textarea  placeholder="说点什么" ng-model="edit.saying"></textarea>
         </label>

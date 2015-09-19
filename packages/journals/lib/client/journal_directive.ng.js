@@ -10,19 +10,14 @@
             },
             replace: "true",
             templateUrl: "sbj_journals_lib/client/journal_directive.ng.html",
+            //link:function(scope,element,attrs){
+            //
+            //},
             controller: function ($scope, $meteor, $timeout, $ionicModal,$ionicPopover) {
                 //console.log($scope.journal.babyDetail);
                 $scope.error = {};
                 $scope.edit = {};
-                $ionicPopover.fromTemplateUrl('sbj_journals_lib/client/input_popover.ng.html',{scope:$scope,focusFirstInput:true})
-                    .then(function(popover){
-                        $scope.input = popover;
-                        $scope.$on('$destroy',function(){
-                            $scope.input.remove();
-                        });
-                    });
-
-
+                $scope.commenting = false;
 
                 $meteor.autorun($scope,function(){
                     $scope.timeFromNow = function(date){
@@ -64,11 +59,9 @@
                         })
                 };
                 $scope.toggleComment = function($event){
-                    if($scope.input.isShown())
-                        $scope.input.hide($event);
-                    else
-                        $scope.input.show($event);
+                    $scope.commenting = !$scope.commenting;
                 };
+
                 $scope.comment = function(journal){
                     $meteor.call('commentOnJournal',journal._id,Meteor.userId(),$scope.edit.saying)
                         .then(function(){
@@ -76,9 +69,9 @@
                             $timeout(function(){
                                 $scope.$apply(function(){
                                     $scope.edit.saying = '';
+                                    $scope.commenting = false;
                                 });
                             })
-                            $scope.input.hide();
                         },function(err){
                             console.log(err);
                             $scope.error.sbjError = {

@@ -1,4 +1,8 @@
 .journal {
+    /*border-color: black;*/
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-style: solid;
     border-bottom-width: 1px;
 }
 .journal >
@@ -38,41 +42,50 @@
 }
 
 .journal-upvoter{
-    background-color: #dddddd;
-    color: lightskyblue;
+    background-color: #eeeeee;
+    color: cornflowerblue;
 }
 
 .journal-upvoter .icon{
-    font-size: 16px;
+    padding-left: 2px;
+    /*padding-right: 2px;*/
+    font-size: 14px;
     left: 0px;
 }
 .journal-upvoter .icon:before {
     width: 16px;
+    font-weight: bolder;
 }
 
-.journal-upvoter .h6 {
+.journal-upvoter .h5 {
     padding-left: 2px;
     padding-right: 2px;
-    color: lightskyblue;
+    color: cornflowerblue;
+}
+
+.journal-upvoter span + span:before{
+    content:", ";
+    /*padding-left: 0px;*/
+    padding-right: 4px;
 }
 
 .journal-comment-list{
-    background-color: #dddddd;
+    background-color: #eeeeee;
 }
 .journal-comment-list .journal-comment{
     display: block;
-    margin-top: 2px;
+    padding: 2px;
 }
 .journal-comment .comment-author{
     display: inline;
-    color: turquoise;
-    font-size: 16px;
+    color: cornflowerblue;
+    font-size: 14px;
 }
 .journal-comment .comment-content{
     display: inline;
     margin-left: 2px;
-    color: #aaaaaa;
-    font-size: 12px;
+    color: black;
+    font-size: 14px;
 }
 /*div.journal-input.item-input-inset{*/
     /*border-width: 1px;*/
@@ -83,14 +96,22 @@
 
 .journal-actions{
     display: flex;
-    margin-right: 16px;
+    margin-left: 64px;
+    /*margin-top: 10px;*/
+    /*margin-right: 16px;*/
+    margin-right: 12px;
+    color: blue;
 }
 .comment-action{
-    margin-right: 64px;
+    flex:1;
+    text-align: right;
+    text-decoration: none;
+    margin-top: 10px;
+    margin-bottom: 12px;
 }
 
 .comment-action .icon:before{
-    flex: auto;
+    /*flex: auto;*/
     width: 16px;
 }
 
@@ -109,7 +130,8 @@
     /*vertical-align: middle;*/
     /*overflow: hidden;*/
 /*}*/
-.journal-img{
-    width: 80px;
-    height: 80px;
+
+
+.journal-thumb{
+    margin: 2px;
 }

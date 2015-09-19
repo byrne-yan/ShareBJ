@@ -95,6 +95,7 @@ input.journal-search{
     /*padding-right: 2px;*/
     /*margin-right: 0;*/
 /*}*/
-.journal-thumb{
-    margin: 2px;
+.journal-img{
+    width: 80px;
+    height: 80px;
 }
