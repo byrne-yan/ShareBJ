@@ -87,18 +87,28 @@
     color: black;
     font-size: 14px;
 }
-/*div.journal-input.item-input-inset{*/
-    /*border-width: 1px;*/
-/*}*/
+div.journal-input{
+    display: flex;
+    border-width: 3px;
+    border-style: inset;
+    margin: 2px 2px 4px 2px;
+}
+
+.journal-input > button{
+    align-self: flex-end;
+}
 .item-input-wrapper > textarea{
     width: 100%;
+    padding: 2px;
+}
+.journal-input .item-input-wrapper ~ button {
+    margin-left: 4px;
+    margin-right: 4px;
 }
 
 .journal-actions{
     display: flex;
     margin-left: 64px;
-    /*margin-top: 10px;*/
-    /*margin-right: 16px;*/
     margin-right: 12px;
     color: blue;
 }
@@ -111,26 +121,8 @@
 }
 
 .comment-action .icon:before{
-    /*flex: auto;*/
     width: 16px;
 }
-
-/*ion-popover-view.input-popover{*/
-    /*left: 0;*/
-    /*width: 100%;*/
-    /*height: 36px;*/
-/*}*/
-/*ion-popover-view.input-popover .ion-content{*/
-    /*position: relative;*/
-/*}*/
-/*.thumb-container{*/
-    /*display: inline-block;*/
-    /*width: 80px !important;*/
-    /*height: 80px !important;*/
-    /*vertical-align: middle;*/
-    /*overflow: hidden;*/
-/*}*/
-
 
 .journal-thumb{
     margin: 2px;

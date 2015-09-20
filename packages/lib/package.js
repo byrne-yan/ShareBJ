@@ -72,6 +72,7 @@ Package.onUse(function(api) {
         'client/directive/slidebox_directive.ng.js',
         'client/directive/thumbnail_directive.ng.html',
         'client/directive/thumbnail_directive.ng.js',
+        'client/directive/autosize_directive.ng.js',
         'client/style.css'
         ],   ['client']);
 

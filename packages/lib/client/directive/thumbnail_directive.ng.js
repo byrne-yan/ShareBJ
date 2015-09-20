@@ -51,24 +51,29 @@
             replace:"true",
             templateUrl: "sbj_lib_client/directive/thumbnail_directive.ng.html",
             link:function(scope,element,attrs){
+                function fit(e){
+                    //console.log("img.load：",e,this);
+                    var img = e.currentTarget;
+
+                    var w = img.width;
+                    var h = img.height;
+
+                    var tw = scope.thumbWidth;
+                    var th = scope.thumbWidth;
+
+                    // compute the new size and offsets
+                    var result = ScaleImage(w, h, tw, th, false);
+
+                    // adjust the image coordinates and size
+                    //console.log(result);
+                    img.width = result.width;
+                    img.height = result.height;
+                    img.style.left = result.targetleft + "px";
+                    img.style.top = result.targettop + "px";                }
+
                 var img = $('img',$(element));
                 if(img){
-                    img.bind("load",function(e){
-                        var w = img.width();
-                        var h = img.height();
-
-                        var tw = scope.thumbWidth;
-                        var th = scope.thumbWidth;
-
-                        // compute the new size and offsets
-                        var result = ScaleImage(w, h, tw, th, false);
-
-                        // adjust the image coordinates and size
-                        img.width = result.width;
-                        img.height = result.height;
-                        img.css("left", result.targetleft);
-                        img.css("top", result.targettop);
-                    });
+                    img.bind("load",fit);
                 }
             },
             controller:function($scope){
