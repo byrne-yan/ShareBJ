@@ -18,6 +18,10 @@
     border-width: 0;
 }
 
+.journal .journal-when{
+    color: sandybrown;
+}
+
 .journal-image-list{
     /*padding-left: 64px;*/
     white-space: normal;

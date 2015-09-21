@@ -46,6 +46,7 @@
             scope:{
                 thumbWidth:'@',
                 thumbHeight:'@',
+                thumbStamp:'@',
                 ngSrc:'='
             },
             replace:"true",

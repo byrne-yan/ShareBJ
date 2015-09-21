@@ -30,27 +30,39 @@
                     <textarea name="description" placeholder="这一刻的想法..." ng-model="journal.description">
                     </textarea>
                 </label>
-                <!--<div  ng-messages="newBabyForm.babyname.$error" class="error-container"-->
-                      <!--ng-if="newBabyForm.babyname.$touched">-->
-
-                    <!--<div ng-message="'maxlength'" class="error">-->
-                        <!--<i class="ion-information-circled"></i>-->
-                        <!--字必须在４～１６个字符之间-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash;<ng-messages-include src="errors-messages"> </ng-messages-include>&ndash;&gt;-->
-                <!--</div>-->
-
-
                 <input type="file" id="imagePicker" multiple accept="image/*" class="sharebj-imgPicker" >
                 <div class="item item-text-wrap">
                     <a class="subdued " href="#" ng-repeat="image in journal.images track by image.filename" ng-click="showSlides($index)">
-                        <sbj-thumbnail thumb-width="80" thumb-height="80" ng-src="image.dataAsUrl"></sbj-thumbnail>
+                        <sbj-thumbnail thumb-width="80" thumb-height="80" ng-src="image.dataAsUrl"
+                                       thumb-stamp="{{dateTaken(image.exif.DateTime)}}"></sbj-thumbnail>
                     </a>
                     <a class="subdued" href="#" id="imageFacade" ng-show="journal.images.length < 9">
                         <img class="journal-img" src="images/plus.jpg"  >
                     </a>
                 </div>
-
+                <div ng-if="askAddendum">
+                    <div class="item item-divider item-positive item-text-wrap">
+                        最早的一张的照片拍摄于<span>{{tookDate}}</span>, 请问是否补记？
+                    </div>
+                    <label class="item item-radio item-radio-balanced">
+                        <input type="radio" name="group" ng-value="true" ng-model="edit.isAddendum">
+                        <div class="item-content">
+                            补记
+                        </div>
+                        <i class="radio-icon ion-checkmark"></i>
+                    </label>
+                    <label class="item item-input" ng-if="edit.isAddendum">
+                        <span class="input-label">故事日期：</span>
+                        <input type="date" ng-model="edit.addendumDate">
+                    </label>
+                    <label class="item item-radio item-radio-assertive">
+                        <input type="radio" name="group"  ng-value="false" ng-model="edit.isAddendum">
+                        <div class="item-content">
+                            不补记
+                        </div>
+                        <i class="radio-icon ion-checkmark"></i>
+                    </label>
+                </div>
             </ion-list>
             <!--<div class="padding">-->
                 <!--<button id="newJournalButton" type="submit" ng-disabled="newJournalForm.$invalid"-->

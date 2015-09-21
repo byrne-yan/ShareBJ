@@ -4,8 +4,8 @@
         return {
             restrict: 'E',
             scope: {
-                target: '@',
-                author: '=',
+                //target: '@',
+                //author: '=',
                 journal: '=' //must have propeties: images,
             },
             replace: "true",
@@ -27,6 +27,10 @@
                         }
                     }
                 });
+                $scope.age = $scope.journal.baby.birth?
+                        ageOf($scope.journal.baby.birth.birthTime,$scope.journal.when||$scope.journal.createdAt)[3]
+                        :conceptionAge($scope.journal.baby.conceptionDate,$scope.journal.when||$scope.journal.createdAt)[2];
+
 
                 $scope.closeSlides = function(){
                     $scope.slideModal.hide();

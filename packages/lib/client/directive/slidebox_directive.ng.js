@@ -12,6 +12,9 @@
             },
             replace:"true",
             templateUrl: "sbj_lib_client/directive/slidebox_directive.ng.html",
+            link: function(scope,element,attrs){
+              element.bind()
+            },
             controller:function($scope,$timeout,$ionicSlideBoxDelegate){
                 $scope.slideImages = new Array($scope.images.length);
                 for(var i=0;i<$scope.images.length;++i){
@@ -26,21 +29,16 @@
                             console.log('getImage:',img);
                             processImage(img,function(data){
                                 //console.log(data);
-                                $scope.$apply(function() {  //change to original picture
+                                //$scope.$apply(function() {  //change to original picture
                                     console.log("Image loaded:"+idx);
                                     $scope.slideImages[idx] = {
                                         src:data,
                                         thumb:false
                                     };
-                                });
-                                $timeout(function(){
+                                //});
+                                //$timeout(function(){
                                     $ionicSlideBoxDelegate.update();
-                                });
-
-                                //if(idx===$ionicSlideBoxDelegate.currentIndex())
-                                //{
-                                //    $ionicSlideBoxDelegate.update();
-                                //}
+                                //});
                             })
                         };
                         getImage(imgSrc,i);
@@ -65,13 +63,35 @@
                         },100);
                     }
                 }
+
                 $scope.closeModal = function(){
                     $scope.onclose();
                 };
 
                 $scope.slideHasChanged = function($index){
-                    console.log($index);
-                    //$('.full-slider').trigger('resize');
+                    //console.log($index);
+                };
+                $scope.deleteImage = function(e){
+                    console.log("try to delete image #" + $ionicSlideBoxDelegate.currentIndex());
+                    var count = $ionicSlideBoxDelegate.slidesCount();
+                    var idx = $ionicSlideBoxDelegate.currentIndex();
+                    if(idx>0 && idx===count-1)//last one slide delete
+                    {
+                        $ionicSlideBoxDelegate.previous()//slide to previous
+                    }
+                    $ionicSlideBoxDelegate.enableSlide(false);
+                    $scope.images.splice(idx,1);
+                    $scope.slideImages.splice(idx,1);
+                    if($scope.slideImages.length<=0)//no slide left
+                        $scope.closeModal();
+                    else{
+                        $ionicSlideBoxDelegate.update();
+                        if(idx===count-1)//last one slide delete
+                            $ionicSlideBoxDelegate.slide(idx-1);
+                        else
+                            $ionicSlideBoxDelegate.slide(idx);
+                        $ionicSlideBoxDelegate.enableSlide(true);
+                    }
                 }
             }
         }

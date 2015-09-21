@@ -75,3 +75,31 @@
     position: absolute;
     display: inline-block;
 }
+
+.thumbnail-container .thumbnail-date {
+    z-index: 100;
+    position: absolute;
+    margin: 0px;
+    padding: 0px;
+    left: 0px;
+    top: 66px;
+    height: 14px;
+    width: 80px;
+}
+
+.thumbnail-container .thumbnail-date > p{
+    background-color: beige;
+    color: red;
+    opacity: 0.5;
+    font-size: 14px;
+    line-height: 14px;
+    text-align: center;
+    vertical-align: top;
+}
+
+
+.trash-button {
+    position: fixed;
+    top:10px;
+    right: 10px;
+}

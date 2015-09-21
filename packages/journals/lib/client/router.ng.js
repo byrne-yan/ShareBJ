@@ -58,6 +58,7 @@ angular.module('shareBJ.journals')
                 }
             })
             .state('shareBJ.journals.new',{
+                cache:false,
                 url: '/new?baby',
                 views:{
                     'journalView':{

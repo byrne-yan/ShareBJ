@@ -1,8 +1,13 @@
 moment.locale('zh-cn');
 
-conceptionAge = function(conceptionDate){
+conceptionAge = function(conceptionDate,toThen){
     if(conceptionDate instanceof Date){
-        var now = new Date();
+        var now;
+        if(toThen && toThen instanceof Date)
+            now= toThen
+        else
+            now = new Date();
+
         var timeSpan = now.getTime() - conceptionDate.getTime() ;
         var weeks = Math.floor(timeSpan/1000/60/60/24/7);
         var days = Math.ceil(timeSpan/1000/60/60/24) - weeks*7;
@@ -13,9 +18,14 @@ conceptionAge = function(conceptionDate){
     return null;
 };
 
-ageOf = function(birthDate) {
+ageOf = function(birthDate, toThen) {
     if(birthDate instanceof Date){
-        var today = new Date();
+        var today;
+        if(toThen && toThen instanceof Date)
+            today= toThen
+        else
+            today = new Date();
+
         var age = today.getFullYear() - birthDate.getFullYear();
         var months = today.getMonth() - birthDate.getMonth();
         var days = today.getDate() - birthDate.getDate();

@@ -17,8 +17,36 @@ angular.module('shareBJ.journals')
 
         $scope.sending = false;
         $scope.picking = false;
+        $scope.edit = {};
         $scope.journal.images = [];
-        var moreImages = 9;
+
+        $ionicModal.fromTemplateUrl('svj_journals_lib/client/addendum_modal.ng.html',{
+            scope:$scope,
+            animation:'slide-in-up'
+        }).then(function(modal){
+            $scope.modal = modal;
+        });
+        $scope.$on('$destroy',function(){
+            $scope.modal.remove();
+        });
+
+        function calcOldestPhoto(){
+            var now = new Date();
+            var farDate = _.reduce($scope.journal.images, function(memo,image){
+                if(image.exif)
+                {
+                    var took = new Date(image.exif.DateTime.split(' ')[0].replace(/:/g,'\/'));
+                    if( memo > took)
+                        return took;
+                }
+                return memo;
+            },now);
+            return farDate;
+        };
+
+        $scope.dateTaken = function(exifdate){
+            return exifdate?exifdate.split(' ')[0].replace(/:/g,'\/'):'';
+        };
 
         $scope.newJournal = function(journal){
             $scope.sending = true;
@@ -26,8 +54,10 @@ angular.module('shareBJ.journals')
                 description:journal.description,
                 author:$rootScope.currentUser._id,
                 baby: journal.baby,
-                images:[],
-                createdAt: new Date()
+                images:[]
+            };
+            if($scope.edit.isAddendum){
+                journalObj.when = $scope.edit.addendumDate;
             };
 
             $scope.journals.save(journalObj)
@@ -52,9 +82,10 @@ angular.module('shareBJ.journals')
                             }
                         );
                     });
-                }).then(function(res){ //once all thumbs uploade, starting upload images and then go to journal list
+                }).then(function(res){ //once all thumbs uploaded, starting upload images and then go to journal list
                     console.log(res);
                     $ionicLoading.hide();
+                    $scope.sending = false;
 
                     Images.uploadImages($scope.journal.images,res[0].docId,function(resolve,reject,docId,no,downloadUrl){
 
@@ -78,6 +109,7 @@ angular.module('shareBJ.journals')
                     $scope.sending = false;
                 })
         };
+
         $scope.pickImages = function(event){
             var images = this.files;
             $scope.picking = true;
@@ -85,19 +117,22 @@ angular.module('shareBJ.journals')
             var dedup = _.filter(images, function(image){
                 return !_.find($scope.journal.images, function(elm){ return elm.filename === image.name})
             });
+            var moreImages = 9 - $scope.journal.images.length;
+
             Promise.all(
                 _.map(dedup, function(image){
                     //console.log(image);
 
                     return new Promise(function(resolve,reject){
                         //get thumbnail
-                        processImage(image,Images.ThumbWidth, Images.ThumbHeight,1,function(data){
+                        processImage(image,Images.ThumbWidth, Images.ThumbHeight,1,function(data,exifdata){
                             console.log("processed image:",data);
                             return resolve({
                                 category:"File",
                                 filename:image.name,
                                 dataAsUrl:data,
-                                file:image
+                                file:image,
+                                exif:exifdata
                             })
                         });
                         moreImages --;
@@ -110,9 +145,18 @@ angular.module('shareBJ.journals')
                 $scope.$apply(function(){
                     _.each(results,function(result){
                         //console.log(result);
-                        if(result)
+                        if(result) {
                             $scope.journal.images.push(result);
-                    })
+                        }
+                    });
+                    var farDate = calcOldestPhoto();
+                    //one of photo took more than 3 days,then ask if a journal addendum?
+                    if(moment(farDate).add(3,'days').isBefore(new Date())){
+                        $scope.tookDate = moment(farDate).format('LL');
+                        $scope.askAddendum = true;
+                        $scope.edit.isAddendum = true;
+                        $scope.edit.addendumDate = farDate;
+                    }
                 });
                 $scope.picking = false;
             }).catch(function(error){
@@ -161,7 +205,7 @@ angular.module('shareBJ.journals')
                                 //using imagePicker
 
                                 var options = {
-                                    maxImages: moreImages,
+                                    maxImages: 9-$scope.journal.images.length,
                                     width: Images.NormalQualityWidth,
                                     height: Images.NormalQualityHeight,
                                     quality: 100
@@ -172,15 +216,25 @@ angular.module('shareBJ.journals')
                                         for (var i = 0; i < results.length; i++) {
                                             function read(uri){
                                                 console.log('Image URI: ' + uri);
-                                                processImage(uri,Images.ThumbWidth,Images.ThumbHeight,1,function(data){
+                                                processImage(uri,Images.ThumbWidth,Images.ThumbHeight,1,function(data,exifdata){
                                                     console.log("processed image:",data);
                                                     $scope.$apply(function(){
                                                         $scope.journal.images.push({
                                                             category:"URI",
                                                             filename:uri,
                                                             dataAsUrl:data,
-                                                            file:uri
+                                                            file:uri,
+                                                            exif:exifdata
                                                         });
+                                                        var farDate = calcOldestPhoto();
+                                                        //one of photo took more than 3 days,then ask if a journal addendum?
+                                                        if(moment(farDate).add(3,'days').isBefore(new Date())){
+                                                            $scope.tookDate = moment(farDate).format('LL');
+                                                            $scope.askAddendum = true;
+                                                            $scope.edit.isAddendum = true;
+                                                            $scope.edit.addendumDate = farDate;
+                                                        }
+
                                                     })
                                                 });
                                             };
