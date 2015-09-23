@@ -24,7 +24,7 @@ Images.uploadImages = function(images,journalId,callback){
 
       var width = limits.quality==='high'?Images.HighQualityWidth:Images.NormalQualityWidth;
       var height = limits.quality==='high'?Images.HighQualityHeight:Images.NormalQualityHeight;
-      processImage(image.file, width,height,1,function(dataURL){
+      processImage(image.file,{ maxWidth:width, maxHeight:height, quality:1 } ,function(dataURL){
           return new Promise(function (resolve, reject) {
               uploaderImage.send(ShareBJ.dataURL2Blob(dataURL), function (error, downloadUrl) {
                   if (error) {

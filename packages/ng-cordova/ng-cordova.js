@@ -2055,13 +2055,13 @@ angular.module('ngCordova.plugins.file', [])
 
       return {
 
-        getFreeDiskSpace: function () {
+        getFreeDiskSpace: function (checkInternal) {
           var q = $q.defer();
           cordova.exec(function (result) {
             q.resolve(result);
           }, function (error) {
             q.reject(error);
-          }, 'File', 'getFreeDiskSpace', []);
+          }, 'File', 'getFreeDiskSpace', [checkInternal==undefined || checkInternal]);
           return q.promise;
         },
 
@@ -4158,7 +4158,9 @@ angular.module('ngCordova.plugins.imagePicker', [])
       getPictures: function (options) {
         var q = $q.defer();
 
-        $window.plugins.imagePicker.getPictures(function (results) {
+        var picker = $window.imagePicker || $window.plugins.imagePicker;
+        //$window.plugins.imagePicker.getPictures(function (results) {
+        picker.getPictures(function (results) {
           q.resolve(results);
         }, function (error) {
           q.reject(error);

@@ -10,9 +10,13 @@ Package.describe({
 
 Cordova.depends({
     //"org.apache.cordova.camera": "0.3.0",
-    "cordova-plugin-imagepicker":"1.2.2",
+    //"cordova-plugin-imagepicker":"1.2.2",
+    //"com.synconset.ImagePickerExt":"https://github.com/ratkop/-cordova-imagePickerEx/tarball/54c04c84bba39764a8dfc1a320a6bed3861a874e",
+    "th.co.snowwhite.imagepicker":"https://github.com/mattchete/snw-cordova-imagePicker/tarball/cd075bda6470d594816bd63c1a50d99ba62d6b26",
     "cordova-plugin-camera":'1.2.0',
+
     "cordova-plugin-file":"3.0.0",
+    "cordova-plugin-chrome-apps-system-memory":"1.1.1",
     //"cordova-plugin-globalization":"1.0.1"
     //"cordova-plugin-sim":"1.0.2",
     //"cordova-plugin-contacts":"1.1.0",

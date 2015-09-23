@@ -6,16 +6,26 @@
                 images:'=',
                 thumb:'@',
                 src:'@',
+                exif:'@',
                 start:'@',
+                showTrash:'@',
                 orientationFix:'@',
                 onclose:'&'
             },
             replace:"true",
             templateUrl: "sbj_lib_client/directive/slidebox_directive.ng.html",
-            link: function(scope,element,attrs){
-              element.bind()
-            },
-            controller:function($scope,$timeout,$ionicSlideBoxDelegate){
+            controller:function($scope,$timeout,$ionicSlideBoxDelegate,$cordovaFile){
+                //$cordovaFile.getFreeDiskSpace().then(function(size){
+                //   console.log("free space:" + size/1024 + 'MB');
+                //});
+                //$cordovaFile.getFreeDiskSpace(false).then(function(size){
+                //    console.log("free space:" + size/1024 + 'MB');
+                //});
+                //
+                //chrome.system.memory.getInfo(function(info){
+                //    console.log("memory:" + info.availableCapacity/1024/1024 +'/'+ info.capacity/1024/1024);
+                //});
+
                 $scope.slideImages = new Array($scope.images.length);
                 for(var i=0;i<$scope.images.length;++i){
                     $scope.slideImages[i] = {//load thumb first
@@ -25,24 +35,29 @@
 
                     var imgSrc = $scope.images[i][$scope.src];
                     if($scope.orientationFix){
-                        function getImage(img,idx){
-                            console.log('getImage:',img);
-                            processImage(img,function(data){
-                                //console.log(data);
-                                //$scope.$apply(function() {  //change to original picture
-                                    console.log("Image loaded:"+idx);
-                                    $scope.slideImages[idx] = {
-                                        src:data,
-                                        thumb:false
-                                    };
-                                //});
-                                //$timeout(function(){
-                                    $ionicSlideBoxDelegate.update();
-                                //});
+                        //console.log("orientationFix");
+                        function getImage(img,exif,idx){
+                            //console.log('getImage with exif:',exif,img);
+                            processImage(img,{maxWidth:Images.NormalQualityWidth,
+                                maxHeight:Images.NormalQualityHeight,
+                                quality:1,exif:exif}, function(data){
+                                //console.log("got processed image:"+ Date.now());
+
+                                $timeout(function() {
+                                    $scope.$apply(function () {  //change to original picture
+                                        //console.log("image applied:" + idx + ':' + Date.now());
+                                        $scope.slideImages[idx] = {
+                                            src: data,
+                                            thumb: false
+                                        };
+                                        $ionicSlideBoxDelegate.update();
+                                    })
+                                },0);
                             })
                         };
-                        getImage(imgSrc,i);
+                        getImage(imgSrc,$scope.images[i][$scope.exif],i);
                     }else{
+                        debugger;
                         $scope.slideImages[i] = {
                             src:imgSrc,
                             thumb:false

@@ -38,7 +38,7 @@
                 };
 
                 $scope.showSlides = function(images,index){
-                    console.log('showSlides:',images)
+                    //console.log('showSlides:',images)
                     $scope.currentImages = images;
                     $scope.slideStart = index;
 

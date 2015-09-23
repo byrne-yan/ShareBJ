@@ -125,15 +125,21 @@ angular.module('shareBJ.journals')
 
                     return new Promise(function(resolve,reject){
                         //get thumbnail
-                        processImage(image,Images.ThumbWidth, Images.ThumbHeight,1,function(data,exifdata){
-                            console.log("processed image:",data);
-                            return resolve({
-                                category:"File",
-                                filename:image.name,
-                                dataAsUrl:data,
-                                file:image,
-                                exif:exifdata
-                            })
+                        EXIF.readExifFromFileURI(image,function(exif) {
+                            console.log("Image exif:", exif);
+                            var doImgProcess = function(exifdata){
+                                processImage(image, {maxWidth:Images.ThumbWidth, maxHeight:Images.ThumbHeight,quality: 1,exif:exif}, function (data) {
+                                    console.log("processed image:", data);
+                                    return resolve({
+                                        category: "File",
+                                        filename: image.name,
+                                        dataAsUrl: data,
+                                        file: image,
+                                        exif: exifdata
+                                    })
+                                });
+                            };
+                            doImgProcess(exif);
                         });
                         moreImages --;
                         if(moreImages<0)//ignore rest
@@ -205,7 +211,11 @@ angular.module('shareBJ.journals')
                                 //using imagePicker
 
                                 var options = {
-                                    maxImages: 9-$scope.journal.images.length,
+                                    //maxImages: 9-$scope.journal.images.length,
+                                    maximumImagesCount:9-$scope.journal.images.length,
+                                    useOriginal:true,
+                                    createThumbnail:true,
+                                    //saveToDataDirectory:true,
                                     width: Images.NormalQualityWidth,
                                     height: Images.NormalQualityHeight,
                                     quality: 100
@@ -216,26 +226,34 @@ angular.module('shareBJ.journals')
                                         for (var i = 0; i < results.length; i++) {
                                             function read(uri){
                                                 console.log('Image URI: ' + uri);
-                                                processImage(uri,Images.ThumbWidth,Images.ThumbHeight,1,function(data,exifdata){
-                                                    console.log("processed image:",data);
-                                                    $scope.$apply(function(){
-                                                        $scope.journal.images.push({
-                                                            category:"URI",
-                                                            filename:uri,
-                                                            dataAsUrl:data,
-                                                            file:uri,
-                                                            exif:exifdata
-                                                        });
-                                                        var farDate = calcOldestPhoto();
-                                                        //one of photo took more than 3 days,then ask if a journal addendum?
-                                                        if(moment(farDate).add(3,'days').isBefore(new Date())){
-                                                            $scope.tookDate = moment(farDate).format('LL');
-                                                            $scope.askAddendum = true;
-                                                            $scope.edit.isAddendum = true;
-                                                            $scope.edit.addendumDate = farDate;
-                                                        }
+                                                EXIF.readExifFromFileURI(uri,function(exifdata){
+                                                    console.log("Image exif:",exifdata);
 
-                                                    })
+                                                    //var thumb_uri = uri.replace(cordova.file.dataDirectory,cordova.file.dataDirectory+'thumb_');
+                                                    var thumb_uri = uri.replace(cordova.file.cacheDirectory,cordova.file.cacheDirectory+'thumb_');
+                                                    console.log('Thumb URI: ' + thumb_uri);
+                                                    //processImage(uri,Images.ThumbWidth,Images.ThumbHeight,1,function(data,exifdata){
+                                                    processImage(thumb_uri,{exif:exifdata},function(data){
+                                                        console.log("processed image:",data);
+                                                        $scope.$apply(function(){
+                                                            $scope.journal.images.push({
+                                                                category:"URI",
+                                                                filename:uri,
+                                                                dataAsUrl:data,
+                                                                file:uri,
+                                                                exif:exifdata
+                                                            });
+                                                            var farDate = calcOldestPhoto();
+                                                            //one of photo took more than 3 days,then ask if a journal addendum?
+                                                            if(moment(farDate).add(3,'days').isBefore(new Date())){
+                                                                $scope.tookDate = moment(farDate).format('LL');
+                                                                $scope.askAddendum = true;
+                                                                $scope.edit.isAddendum = true;
+                                                                $scope.edit.addendumDate = farDate;
+                                                            }
+
+                                                        })
+                                                    });
                                                 });
                                             };
                                             read(results[i]);
@@ -260,7 +278,7 @@ angular.module('shareBJ.journals')
             //console.log($scope.journal.images);
             $scope.slideStart = index;
             $scope.slideModal = $ionicModal.fromTemplate(
-                '<sbj-slide-box images="journal.images" thumb="dataAsUrl" src="file" orientation-fix="true" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
+                '<sbj-slide-box images="journal.images" thumb="dataAsUrl" src="file" exif="exif" orientation-fix="true" show-trash="true" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
                     scope: $scope,
                     animation: 'slide-in-up'
                 });

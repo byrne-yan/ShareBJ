@@ -5,7 +5,7 @@
                 <ion-spinner class="spinner-balanced " ng-show="{{image.thumb}}"></ion-spinner>
             </ion-slide>
         </ion-slide-box>
-        <div class="trash-button button button-icon" ng-click="deleteImage()">
+        <div class="trash-button button button-icon" ng-click="deleteImage()" ng-if="showTrash">
             <i class="icon ion-trash-a"></i>
         </div>
 </ion-modal-view>
