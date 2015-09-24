@@ -73,7 +73,7 @@ angular.module('shareBJ.users')
         });
 
         $scope.$meteorAutorun(function() {
-            console.log('buttons status:%j%j', $scope.getReactively('codeRequestReady'), $scope.getReactively('signupReady'));
+            console.log('buttons status:', $scope.getReactively('codeRequestReady'), $scope.getReactively('signupReady'));
         });
         //
 

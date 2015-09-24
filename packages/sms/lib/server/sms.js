@@ -1,3 +1,5 @@
+SMSLog = new Mongo.Collection('SMSLog');
+
 SMSManger = function(){
     this._providers = {};
     this._current = null;
@@ -12,34 +14,44 @@ SMSManger.prototype = {
             throw 'unregistered provider:'+provider;
 
         this._current = this._providers[provider];
+        console.log("SMS provider set as "+provider);
     },
     sendMessage: function(template, mobile, options, callback){
         if(this._current){
             var provider = this._current;
 
-            return this._current.sendMessage(template, mobile, options,function(err,messageId){
-                if(!err){//save mesage to collection
+            return this._current.sendMessage(template, mobile, options, Meteor.bindEnvironment(function(err,result){
+                console.log(err,result);
+                if(err){
+                    callback && callback(err);
+                    return;
+                }else
+                {
                     var date = new Date();
-                    SMS.insert({
-                        _id: messageId,
+                    SMSLog.insert({
+                        _id: result.messageId,
                         to: mobile,
-                        status: 'queued',
+                        status: result.status,
+                        template:template,
+                        option:options,
                         provider: provider.name,
                         createdAt: date,
                         updatedAt: date
                     });
+                    callback && callback(null,result);
+                    //Meteor.setTimeout( Meteor.bindEnvironment(function(){
+                    //    console.log("query "+result.messageId);
+                    //    provider.queryMessageStatus(result.messageId,Meteor.bindEnvironment(function(err,status){
+                    //        if(!err){
+                    //            console.log("query result:"+status);
+                    //            SMSLog.update({_id:result.messageId},{$set:{status:status,updatedAt:new Date()}});
+                    //        }else{
+                    //            console.log(err);
+                    //        }
+                    //    }))
+                    //}),2000);
                 }
-                callback && callback(err,messageId);
-                //2 seconds later, check if delivered
-
-                Meteor.setTimeout( Meteor.bindEnvironment(function(){
-                    provider.queryMessageStatus(messageId,Meteor.bindEnvironment(function(err,result){
-                        if(!err){
-                            SMS.update({_id:messageId},{$set:{status:result,updatedAt:new Date()}});
-                        }
-                    }))
-                }),2000)
-            });
+            }));
         }else{
             console.log('======BEGIN SMS ======');
             console.log("SMS not sent due to no SMS provider set, work as development mode!");
@@ -58,6 +70,5 @@ SMSManger.prototype = {
 
 SMSDeliver = new SMSManger();
 
-SMS = new Mongo.Collection('SMS');
 
 

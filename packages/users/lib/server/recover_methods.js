@@ -36,16 +36,13 @@ Meteor.methods({
     },
     sendResetSMSVerify:function(userId){
         check(userId,String);
-        this.unblock();
-        try{
-            ShareBJ.sendResetVerifyCodeSMS(userId);
-        }catch(err){
-            throw new Meteor.Error(500,err.message);
-        }
+        var err = ShareBJ.sendResetVerifyCodeSMS(userId);
+        if(err)
+            throw new Meteor.Error(400,err);
     },
     sendResetEmailVerify:function(userId){
         check(userId,String);
-        this.unblock();
+        //this.unblock();
         try{
             ShareBJ.sendResetVerifyCodeEmail(userId);
         }catch(err){
@@ -60,7 +57,9 @@ Meteor.methods({
         //if(options.type==="phone"){
         //
         //}
-        ShareBJ.validateResetVerify(userId,verifyCode);
+        var err = ShareBJ.validateResetVerify(userId,verifyCode);
+        if(err)
+            throw new Meteor.Error(400,err.message);
     },
     setMyPassword: function(userId,verifyCode,password){
         check(userId,String);

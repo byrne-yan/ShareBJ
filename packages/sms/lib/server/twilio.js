@@ -14,36 +14,20 @@ TwilioProvider.prototype = {
         this._twilioClient.sendMessage({
             to: '+86' + mobile,
             from: Meteor.settings.twilio.number,
-            body:message
+            body:message,
+            StatusCallback:process.env.ROOT_URL+'smshook'
         }, function(err,sms){
             if(err){
-                callback(err,sms);
+                callback(err);
             }else{
-                callback(null,sms.sid);
+                callback(null,{messageId:sms.sid,status:sms.status});
             }
         });
-        //callack(err,sms)
-        //sms:
-        //{
-        //    "account_sid": "AC8c6b9c6609a9cac8b6ba36e0e8b8ee79",
-        //    "api_version": "2010-04-01",
-        //    "body": "Jenny please?! I love you <3",
-        //    "date_created": "Wed, 18 Aug 2010 20:01:40 +0000",
-        //    "date_sent": null,
-        //    "date_updated": "Wed, 18 Aug 2010 20:01:40 +0000",
-        //    "direction": "outbound-api",
-        //    "from": "+14158141829",
-        //    "price": null,
-        //    "sid": "SM90c6fc909d8504d45ecdb3a3d5b3556e",
-        //    "status": "queued",
-        //    "to": "+14159352345",
-        //    "uri": "/2010-04-01/Accounts/AC8c6b9c6609a9cac8b6ba36e0e8b8ee79/SMSDeliver/Messages/SM90c6fc909d8504d45ecdb3a3d5b3556e.json"
-        //}
     },
     queryMessageStatus:function(messageId,callback){
-        this._twilioClient.listSms(messageId,function(err,message){
+        this._twilioClient.getMessage(messageId,function(err,message){
             if(err){
-                callback(err,message);
+                callback(err);
             }else{
                 callback(null,message.status);
             }

@@ -17,7 +17,8 @@ Package.onUse(function(api) {
       'mongo',
       'http@1.1.0',
       'random@1.0.3',
-      'abhiaiyer:meteor-twilio@0.0.5'
+      'abhiaiyer:meteor-twilio@0.0.5',
+      'iron:router@1.0.9'
   ];
 
   api.use(packages);
@@ -26,12 +27,13 @@ Package.onUse(function(api) {
   api.addFiles([
       'lib/server/sms.js',
       'lib/server/twilio.js',
-      'lib/server/haoservice.js'
+      'lib/server/haoservice.js',
+      'lib/server/sms_send_hook.js'
   ],['server']);
 
     api.export([
         'SMSDeliver',
-        'SMS'
+        'SMSLog'
     ]);
 });
 
