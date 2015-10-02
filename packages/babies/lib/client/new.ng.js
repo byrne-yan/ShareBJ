@@ -1,9 +1,7 @@
 angular.module('shareBJ.babies')
-    .controller('BabiesCtrl',function(){
-
-    })
-    .controller('NewBabyCtrl',function($rootScope,$scope,$state,$stateParams,$ionicHistory,
-                                       $ionicModal,$meteor,$timeout, $ionicLoading, babiesSub) {
+    .controller('BabiesCtrl',()=>{})
+    .controller('NewBabyCtrl',($rootScope,$scope,$state,$stateParams,$ionicHistory,
+                                       $ionicModal,$meteor,$timeout, $ionicLoading, babiesSub) => {
         $scope.newMode = $stateParams.babyId==='new';
 
 
@@ -102,28 +100,12 @@ angular.module('shareBJ.babies')
                     function(err){
                         $ionicLoading.hide();
                         $scope.newbabyError.newbaby = true;
-                        $scope.newbabyErrorMessage = err.message();
+                        $scope.newbabyErrorMessage = err.message;
                         console.log(err);
                     });
             };
 
-            if($scope.avatarBlob) {
-                var avatarUploader = new Slingshot.Upload('avatarBabyUploads', {babyId: $stateParams.babyId});
-                avatarUploader.send($scope.avatarBlob, function (error, downloadUrl) {
-                    if (error) {
-                        $ionicLoading.hide();
-                        $scope.newbabyError.newbaby = true;
-                        $scope.newbabyErrorMessage = err.message();
-                        console.log(err);
-                    } else {
-                        babyObj.avatar = downloadUrl;
-                        save();
-                    }
-                })
-            }else{
-                babyObj.avatar = null;
-                save();
-            }
+            save();
         };
 
         $scope.editAvatar = function(){
@@ -136,18 +118,23 @@ angular.module('shareBJ.babies')
             );
             $scope.avatarModal.show();
         };
+        $scope.$on('$destroy',()=>{
+            if($scope.avatarModal)
+                $scope.avatarModal.remove();
+        });
         $scope.closeAvatarEditor =function(){
             $scope.avatarModal.hide();
             $scope.avatarModal.remove();
         };
-        $scope.saveAvatar = function(blob,dataURL,callback){
-            $scope.avatarBlob = blob;
-            $timeout(function(){
-                $scope.$apply(function(){
-                    $scope.baby.avatar = dataURL;
-                })
+        $scope.saveAvatar = function(dataURL){
+            return new Promise((resolve,reject)=>{
+                $timeout(function(){
+                    $scope.$apply(function(){
+                        $scope.baby.avatar = dataURL;
+                    })
+                });
+                resolve();
             });
-            callback();
         };
 
 

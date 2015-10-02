@@ -27,8 +27,9 @@ Cordova.depends({
 Package.onUse(function(api) {
     api.versionsFrom('1.1.0.2');
     var packages =[
+        'ecmascript',
         'meteor-platform@1.2.2',
-        'angular',
+        'angular@1.0.0-rc.11',
         'momentjs:moment@2.10.6',
         'accounts-password@1.1.1',
         //'angularui:angular-ui-router@0.2.15',
@@ -38,11 +39,13 @@ Package.onUse(function(api) {
         'matb33:collection-hooks@0.8.0',
         'driftyco:ionic@1.1.0_1',
         //'jonmc12:ionic-material@0.4.2_1',
-        'edgee:slingshot@0.7.1',
+        //'edgee:slingshot@0.7.1',
+        'sbj:slingshot@0.7.2',
         'angular:angular-messages@1.4.2',
         //'ccorcos:clientside-image-manipulation@1.0.4',
         'sbj:clientside-image-manipulation@1.0.4',
-        'tmeasday:publish-counts@0.7.1'
+        'tmeasday:publish-counts@0.7.1',
+        'http'
         //,'sbj:cordova-file-server@0.1.3'
         //'natestrauser:cordova-file-server@0.1.2'
 
@@ -57,44 +60,52 @@ Package.onUse(function(api) {
         'lib/callbacks.js',
         'lib/collections.js',
         'lib/moment_locale_zh_cn.js',
-        'lib/age.js'
+        'lib/age.js',
+        'lib/net.js'
     ],['server','client']);
 
     api.addFiles([
         'server/aws.js',
-        'server/verification.js'
-        //'client/helpers/stylesheet.css'
+        'server/verification.js',
+        'server/net_server.js'
     ],   ['server']);
 
     api.addFiles([
         'client/lib.ng.js',
         'client/ngletteravatar.js',
         'client/photos.js',
-        'client/directive/avatar_directive.ng.js',
-        'client/directive/avatar_directive.ng.html',
         'client/directive/slidebox_directive.ng.html',
         'client/directive/slidebox_directive.ng.js',
         'client/directive/thumbnail_directive.ng.html',
         'client/directive/thumbnail_directive.ng.js',
         'client/directive/autosize_directive.ng.js',
-        'client/style.css'
+        'client/style.css',
+        'client/net_client.js'
         ],   ['client']);
 
     api.export('ShareBJ');
     api.export('conceptionAge');
     api.export('ageOf');
     api.export('clone');
+    api.export('LocalCollection','client');
+
+    //testing purpose
+    api.export('_lib_methods4Testing')
 
 });
 
 Package.onTest(function(api) {
     api.use([
-        'sanjo:jasmine@0.16.0',
-        'coffeescript',
+        'sanjo:jasmine@0.20.0',
         'sbj:lib'
     ]);
 
-    api.addFiles('tests/jasmine/client/libSpec.coffee',['client']);
+    api.addFiles([
+        'tests/jasmine/client/net_spec.js'
+    ],'client');
 
-    api.addFiles('tests/jasmine/lib_spec.coffee',['client','server']);
+    api.addFiles([
+        'tests/jasmine/lib_spec.js',
+        'tests/jasmine/net_spec.js'
+        ],['client','server']);
 });

@@ -57,7 +57,6 @@
                         };
                         getImage(imgSrc,$scope.images[i][$scope.exif],i);
                     }else{
-                        debugger;
                         $scope.slideImages[i] = {
                             src:imgSrc,
                             thumb:false

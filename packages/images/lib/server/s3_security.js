@@ -1,23 +1,56 @@
+AWS = Npm.require('aws-sdk');
+var urlapi = Npm.require('url');
+
+AWS.config.update({
+    region:Meteor.settings.s3.image.region,
+    accessKeyId:Meteor.settings.s3.image.KEY,
+    secretAccessKey:Meteor.settings.s3.image.SECRET
+});
+//console.log(AWS.config.credentials);
+AWS.config.credentials = new AWS.TemporaryCredentials();
+//console.log(AWS.config.credentials);
+
+Images.getPresignedUrl = function(url,ip){
+    //console.log("siging url:",url);
+    var getCredentialSync = Meteor.wrapAsync(AWS.config.credentials.get,AWS.config.credentials);
+
+    if(AWS.config.credentials.expired) {
+        getCredentialSync();
+    }
+    var s3 = new AWS.S3({
+        accessKeyId: AWS.config.credentials.accessKeyId,
+        secretAccessKey: AWS.config.credentials.secretAccessKey,
+        sessionToken: AWS.config.credentials.sessionToken
+    });
+    var signedUrl =  url?ShareBJ.get_temp_url(Meteor.settings.s3.image.region,
+        AWS.config.credentials.accessKeyId,AWS.config.credentials.secretAccessKey,
+        AWS.config.credentials.sessionToken,
+        Meteor.settings.s3.image.bucket,
+        Images.ThumbExpires,
+        url,
+        ip
+    ):null;
+    //console.log("signed url:",signedUrl);
+    return signedUrl;
+};
 //replace private url by pre-signed url
-Images.getPresignedUrls = function(images){
-  return _.map(images,function(image){
-            if(image.url || image.thumb)
-            {
-                return {
-                    thumb: image.thumb?ShareBJ.get_temp_url(Meteor.settings.s3.image.KEY, Meteor.settings.s3.image.SECRET,
-                        Meteor.settings.s3.image.bucket,
-                        Images.ThumbExpires,
-                        image.thumb
-                    ):null,
-                    url: image.url?ShareBJ.get_temp_url(Meteor.settings.s3.image.KEY, Meteor.settings.s3.image.SECRET,
-                        Meteor.settings.s3.image.bucket,
-                        Images.ThumbExpires,
-                        image.url
-                    ):null
-                }
+Images.getPresignedUrls = function(images,ip){
+    return _.map(images,function(image){
+        if(image.url || image.thumb)
+        {
+            var s3 = new AWS.S3({
+                accessKeyId: AWS.config.credentials.accessKeyId,
+                secretAccessKey: AWS.config.credentials.secretAccessKey,
+                sessionToken: AWS.config.credentials.sessionToken
+            });
+
+            return {
+                thumb: Images.getPresignedUrl(image.thumb,ip),
+                url: Images.getPresignedUrl(image.url,ip)
             }
-            return image;
-        });
+        }
+        return image;
+    });
 };
 
 Images.getUploadStats = function(userId){
@@ -27,3 +60,5 @@ Images.getUploadStats = function(userId){
     //TODO: no stats yet
     return {counts: 0, size: 0}
 }
+
+

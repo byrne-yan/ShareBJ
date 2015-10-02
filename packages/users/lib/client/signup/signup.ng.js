@@ -44,8 +44,8 @@ angular.module('shareBJ.users')
     })
     .controller('SignupWithPhoneCtrl', function ($scope, $meteor, $state, $stateParams, $ionicHistory) {
         $scope.user = {
-            mobile:'',//TODO phone'number
-            name:'本机号码',
+            mobile:'',
+            name:'',
             code:''
         };
         if($stateParams.mobile){

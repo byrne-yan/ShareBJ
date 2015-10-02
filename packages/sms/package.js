@@ -17,8 +17,8 @@ Package.onUse(function(api) {
       'mongo',
       'http@1.1.0',
       'random@1.0.3',
-      'abhiaiyer:meteor-twilio@0.0.5',
-      'iron:router@1.0.9'
+      'abhiaiyer:meteor-twilio@0.0.5'/*,
+      'iron:router@1.0.9'*/
   ];
 
   api.use(packages);

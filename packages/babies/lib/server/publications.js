@@ -47,6 +47,7 @@ Meteor.publish('myFollowingBabies',function(){
             fields:{username:1, 'profile.name':1, 'profile.avatar':1}}).fetch();
         doc.followersDetail = Meteor.users.find({_id:{$in:doc.followers}},{
             fields:{username:1, 'profile.name':1, 'profile.avatar':1}}).fetch();
+
         return doc;
     };
 

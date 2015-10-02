@@ -1,6 +1,9 @@
 Meteor.methods({
-    'fixtures/reset':function(){
+    'fixtures/users/reset':function(){
         Meteor.users.remove({});
+    },
+    'fixtures/users/makeupTest1':function(){
+        Accounts.createUser({username:'test1',password:'test1'});
     },
     'signUp':function(user){
         Accounts.createUser(user);
@@ -41,5 +44,8 @@ Meteor.methods({
         if(!user)
             throw new Meteor.Error(404,"No sms code for the phone:"+phone);
         return user && user.services.phone.verification.code;
+    },
+    'fixtures/avatar/get': function(avatarId){
+        return Avatars.findOne({_id:avatarId});
     }
 });

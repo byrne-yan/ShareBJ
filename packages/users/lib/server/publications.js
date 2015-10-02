@@ -12,4 +12,3 @@ Meteor.publish("getUser",function(userIds){
     });
 });
 
-

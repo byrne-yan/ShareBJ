@@ -1,4 +1,4 @@
-angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'])
+angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals','shareBJ.images'])
     .controller('AppCtrl',function($scope,$state,$meteor,$ionicHistory,$rootScope,$ionicPopover) {
         //$scope.popover = $ionicPopover.fromTemplate( '<ion-popover-view>' +
         //    '<ion-content><div class="list">' +
@@ -33,6 +33,7 @@ angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'
 
         $scope.menuBabies = ShareBJ.menu.babiesList;
         $scope.menuUserSummary = ShareBJ.menu.userSummary;
+        $scope.menuUploading = ShareBJ.menu.uploadDashboard;
         $scope.logout = function(){
             $meteor.logout().then(
                 function(){

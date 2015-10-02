@@ -20,7 +20,3 @@ Baby.prototype = {
 
 };
 
-Slingshot.fileRestrictions("avatarBabyUploads",{
-    allowedFileTypes:["image/png","image/jpeg","image/gif"],
-    maxSize: 4 * 1024 //4K
-});

@@ -39,7 +39,9 @@ ShareBJ.dataURL2Blob = function (dataurl,name){
     while(n--){
         u8arr[n] = bstr.charCodeAt(n);
     }
-    return new Blob([u8arr],{type:mime,name:name || ''});
+    var blob = new Blob([u8arr],{type:mime});
+    blob.name = name || '';
+    return blob;
 };
 
 ShareBJ.uri2DataURL = function (uri){

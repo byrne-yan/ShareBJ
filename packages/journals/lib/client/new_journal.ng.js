@@ -64,7 +64,7 @@ angular.module('shareBJ.journals')
                 .then(function(docIds){
                     console.log("saved journals:", docIds);
                     $ionicLoading.show('上传照片中...');
-                    return Images.uploadThumbs($scope.journal.images,docIds[0],function(resolve,reject,docId,no,downloadUrl){
+                    return Images.uploadThumbs($scope.journal.images,docIds[0]._id,function(resolve,reject,docId,no,downloadUrl,imageId){
                         Journals.update({_id: docId},
                             {$push:{images:{
                                 no:no,
@@ -77,7 +77,7 @@ angular.module('shareBJ.journals')
                                     return reject(error);
                                 } else {
                                     console.log("update journal's images done", docId, affected);
-                                    return resolve({docId:docId,no:no});
+                                    return resolve({docId:docId,imageId:imageId,no:no});
                                 }
                             }
                         );
@@ -87,7 +87,7 @@ angular.module('shareBJ.journals')
                     $ionicLoading.hide();
                     $scope.sending = false;
 
-                    Images.uploadImages($scope.journal.images,res[0].docId,function(resolve,reject,docId,no,downloadUrl){
+                    Images.uploadImages($scope.journal.images,res,function(resolve,reject,docId,no,downloadUrl){
 
                         Meteor.call('updateJournalImageURL', docId, no, downloadUrl, function (error, num) {
                             if (error) {
@@ -102,6 +102,18 @@ angular.module('shareBJ.journals')
                     },function(err){
                         console.log(err);
                     });
+
+                    Images.uploadOrigins($scope.journal.images,res,function(resolve,reject,docId,no,downloadUrl){
+                        Meteor.call('updateJournalImageURL', docId, no, downloadUrl,true, function (error, num) {
+                            if (error) {
+                                return reject(error);
+                            } else {
+                                console.log("update journal's original images done", docId, num);
+                                return resolve({docId: docId, no: no});
+                            }
+                        });
+                    });
+
                     $state.go(ShareBJ.state.journals);
                 }).catch(function(error){
                     $ionicLoading.hide();

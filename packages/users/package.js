@@ -10,13 +10,13 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.1']);
 
     var packages =[
-        'sbj:lib@0.1.0',
-        'jonblum:jquery-cropper@0.11.0',
+        'sbj:lib',
         'riaan53:blueimp-canvas-to-blob@0.0.1',
         //'okland:accounts-phone@0.0.21',
         'sbj:accounts-phone@0.0.21',
         'sbj:sms',
-        'sbj:notifications'
+        'sbj:notifications',
+        'sbj:avatar'
     ];
 
   api.use(packages);
@@ -72,8 +72,7 @@ Package.onUse(function (api) {
     'lib/server/users_security.js',
     'lib/server/users_methods.js',
     'lib/server/recover_methods.js',
-    'lib/server/publications.js',
-    'lib/server/upload.js'
+    'lib/server/publications.js'
   ], ['server']);
 
   api.export('Users');

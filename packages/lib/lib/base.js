@@ -26,3 +26,5 @@ templates = {}
 getVotePower = function (user) {
   return 1;
 };
+
+

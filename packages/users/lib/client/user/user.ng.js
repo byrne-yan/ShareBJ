@@ -46,11 +46,7 @@ angular.module('shareBJ.users')
         }).then(function(modal){
             $scope.modals.mobile = modal;
         });
-        $scope.modals.avatar = $ionicModal.fromTemplate(
-            '<sbj-avatar save="saveAvatar" saving-message="正在上传头像..." onclose="closeAvatarEditor()"></sbj-avatar>',{
-            scope:$scope,
-            animation:'slide-in-up'
-        });
+
         $ionicModal.fromTemplateUrl('sbj_users_lib/client/user/motto_edit.ng.html',{
             scope:$scope,
             animation:'slide-in-up',
@@ -139,13 +135,9 @@ angular.module('shareBJ.users')
                 .then(function(){
                     console.log('验证邮件已发送！');
                     $scope.sending = false;
-                },
-                function(error)
-                {
-                    console.log(error);
-                    $scope.sending = false;
-                }
-            );
+                })
+                .catch((error)=> { console.log(error); $scope.sending = false; });
+
         };
 
         //motto
@@ -165,39 +157,41 @@ angular.module('shareBJ.users')
                     break;
                 case 'avatar':
                     $scope.croppedCanvas = $scope.avatar;
+                    $scope.modals.avatar = $ionicModal.fromTemplate(
+                        '<sbj-avatar save="saveAvatar" saving-message="正在上传头像..." onclose="closeAvatarEditor()"></sbj-avatar>',{
+                            scope:$scope,
+                            animation:'slide-in-up'
+                        });
                     break;
             }
 
             $scope.modals[field].show();
         };
 
+        $scope.$on('$destroy',()=>{
+            if($scope.modals.avatar)
+                $scope.modals.avatar.remove();
+        });
         //avatar
         $scope.closeAvatarEditor = function(){
             $scope.modals.avatar.hide();
+            $scope.modals.avatar.remove();
         };
-        $scope.saveAvatar = function(blob,dataURL,callback){
-            var avatarUploader = new Slingshot.Upload('avatarUploads',{userId:$rootScope.currentUser._id});
-            avatarUploader.send(blob,function(error,downloadUrl){
-                if(error)
-                {
-                    //$ionicLoading.hide();
-                    callback(error);
-                }else{
-                    console.log("Uploading progress:" + avatarUploader.progress());
-                    $meteor.call('updateCurrentUserAvatar',$rootScope.currentUser._id,downloadUrl)
-                        .then(function(){
-                            $timeout(function(){
-                                $scope.$apply(function(){
-                                    $scope.avatar = downloadUrl;
-                                });
-                            },0);
+        $scope.saveAvatar = function(dataUrl){
+            return new Promise((resolve,reject)=>{
+                $meteor.call('updateCurrentUserAvatar',$rootScope.currentUser._id,dataUrl)
+                    .then(()=>{
+                        $timeout(function(){
+                            $scope.$apply(function(){
+                                $scope.avatar = dataUrl;
+                            });
+                        },0);
 
-                            callback();
-                            $scope.closeAvatarEditor();
-                        },function(err){
-                            callback(error);
-                        });
-                }
+                        $scope.closeAvatarEditor();
+                        resolve();
+                    },(err)=>{
+                        reject(err);
+                    });
             });
         };
 

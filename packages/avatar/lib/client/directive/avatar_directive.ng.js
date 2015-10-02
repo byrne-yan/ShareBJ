@@ -95,14 +95,8 @@
                         console.log(input.files[0]);
                         processImage(input.files[0],{maxWidth:Images.NormalQualityWidth,maxHeight:Images.NormalQualityHeight,quality:1},function(dataURL){
                             console.log(dataURL);
-                            //$scope.$apply(function(){
-                                //$scope.edit.fileAsUrl = dataURL;
-                                //$scope.edit.hasImage = true;
-                                //debugger;
-                                //if(!!$scope.cropperImage)
-                                console.log('$scope.cropperImage.cropperreplace');
+                            console.log('$scope.cropperImage.cropperreplace');
                                         $scope.cropperImage.cropper('replace',dataURL);
-                            //});
                         })
                     }
                 };

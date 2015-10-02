@@ -10,28 +10,55 @@ Package.describe({
   documentation: 'README.md'
 });
 
+Npm.depends({
+  "aws-sdk":'2.2.4'
+});
+
+
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
+    const impliables = ['sbj:slingshot@0.7.2'];
   api.use([
+      'ecmascript',
       'meteor-base',
       'mongo',
-    'edgee:slingshot@0.7.1'
-  ]);
-
+      "random",
+      'sbj:lib',
+      'sbj:users'
+    ]);
+    api.use(impliables);
+    api.imply(impliables);
   api.addFiles('lib/images.js');
 
-  api.addFiles('lib/client/upload_client.js','client');
+  api.addFiles([
+      'lib/client/upload_client.js',
+      'lib/client/images.ng.js',
+      'lib/client/router.ng.js',
+      'lib/client/uploading_menu.ng.html',
+      'lib/client/uploading_dashboard.ng.html'
+  ],'client');
 
   api.addFiles([
     'lib/server/s3_upload.js',
     'lib/server/s3_security.js'
     ],'server');
   api.export('Images');
+    api.export('Uploads');
+
 
 });
 
-//Package.onTest(function(api) {
-//  api.use('tinytest');
-//  api.use('sbj:images');
-//  //api.addFiles('images-tests-bak.js');
-//});
+Package.onTest(function(api) {
+    api.use([
+        'ecmascript',
+        'sanjo:jasmine@0.20.0',
+        'accounts-base',
+        'accounts-password',
+        "random",
+        'reactive-var',
+        'sbj:lib',
+        'sbj:images',
+        'sbj:fixtures'
+    ]);
+    api.addFiles('tests/jasmine/client/images-specs.js','client');
+});

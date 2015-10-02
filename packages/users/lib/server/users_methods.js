@@ -50,13 +50,16 @@ Meteor.methods({
             throw new Meteor.Error("Access Denied");
         }
     },
-    updateCurrentUserAvatar: function(userId,url){
+    updateCurrentUserAvatar: function(userId,avatarDataUrl){
         check(userId,String);
-        check(url,String);
+        check(avatarDataUrl,String);
+        if(/^data\:image\/.*;base64,.*/g.test(avatarDataUrl)==false)
+            throw new Meteor(400,"avatar must be DataUrl");
+
         if(this.userId && userId === this.userId)
         {
             n = Meteor.users.update({_id:userId},
-                {$set:{'profile.avatar':url}}
+                {$set:{'profile.avatar':avatarDataUrl}}
             );
             if ( n !== 1){
                 throw new Meteor.Error("Updating avatar fails");

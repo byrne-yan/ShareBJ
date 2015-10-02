@@ -1,4 +1,4 @@
-angular.module('shareBJ.users',['shareBJ.lib'])
+angular.module('shareBJ.users',['shareBJ.avatar','shareBJ.lib'])
     .run(function($ionicPopup){
         if(!ShareBJ.users)
             ShareBJ.users = {};

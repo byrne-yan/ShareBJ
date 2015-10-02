@@ -13,13 +13,22 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.3');
   api.use([
-     'meteor-base'
+     'meteor-base',
+      'accounts-password'/*,
+      'sbj:avatar'*/
+      ,'sbj:slingshot@0.7.2'
   ]);
   api.addFiles('fixtures.js');
+    api.addFiles('helpers.js');
+    api.addFiles('server_helpers.js','server');
+
+    api.export('TestStorageService');
 });
 
 Package.onTest(function(api) {
   api.use('tinytest');
   api.use('sbj:fixtures');
+
   api.addFiles('fixtures-tests.js');
+
 });

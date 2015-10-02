@@ -10,7 +10,6 @@
                         var elm = e.currentTarget;
                         var style = elm.style;
 
-                        //debugger;
                         var val = elm.value;
                         var rgx = /\r?\n/g;
                         var lns = 2;

@@ -1,11 +1,18 @@
 Meteor.methods({
-    'updateJournalImageURL':function(docId,no,downloadUrl){
-        console.log(docId,no,downloadUrl);
+    'updateJournalImageURL':function(docId,no,downloadUrl,isOrigin){
+        //console.log(docId,no,downloadUrl,isOrigin);
         check(docId,String);
         check(no,Number);
         check(downloadUrl,String);
+        check(isOrigin,Match.Optional(Boolean));
 
-        Journals.update({_id: docId,'images.no':no}, {$set:{'images.$.url':downloadUrl}});
+        var setField;
+        if(_.isUndefined(isOrigin || _.isNull(isOrigin)) || !isOrigin)
+            setField = {'images.$.url':downloadUrl};
+        else
+            setField  = {'images.$.origin':downloadUrl};
+        //console.log(setField);
+        return Journals.update({_id: docId,'images.no':no}, {$set:setField});
     },
     'upvote':function(journalId,voterId){
         check(journalId,String);
@@ -21,7 +28,7 @@ Meteor.methods({
         }
     },
     'commentOnJournal':function(journalId,commenterId,comment){
-        console.log(journalId,commenterId,comment);
+        //console.log(journalId,commenterId,comment);
         check(journalId,String);
         check(commenterId,String);
         check(comment,String);

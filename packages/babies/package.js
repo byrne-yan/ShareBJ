@@ -14,7 +14,8 @@ Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
   var packkges = [
     'sbj:lib',
-      'sbj:notifications'
+      'sbj:notifications',
+      'sbj:avatar'
   ];
 
   api.use(packkges);
@@ -52,7 +53,6 @@ Package.onUse(function(api) {
       'lib/server/babies_methods.js',
     'lib/server/requests_methods.js',
     'lib/server/babies_securities.js',
-    'lib/server/uploads.js',
       'lib/server/publications.js'
   ],'server');
 
