@@ -42,7 +42,7 @@ angular.module('shareBJ.users')
                 })
             }
     })
-    .controller('SignupWithPhoneCtrl', function ($scope, $meteor, $state, $stateParams, $ionicHistory) {
+    .controller('SignupWithPhoneCtrl', function ($scope, $meteor, $state, $stateParams, $ionicHistory,$timeout) {
         $scope.user = {
             mobile:'',
             name:'',
@@ -71,11 +71,15 @@ angular.module('shareBJ.users')
                 && $scope.getReactively('user',true).code.length>0;
 
         });
+        //
+        $scope.$meteorAutorun(function() {
+            $scope.getReactively('user.mobile');
+            $scope.user.signupError = {signup:false}
+        });
 
         $scope.$meteorAutorun(function() {
             console.log('buttons status:', $scope.getReactively('codeRequestReady'), $scope.getReactively('signupReady'));
         });
-        //
 
         console.log('tag');
         //$meteor.session('CodeWindow').bind($scope,'codeWindow');
@@ -104,6 +108,8 @@ angular.module('shareBJ.users')
                     if (error) {
                         console.log(error);
                         $scope.user.signupError = {signup:true};
+
+                        $scope.user.signupErrorMessage = (error.error>=500?'内部错误, 请联系管理员或客服。':'')+error.message;
                     } else {
                         console.log('get code done');
                         $scope.codeSent = true;
@@ -116,6 +122,7 @@ angular.module('shareBJ.users')
                             cleanup();
                         }
                     }
+                $timeout(()=>{$scope.$apply(()=>{})});
             });
         };
 
@@ -127,7 +134,7 @@ angular.module('shareBJ.users')
                     console.log(error);
                     $scope.$apply(function() {
                         $scope.user.signupError = {signup: true};
-                        $scope.signupErrorMessage = error.message;
+                        $scope.user.signupErrorMessage = error.message;
                     })
                 }else{
                     cleanup();

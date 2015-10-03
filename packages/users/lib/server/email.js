@@ -1,7 +1,5 @@
 Accounts.emailTemplates.siteName = "Share Baby Journal";
-    //from:'no-reply@hy-studio.cn',
-//Accounts.emailTemplates.from = 'ShareBJ <no-reply@hy-studio.cn>';
-Accounts.emailTemplates.from = 'ShareBJ <byrne_yan@yahoo.com>';
+Accounts.emailTemplates.from = 'ShareBJ <sharebj@hy-cloud.info>';
 Accounts.emailTemplates.verifyEmail = {
         subject:function(user){
                 return '电子邮箱地址验证';

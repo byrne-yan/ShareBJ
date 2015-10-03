@@ -1,9 +1,9 @@
 App.info({
-   id:"cn.hystudio.sharebj",
+   id:"info.hy-cloud.sharebj",
     name: 'sharebj',
     description: 'Shared Baby Journals',
     author: 'Byrne Yan',
-    email: 'byrne.yan@yahoo.com',
+    email: 'yanjb@hy-cloud.info',
     website: 'http://sharebj.hystudio.cn'
 });
 App.setPreference('AllowInlineMediaPlayback',true);

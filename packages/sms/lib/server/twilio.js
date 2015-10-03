@@ -4,13 +4,15 @@ if(Meteor.settings.twilio)
     process.env.TWILIO_AUTH_TOKEN=Meteor.settings.twilio.auth_token;
 }
 
-TwilioProvider = function(){
-    this.name = "twilio";
-    this._twilioClient = Twilio();
-};
+class TwilioProvider extends SMSProvider{
+    constructor(){
+        super();
+        this.name = "twilio";
+        this._twilioClient = Twilio();
+    }
+    sendMessage(template, mobile, params, callback){
 
-TwilioProvider.prototype = {
-    sendMessage: function(message, mobile, unused, callback){
+
         this._twilioClient.sendMessage({
             to: '+86' + mobile,
             from: Meteor.settings.twilio.number,
@@ -23,8 +25,8 @@ TwilioProvider.prototype = {
                 callback(null,{messageId:sms.sid,status:sms.status});
             }
         });
-    },
-    queryMessageStatus:function(messageId,callback){
+    }
+    queryMessageStatus(messageId,callback){
         this._twilioClient.getMessage(messageId,function(err,message){
             if(err){
                 callback(err);
@@ -33,9 +35,8 @@ TwilioProvider.prototype = {
             }
         })
     }
-
-
 };
+
 
 SMSDeliver.registerProvider('twilio',new TwilioProvider());
 

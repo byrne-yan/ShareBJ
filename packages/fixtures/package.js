@@ -18,7 +18,7 @@ Package.onUse(function(api) {
       'sbj:avatar'*/
       ,'sbj:slingshot@0.7.2'
   ]);
-  api.addFiles('fixtures.js');
+  api.addFiles('fixtures.js','server');
     api.addFiles('helpers.js');
     api.addFiles('server_helpers.js','server');
 

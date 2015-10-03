@@ -1,10 +1,5 @@
 if(Meteor.settings.MAIL_URL)
     process.env.MAIL_URL = Meteor.settings.MAIL_URL;
-if(Meteor.settings.twilio)
-    SMS.twilio = {ACCOUNT_SID:Meteor.settings.twilio.sid,
-        AUTH_TOKEN:Meteor.settings.twilio.auth_token,
-        NUMBER: Meteor.settings.twilio.number
-    };
 
 //Email.send({
 //   from:"byrne.yan@yahoo.com",

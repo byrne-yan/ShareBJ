@@ -14,7 +14,9 @@ Package.onUse(function(api) {
   api.versionsFrom('1.1.0.3');
   var packages = [
       'meteor-base',
+      'ecmascript',
       'mongo',
+      'check',
       'http@1.1.0',
       'random@1.0.3',
       'abhiaiyer:meteor-twilio@0.0.5'/*,
@@ -26,7 +28,7 @@ Package.onUse(function(api) {
 
   api.addFiles([
       'lib/server/sms.js',
-      'lib/server/twilio.js',
+      //'lib/server/twilio.js',
       'lib/server/haoservice.js',
       'lib/server/sms_send_hook.js'
   ],['server']);

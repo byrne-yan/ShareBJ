@@ -40,36 +40,12 @@
                         ng-disabled="!signupReady"
                         class="button button-full button-balanced ink">发送</button>
             </div>
-            <div id="errorMessages" ng-messages="user.signupError">
-                <ng-messages-include src="errors-messages-signup－phone"> </ng-messages-include>
-            </div>
+            <ng-messages id="errorMessages" for="user.signupError">
+                <div ng-message="signup" class="error">
+                    <i class="ion-information-circled"></i>
+                    {{user.signupErrorMessage}}
+                </div>
+            </ng-messages>
         </form>
     </ion-content>
 </ion-view>
-
-<script id="errors-messages-signup－phone" type="text/ng-template">
-    <div ng-message="required" class="error" >
-        <i class="ion-information-circled"></i>
-        这个字段是必填的！
-    </div>
-    <div ng-message="minlength" class="error">
-        <i class="ion-information-circled"></i>
-        输入太短
-    </div>
-    <div ng-message="maxlength" class="error">
-        <i class="ion-information-circled"></i>
-        输入太长
-    </div>
-    <div ng-message="pattern" class="error">
-        <i class="ion-information-circled"></i>
-        请输入符合pattern的内容
-    </div>
-    <div ng-message="email" class="error">
-        <i class="ion-information-circled"></i>
-        请输入合法email
-    </div>
-    <div ng-message="signup" class="error">
-        <i class="ion-information-circled"></i>
-        {{signupErrorMessage}}
-    </div>
-</script>

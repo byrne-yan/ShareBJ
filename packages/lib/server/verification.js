@@ -1,4 +1,4 @@
-ShareBJ.SMSValidTime =  1000 * 15 * 60; //15 minutes
+
 ShareBJ.SMSSendWaitTime = 60*1000;
 ShareBJ.SMSCodeLength = 6;
 
@@ -52,9 +52,11 @@ ShareBJ.sendResetVerifyCodeSMS = function(userId){
     }
 
     var sendMessageSync = Meteor.wrapAsync(SMSDeliver.sendMessage,SMSDeliver);
-    var result = sendMessageSync('-ShareBJ: 最近有人请求复位你的密码,你可以输入确认码 '
-        +user.services.verification.code+' 复位密码。此码'
-        +ShareBJ.SMSValidTime/1000/60+'分钟内有效。发送时间：'+moment.utc().format('LT'),user.phone.number,{});
+
+    var result = sendMessageSync('template:password_reset',user.phone.number, {
+        code: user.services.verification.code,
+        minutes: Accounts._options.verificationValidDuration / 1000 / 60
+    });
 
     if(result)
     {

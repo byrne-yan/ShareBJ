@@ -36,9 +36,11 @@ Meteor.methods({
     },
     sendResetSMSVerify:function(userId){
         check(userId,String);
-        var err = ShareBJ.sendResetVerifyCodeSMS(userId);
-        if(err)
-            throw new Meteor.Error(400,err);
+        try{
+            ShareBJ.sendResetVerifyCodeSMS(userId);
+        }catch(err){
+            throw new Meteor.Error(500,err.message);
+        }
     },
     sendResetEmailVerify:function(userId){
         check(userId,String);

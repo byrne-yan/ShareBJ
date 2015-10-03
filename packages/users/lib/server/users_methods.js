@@ -24,9 +24,13 @@ Meteor.methods({
             if ( n !== 1){
                 throw new Meteor.Error("Updating email fails");
             }
-            Meteor.setTimeout(function(){
+            this.unblock();
+            try{
                 Accounts.sendVerificationEmail(userId,email);
-            },2*1000);
+            }catch(err){
+                throw new Meteor.Error(500,err.message);
+            }
+
         }else{
             throw new Meteor.Error("Access Denied");
         }
@@ -37,15 +41,21 @@ Meteor.methods({
         check(mobile,String);
         if(this.userId && userId === this.userId)
         {
+            var existingUser = Meteor.users.findOne({'phone.number': mobile, 'phone.verified':true}, {fields: {'_id': 1}});
+            if(existingUser)
+                throw new Meteor.Error(400,`Mobile already registered`);
+
             n = Meteor.users.update({_id:userId},
-                {$set:{'profile.mobiles':[{number:mobile,verified:false}]}});
+                {$set:{phone:{number:mobile,verified:false}}});
             if ( n !== 1){
-                throw new Meteor.Error("Updating mobile fails");
+                throw new Meteor.Error(500,"Updating mobile fails");
             }
 
-            var syncSender  = Meteor.wrapAsync(SMSDeliver.sendMessage,SMSDeliver);
-            var messageId = syncSender('', mobile,{});
-            return messageId;
+            try{
+                Accounts.sendPhoneVerificationCode(userId, mobile, false);
+            }catch(e){
+                throw new Meteor.Error(500,e.message);
+            }
         }else{
             throw new Meteor.Error("Access Denied");
         }

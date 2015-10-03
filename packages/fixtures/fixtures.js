@@ -43,7 +43,7 @@ Meteor.methods({
         var user = Meteor.users.findOne({'services.phone.verification.phone': phone});
         if(!user)
             throw new Meteor.Error(404,"No sms code for the phone:"+phone);
-        return user && user.services.phone.verification.code;
+        return user.services.phone.verification.code;
     },
     'fixtures/avatar/get': function(avatarId){
         return Avatars.findOne({_id:avatarId});
