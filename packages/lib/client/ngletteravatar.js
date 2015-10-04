@@ -88,7 +88,7 @@ catalyst.directive('ngLetterAvatar', function() {
                                     _style = avatarBorderStyle;
                             }else if(avatardefaultBorder){
                                     _style = defaultBorder;
-                            }					
+                            }
 
                         if(shape){
                             if(shape ==='round'){

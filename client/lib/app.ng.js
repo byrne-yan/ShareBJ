@@ -41,12 +41,15 @@ angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'
             }
         });
         Tracker.autorun(()=>{
-            console.log('respond to profile change:',Session.get('profile'));
-            $scope.avatar = Session.get('profile').avatar;
-            $scope.name = Session.get('profile').name || $rootScope.currentUser.username;
-            $scope.motto = Session.get('profile').motto;
+            //console.log('respond to profile change:',Session.get('profile'));
+            if(Session.get('profile'))
+            {
+                $scope.avatar = Session.get('profile').avatar;
+                $scope.name = Session.get('profile').name || $rootScope.currentUser.username;
+                $scope.motto = Session.get('profile').motto;
 
-            $timeout(()=>{$scope.$apply(()=>{})});
+                $timeout(()=>{$scope.$apply(()=>{})});
+            }
         });
 
         $scope.menuBabies = ShareBJ.menu.babiesList;
