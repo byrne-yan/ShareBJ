@@ -1,15 +1,15 @@
 angular.module('shareBJ.users')
     .controller('UserCtrl',function($rootScope,$scope,$ionicHistory,$ionicModal,$meteor,$timeout, $ionicLoading){
-        if($rootScope.currentUser)
-        {
-            Tracker.autorun(function(){
+        Tracker.autorun(function(c){
+            if($rootScope.getReactively('currentUser'))
+            {
                 $scope.mobile = $rootScope.getReactively('currentUser.phone') ?
                     $rootScope.currentUser.phone : {number: "", verified: false};
 
                 //$scope.avatar =  "images/hold32X32.png";
                 $scope.name = $rootScope.currentUser.username;
                 if ($rootScope.currentUser.profile) {
-                    $scope.avatar = $rootScopegetReactively('currentUser.profile').avatar;
+                    $scope.avatar = $rootScope.getReactively('currentUser.profile').avatar;
                     $scope.name = $rootScope.currentUser.profile.name;
                     if ($rootScope.currentUser.birth) {
                         $scope.gender = $rootScope.currentUser.profile.gender;
@@ -18,10 +18,10 @@ angular.module('shareBJ.users')
                     $scope.motto = $rootScope.currentUser.profile.motto;
                 }
                 $scope.username= $rootScope.getReactively('currentUser.username');
-                $scope.email = $rootScope.getReactively('currentUser.emails')?$rootScope.currentUser.emails[0]:{address:'',verified:true};
+                $scope.email = $rootScope.getReactively('currentUser.emails')?$rootScope.currentUser.emails[0]:{address:null,verified:false};
                 $timeout(()=>{$scope.$apply(()=>{})});
-            });
-        };
+            }
+        });
         $scope.goBack = function(){
             $ionicHistory.goBack();
         }
@@ -58,8 +58,9 @@ angular.module('shareBJ.users')
 
         $scope.saveName = function(edit){
             $meteor.call('updateCurrentUserName',$rootScope.currentUser._id,edit.name)
-                .then(function(data){
+                .then(function(profile){
                     console.log('Updating name success!');
+                    Session.set('profile',profile);
             },
             function(error){
                 console.log(error);
@@ -97,8 +98,9 @@ angular.module('shareBJ.users')
         };
         $scope.saveMotto = function(edit){
             $meteor.call('updateCurrentUserMotto',$rootScope.currentUser._id,edit.motto)
-                .then(function(data){
-                    console.log('Updating motto success!');
+                .then(function(profile){
+                    console.log('Updating motto success!',profile);
+                    Session.set('profile',profile);
                 },
                 function(error){
                     console.log(error);

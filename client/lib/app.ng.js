@@ -1,5 +1,5 @@
 angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals','shareBJ.images'])
-    .controller('AppCtrl',function($scope,$state,$meteor,$ionicHistory,$rootScope,$ionicPopover) {
+    .controller('AppCtrl',function($scope,$state,$meteor,$ionicHistory,$rootScope,$timeout) {
         //$scope.popover = $ionicPopover.fromTemplate( '<ion-popover-view>' +
         //    '<ion-content><div class="list">' +
         //        '<div class="item item-button-left">' +
@@ -29,6 +29,24 @@ angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'
 
                     }, console.log);
             }
+        });
+        Tracker.autorun(()=>{
+            if($rootScope.getReactively('currentUser'))
+            {
+                if($rootScope.currentUser.profile){
+                    console.log("set profile session",$rootScope.currentUser.profile);
+                    Session.set('profile',$rootScope.currentUser.profile);
+                }
+                $timeout(()=>{$scope.$apply(()=>{})});
+            }
+        });
+        Tracker.autorun(()=>{
+            console.log('respond to profile change:',Session.get('profile'));
+            $scope.avatar = Session.get('profile').avatar;
+            $scope.name = Session.get('profile').name || $rootScope.currentUser.username;
+            $scope.motto = Session.get('profile').motto;
+
+            $timeout(()=>{$scope.$apply(()=>{})});
         });
 
         $scope.menuBabies = ShareBJ.menu.babiesList;

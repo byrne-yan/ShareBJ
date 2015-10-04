@@ -10,6 +10,7 @@ Meteor.methods({
             if ( n !== 1){
                 throw new Meteor.Error("Updating username fails");
             }
+            return Meteor.users.findOne({_id:userId}).profile;
         }else{
             throw new Meteor.Error("Access Denied");
         }
@@ -98,6 +99,7 @@ Meteor.methods({
             if ( n !== 1){
                 throw new Meteor.Error("Updating motto fails");
             }
+            return Meteor.users.findOne({_id:userId}).profile;
         }else{
             throw new Meteor.Error("Access Denied");
         }

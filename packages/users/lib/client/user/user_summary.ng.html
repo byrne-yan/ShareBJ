@@ -4,14 +4,13 @@
             <div ng-if="$root.currentUser">
                 <div class="item item-divider">我</div>
                 <a class="item item-avatar" menu-close ui_sref=".users.edit">
-                    <img ng-src="{{currentUser.
-                    profile.avatar}}" ng-if="currentUser.profile.avatar">
-                    <ng-letter-avatar class="item-image" data="{{currentUser.profile.name || currentUser.username}}"
-                                      charCount="1" shape="round" ng-if="!currentUser.profile.avatar">
+                    <img ng-src="{{avatar}}" ng-if="avatar">
+                    <ng-letter-avatar class="item-image" data="{{name}}"
+                                      charCount="1" shape="round" ng-if="!avatar">
 
                     </ng-letter-avatar>
-                    <h2>{{currentUser.profile.name || currentUser.username}}</h2>
-                    <p>{{currentUser.profile.motto}}</p>
+                    <h2>{{name}}</h2>
+                    <p>{{motto}}</p>
                 </a>
                 <a class="item item-icon-left" menu-close ui-sref="shareBJ.users.notifications" ng-show="notificationCount">
                     <i class="icon ion-email-unread"></i>

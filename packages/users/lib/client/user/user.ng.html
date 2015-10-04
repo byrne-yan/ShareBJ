@@ -36,11 +36,13 @@
 
             <a class="item" href="#" ng-click="fnEdit('email')">
                 EMAIL
-                <span class="item-note assertive" ng-if="!email.verified">(未验证)</span>
-                <span class="item-note balanced" ng-if="email.verified">(已验证)</span>
+                <div ng-if="email.address">
+                    <span class="item-note assertive" ng-if="!email.verified">(未验证)</span>
+                    <span class="item-note balanced" ng-if="email.verified">(已验证)</span>
+                </div>
                 <span class="item-note">{{email.address}}</span>
             </a>
-            <div class="item item-button-right" ng-if="!email.verified " >
+            <div class="item item-button-right" ng-if="email.address && !email.verified " >
                 未收到验证邮件? 重新发送
                 <button class="button button-balanced" ng-click="sendVerifyEmail()" ng-disabled="sending || blocked">
                     <i class="icon ion-email" ng-if="!sending"> </i>
