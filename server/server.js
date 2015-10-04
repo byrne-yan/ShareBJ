@@ -31,6 +31,9 @@ if(Meteor.settings.MAIL_URL)
 //    ].join(', '));
 //});
 Meteor.startup(function () {
+    if(!Meteor.users.findOne({}))
+        Users.createAdminAccount();
+
     // BrowserPolicy._setRunningTest();
     console.log('defual csp:',BrowserPolicy.content._constructCsp());
     BrowserPolicy.content.allowSameOriginForAll();

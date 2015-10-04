@@ -84,3 +84,19 @@ getUploadLimits = function(userId){
     //TODO: no limits yet
     return {counts: 0, size: 0, quality:"high"}
 };
+
+Users.createAdminAccount = function(){
+    let options = {
+        username: 'admin',
+        password: 'admin123'
+    };
+    if(Meteor.settings.admin)
+    {
+        options.username = Meteor.settings.admin.name;
+        options.password = Meteor.settings.admin.password;
+        if(Meteor.settings.admin.email){
+            options.email = Meteor.settings.admin.email;
+        }
+    }
+    Accounts.createUser(options);
+};
