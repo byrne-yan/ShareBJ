@@ -37,11 +37,13 @@ Package.onUse(function(api) {
         'SMSDeliver',
         'SMSLog'
     ]);
+
+    api.export('HaoService',{testOnly:true});
 });
 
 Package.onTest(function(api) {
   api.use([
-    'sanjo:jasmine@0.18.0',
+    'sanjo:jasmine@0.20.0',
     'coffeescript@1.0.6',
       'sbj:sms'
       ]);

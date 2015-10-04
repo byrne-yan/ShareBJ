@@ -1,4 +1,4 @@
-class HaoService extends SMSProvider{
+HaoService = class HaoService extends SMSProvider{
     constructor(){
         super();
         this.name = "haoservice";
@@ -45,7 +45,6 @@ class HaoService extends SMSProvider{
             callback = params;
 
         let m = /^template:(.+)$/g.exec(template);
-        console.log(`template:${_.keys(this._templates)}`);
 
         if(m.length!==2 || this._templates[m[1]]==undefined )
             throw new TypeError(`unkown template ${m[1]}`);
@@ -62,9 +61,10 @@ class HaoService extends SMSProvider{
         }
 
         var args = _.reduce(params,function(memo,value,key){
-            var pair =  '#' + key + '#' + '=' + value
-            return (memo===''?'':'&') + pair;
+            var pair =  '#' + key + '#' + '=' + value;
+            return memo + (memo===''?'':'&') + pair;
         },'');
+
 
         HTTP.post(this._send_url,{
             params:{
@@ -110,5 +110,6 @@ class HaoService extends SMSProvider{
         });
     }
 };
+
 
 SMSDeliver.registerProvider('haoservice',new HaoService());

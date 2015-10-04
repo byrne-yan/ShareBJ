@@ -13,9 +13,14 @@ describe('SMSManager',function(){
     });
 
     describe("devmode",()=>{
+        let originProvider;
         beforeEach(()=>{
+            originProvider = SMSDeliver._current;
             SMSDeliver._current = null;
-        })
+        });
+        afterEach(()=>{
+            SMSDeliver._current = originProvider;
+        });
         it("output sms content to stdout and return fake messageId",(done)=>{
             SMSDeliver.sendMessage('template:test','15012345678',{no:12346},(err,messageId)=>{
                 expect(err).toBe(null);
@@ -101,17 +106,21 @@ describe('SMSManager',function(){
         })
     });
 
-    describe('haoservice_provider',function(){
-        beforeAll(function(){
-
-            SMSDeliver.setProvider('haoservice');
-            SMSDeliver._current._key = "key1234567890123456789";
-            SMSDeliver._current._send_url = "http:/exmaple.com.sms/send";
-            SMSDeliver._current._status_url = "http:/exmaple.com.sms/status";
-            SMSDeliver._current._templates = {
+    describe('haoservice_provider_basic',function(){
+        let originProvider;
+        beforeEach(function(){
+            originProvider = SMSDeliver._current;
+            let testProvider = new HaoService();
+            testProvider._key = "key1234567890123456789";
+            testProvider._send_url = "http:/exmaple.com.sms/send";
+            testProvider._status_url = "http:/exmaple.com.sms/status";
+            testProvider._templates = {
                 test:{"id":470,"params":["no"] }
             };
-
+            SMSDeliver._current = testProvider;
+        });
+        afterEach(()=>{
+            SMSDeliver._current= originProvider;
         });
 
         it('should has a name',function(){
@@ -134,7 +143,7 @@ describe('SMSManager',function(){
                 },100);
             });
             var callback =function(err,result){
-                expect(err).toBeNull();
+                expect(err).toBeUndefined();
                 expect(result.messageId).toEqual(random_sid);
                 done();
             };
@@ -166,24 +175,104 @@ describe('SMSManager',function(){
                 jasmine.any(Function)
             );
         });
-
-        xit('can send a real message to a mobile', function(done){
-            var callback =function(err,result){
-                console.log(err,result);
-                expect(err).toBeNull();
-                expect(result).toBeDefined();
-                done();
-            };
-
-            SMSDeliver.sendMessage(
-                470,
-                '18680392163',
-                {
-                    'no':456654
-                },
-                Meteor.bindEnvironment(callback)
-            );
-        });
     });
 
+    describe('haoservice_provider_templates',function(){
+        let originProvider;
+        beforeEach(()=>{
+            originProvider = SMSDeliver._current;
+            SMSDeliver.setProvider('haoservice');
+        });
+        afterEach(()=>{
+            SMSDeliver._current= originProvider;
+        });
+
+        it('send register verification code',(done)=>{
+            const expectedMinutes = 30,
+                expectedCode='123456',
+                expectedMobile = '15012345678';
+
+            let random_sid = Math.floor(Random.fraction()*1000000);
+            spyOn(HTTP, 'post').and.callFake(function(url,params,callback){
+                Meteor.setTimeout(function(){
+                    callback(undefined,{
+                        statusCode:200,
+                        content:'{"error_code":0,"reason":"成功","result":'+random_sid+'}'
+                    });
+                },100);
+            });
+
+            SMSDeliver.sendMessage('template:register',expectedMobile,{code:expectedCode,minutes:expectedMinutes},(err,id)=>{
+                expect(err).toBeUndefined();
+                expect(id).toBeDefined();
+                expect(HTTP.post).toHaveBeenCalledWith(jasmine.any(String),{params:{
+                        key:Meteor.settings.haoservice.key,
+                        mobile:expectedMobile,
+                        tpl_id:Meteor.settings.haoservice.templates.register.id,
+                        tpl_value:encodeURIComponent(`#code#=${expectedCode}&#minutes#=${expectedMinutes}`)}}
+                    ,jasmine.any(Function));
+                done();
+            });
+
+        });
+        it('send password_reset verification code',(done)=>{
+                const expectedMinutes = 30,
+                    expectedCode='123456',
+                    expectedMobile = '15012345678';
+
+                let random_sid = Math.floor(Random.fraction()*1000000);
+                spyOn(HTTP, 'post').and.callFake(function(url,params,callback){
+                    Meteor.setTimeout(function(){
+                        callback(undefined,{
+                            statusCode:200,
+                            content:'{"error_code":0,"reason":"成功","result":'+random_sid+'}'
+                        });
+                    },100);
+                });
+
+                SMSDeliver.sendMessage('template:password_reset',expectedMobile,{code:expectedCode,minutes:expectedMinutes},(err,id)=>{
+                    expect(err).toBeUndefined();
+                    expect(id).toBeDefined();
+                    expect(HTTP.post).toHaveBeenCalledWith(jasmine.any(String),{params:{
+                            key:Meteor.settings.haoservice.key,
+                            mobile:expectedMobile,
+                            tpl_id:Meteor.settings.haoservice.templates.password_reset.id,
+                            tpl_value:encodeURIComponent(`#code#=${expectedCode}&#minutes#=${expectedMinutes}`)}}
+                        ,jasmine.any(Function));
+                    done();
+                });
+
+        });
+        it('send mobile_confirm verification code',(done)=>{
+            const expectedMinutes = 30,
+                expectedCode='123456',
+                expectedMobile = '15012345678',
+                expectedName = 'user',
+                expectedNickname = 'nick';
+
+            let random_sid = Math.floor(Random.fraction()*1000000);
+            spyOn(HTTP, 'post').and.callFake(function(url,params,callback){
+                Meteor.setTimeout(function(){
+                    callback(undefined,{
+                        statusCode:200,
+                        content:'{"error_code":0,"reason":"成功","result":'+random_sid+'}'
+                    });
+                },100);
+            });
+
+            SMSDeliver.sendMessage('template:mobile_confirm',expectedMobile,{code:expectedCode,minutes:expectedMinutes,
+                        name:expectedName,nickname:expectedNickname},(err,id)=>{
+                expect(err).toBeUndefined();
+                expect(id).toBeDefined();
+                expect(HTTP.post).toHaveBeenCalledWith(jasmine.any(String),{params:{
+                        key:Meteor.settings.haoservice.key,
+                        mobile:expectedMobile,
+                        tpl_id:Meteor.settings.haoservice.templates.mobile_confirm.id,
+                        tpl_value:encodeURIComponent(`#code#=${expectedCode}&#minutes#=${expectedMinutes}&#name#=${expectedName}&#nickname#=${expectedNickname}`)}}
+                    ,jasmine.any(Function));
+                done();
+            });
+
+        });
+    });
 });

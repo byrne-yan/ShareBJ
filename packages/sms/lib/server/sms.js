@@ -40,7 +40,7 @@ class SMSManger{
         console.log(`SMS provider set as ${provider}`);
     }
     sendMessage(template, mobile, options, callback){
-        console.log("current:",this,this._current);
+        //console.log("current:",this,this._current);
         if(this.isReady){
             var provider = this._current;
 
@@ -72,7 +72,7 @@ class SMSManger{
                         createdAt: date,
                         updatedAt: date
                     });
-                    callback && callback(null,result);
+                    callback && callback(undefined,result);
                 }
             }));
         }else{
