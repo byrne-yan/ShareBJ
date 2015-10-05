@@ -3,7 +3,7 @@
         <!--<ion-list>-->
             <div ng-if="$root.currentUser">
                 <div class="item item-divider">我</div>
-                <a class="item item-avatar" menu-close ui_sref=".users.edit">
+                <a class="item item-avatar item-text-wrap" menu-close ui_sref=".users.edit">
                     <img ng-src="{{avatar}}" ng-if="avatar">
                     <ng-letter-avatar class="item-image" data="{{name}}"
                                       charCount="1" shape="round" ng-if="!avatar">

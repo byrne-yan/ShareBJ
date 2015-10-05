@@ -270,8 +270,46 @@ Meteor.methods({
 
                 break;
             case 'mobile':
-                //TODO: mobile message sending
-                throw Meteor.Error(500,'To be implemented');
+                throw new Meteor.Error(500,"Not implemented yet");
+
+                //var stampedToken = Accounts._generateStampedLoginToken();
+                //var invitationData = {
+                //    token: stampedToken.token,
+                //    when: stampedToken.when,
+                //    invitor:{
+                //        userId: this.userId,
+                //        name: Meteor.user().username,
+                //        nickname: Meteor.user().profile.name
+                //    },
+                //    baby:{
+                //        babyId: baby._id,
+                //        name:baby.name,
+                //        nickname:baby.nickname,
+                //        born: !!baby.birth,
+                //        date: baby.birth?baby.birth.birthTime:baby.conceptionDate
+                //    },
+                //    type:action, //guard or follow
+                //    invitee:invitee
+                //};
+                //
+                //UserInvitations.insert(invitationData);
+                //
+                //const sendSMSSync = Meteor.wrapAsync(SMSDeliver.sendMessage,SMSDeliver);
+                //let invitorName =  Meteor.user().profile.name || Meteor.user().username;
+                //if(Meteor.user().phone)
+                //    invitorName += '/' + Meteor.user().phone.number;
+                //
+                //try{
+                //    sendSMSSync('template:invite_user',invitee,{
+                //        invitor: invitorName,
+                //        baby:baby.name,
+                //        url:process.env.ROOT_URL+'users/invitation?token='+stampedToken.token + '&mobile=' + invitee
+                //    })
+                //}catch(e)
+                //{
+                //    throw new Meteor.Error(500,e.message);
+                //}
+
                 break;
         }
     }

@@ -12,8 +12,9 @@ SMSProvider = class{
         }
         this._templateParameters = {
             'register':["code","minutes"],
-            'password_reset':["code","minutes"],
+            "initial_password":["password"],
             "mobile_confirm":["name","nickname","code","minutes"],
+            'password_reset':["code","minutes"],
             'test':["no"]
         }
     }

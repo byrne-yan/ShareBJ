@@ -42,9 +42,9 @@ Meteor.methods({
         check(mobile,String);
         if(this.userId && userId === this.userId)
         {
-            var existingUser = Meteor.users.findOne({'phone.number': mobile, 'phone.verified':true}, {fields: {'_id': 1}});
-            if(existingUser)
-                throw new Meteor.Error(400,`Mobile already registered`);
+            //var existingUser = Meteor.users.findOne({'phone.number': mobile, 'phone.verified':true}, {fields: {'_id': 1}});
+            //if(existingUser)
+            //    throw new Meteor.Error(400,`Mobile already registered`);
 
             n = Meteor.users.update({_id:userId},
                 {$set:{phone:{number:mobile,verified:false}}});
@@ -53,7 +53,7 @@ Meteor.methods({
             }
 
             try{
-                Accounts.sendPhoneVerificationCode(userId, mobile, false);
+                Accounts.sendPhoneVerificationCode(userId, mobile, {purpose:'bind'});
             }catch(e){
                 throw new Meteor.Error(500,e.message);
             }

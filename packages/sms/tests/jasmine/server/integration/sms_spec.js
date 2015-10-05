@@ -274,5 +274,32 @@ describe('SMSManager',function(){
             });
 
         });
+        it('send initial password',(done)=>{
+            const expectedPassword='123456',
+                expectedMobile = '15012345678';
+
+            let random_sid = Math.floor(Random.fraction()*1000000);
+            spyOn(HTTP, 'post').and.callFake(function(url,params,callback){
+                Meteor.setTimeout(function(){
+                    callback(undefined,{
+                        statusCode:200,
+                        content:'{"error_code":0,"reason":"成功","result":'+random_sid+'}'
+                    });
+                },100);
+            });
+
+            SMSDeliver.sendMessage('template:initial_password',expectedMobile,{password:expectedPassword},(err,id)=>{
+                expect(err).toBeUndefined();
+                expect(id).toBeDefined();
+                expect(HTTP.post).toHaveBeenCalledWith(jasmine.any(String),{params:{
+                        key:Meteor.settings.haoservice.key,
+                        mobile:expectedMobile,
+                        tpl_id:Meteor.settings.haoservice.templates.initial_password.id,
+                        tpl_value:encodeURIComponent(`#password#=${expectedPassword}`)}}
+                    ,jasmine.any(Function));
+                done();
+            });
+
+        });
     });
 });
