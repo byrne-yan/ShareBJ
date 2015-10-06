@@ -3,11 +3,9 @@
 
         return {
             restrict: 'A',
-            //templateUrl: "sbj_lib_client/directive/thumbnail_directive.ng.html",
             link:function(scope,element,attrs){
                 if(element && element[0].tagName === "TEXTAREA" ){
-                    function resize(e){
-                        var elm = e.currentTarget;
+                    function resize(elm){
                         var style = elm.style;
 
                         var val = elm.value;
@@ -27,17 +25,11 @@
                         }
                     };
                     element.css("overflow-y","hidden");
-                    //element.bind("keydown", resize);
-                    //element.bind("keypress", resize);
-                    element.bind("keyup", resize);
+                    element.on("keyup", (e)=>{
+                        resize(e.currentTarget)
+                    });
                 }
-            },
-            //controller:function($scope){
-            //    $scope.containerStyle = {
-            //        width: $scope.thumbWidth + 'px',
-            //        height: $scope.thumbHeight + 'px'
-            //    };
-            //}
+            }
         }
 
     };

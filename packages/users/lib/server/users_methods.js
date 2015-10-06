@@ -109,5 +109,70 @@ Meteor.methods({
         if(this.userId && userId === this.userId){
             return getUploadLimits(userId);
         }
+    },
+    'signup/createUserByEmail':function(email,name){
+        check(email,String);
+        check(name,String);
+
+        let user = Accounts.findUserByEmail(email);
+        let userId;
+        let passwd;
+        if(!user)
+        {
+            passwd = Random.hexString(6);
+            userId = Accounts.createUser({email:email,password:passwd,profile:{name:name}});
+        }else{
+            userId = user._id;
+        }
+
+        let err = ShareBJ.sendRegisterVerifyCodeEmail(userId);
+        if(err){
+            throw new Meteor.Error(500,err.message);
+        }
+
+        if(passwd){
+            Meteor.users.update(userId,{$set:{'services.verification.initial':passwd}});
+        }
+    },
+    'signup/verifyEmail':function(email,code){
+        var self = this;
+
+        return Accounts._loginMethod(
+            self,
+            "signup/verifyEmail",
+            arguments,
+            "password",
+            function () {
+                check(code, String);
+                check(email, String);
+
+                let user = Accounts.findUserByEmail(email);
+                if (!user)
+                    throw new Meteor.Error(400, "email is not registered yet");
+
+                let now = new Date();
+                if (user.services.verification && user.services.verification.code === code && user.services.verification.when
+                    && now.getTime() - user.services.verification.when.getTime() < Accounts._options.verificationValidDuration * 1000) {
+                    const initialPassoword = user.services.verification.initial;
+
+                    Meteor.users.update({_id: user._id, 'emails.address': email}, {
+                        $unset: {'services.verification': 1},
+                        $set: {'emails.$.verified': true}
+                    });
+
+                    if (initialPassoword) {
+                        Email.send({
+                            subject: '初始密码',
+                            from: 'Share Baby Journal <sharebj@hy-cloud.info>',
+                            to: email,
+                            text: `您的ShareBJ初始密码是${initialPassoword}，您可以登录系统设置新的密码。`
+                        })
+                    }
+                    return {userId: user._id}
+                } else {
+                    throw new Meteor.Error(400, "Verification code expired");
+                }
+            }
+        )
     }
 });

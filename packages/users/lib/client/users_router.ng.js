@@ -57,15 +57,15 @@ angular.module('shareBJ.users')
                 templateUrl: 'sbj_users_lib/client/user/user_change_password.ng.html',
                 controller: 'ChangePasswordCtrl'
             })
-            .state('shareBJ.users.signupByPhone',{
-                //cache:false,
+            .state('signupByEmail',{
+                url:'/signup_email?email&name',
+                templateUrl: 'sbj_users_lib/client/signup/signup_with_email.ng.html',
+                controller: 'SignupWithEmailCtrl'
+            })
+            .state('signupByPhone',{
                 url:'/signup_phone?mobile&name',
-                views:{
-                    'userView':{
-                        templateUrl: 'sbj_users_lib/client/signup/signup_with_phone.ng.html',
-                        controller: 'SignupWithPhoneCtrl'
-                    }
-                }
+                templateUrl: 'sbj_users_lib/client/signup/signup_with_phone.ng.html',
+                controller: 'SignupWithPhoneCtrl'
             })
             .state('signup',{
                 //cache:false,
@@ -113,23 +113,6 @@ angular.module('shareBJ.users')
                     }
                 }
             })
-
-            //.state('verifyEmail',{
-            //    url:'/#/verify-email/:token',
-            //    templateUrl: 'sbj_users_lib/client/user/email.ng.html',
-            //    contorller:'EmailVerifyCtrl'
-            //})
-            //
-            //.state('shareBJ.users.mobile',{
-            //    //cache:false,
-            //    url:'/verify_mobile/:token',
-            //    views:{
-            //        'menuContent':{
-            //            templateUrl:'sbj_users_lib/client/user/user.ng.html',
-            //            controller:'UserCtrl'
-            //        }
-            //    }
-            //})
         ;
     })
 ;

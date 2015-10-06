@@ -1,4 +1,4 @@
-<ion-view view-title="手机号注册" >
+<ion-view view-title="Email注册" >
 
     <!--<ion-nav-back-button></ion-nav-back-button>-->
     <ion-content class="has-header" >
@@ -10,29 +10,33 @@
 
                 <div class="item item-input-inset item-button-right">
                     <label class="item-input-wraper">
-                        <input type="text" id="mobile" name="mobile" placeholder="手机号" ng-model="user.mobile" required
-                               ng-pattern="/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/">
+                        <input type="email" name="email" placeholder="abc@example.com" ng-model="user.email" required >
                     </label>
                     <button class="button button-small" id="code_button" ng-click="getCode()"
                             ng-disabled="!codeRequestReady">{{codeButtonName}}</button>
                 </div>
-
+                <div class="item item-text-wrap" ng-if="codeSent">
+                    <p>注册验证码已发送给{{user.email}}, 请检查你的电子邮箱。</p>
+                    <p>电子邮件送达可能需要一点时间，如果没找到验证码邮件，请稍后再检查邮箱。</p>
+                    <p>另外，验证码邮件也有可能被放置到垃圾邮件里，在尝试重新请求发送验证码前，请先仔细找一找。</p>
+                </div>
                 <label class="item item-input" >
                     <input type="text" id="code" placeholder="验证码" ng-model="user.code" ng-disabled="!codeSent">
                 </label>
 
-                <ng-messages class="error-container" for="signupForm.mobile.$error"
-                             ng-if="signupForm.mobile.$touched">
+                <ng-messages class="error-container" for="signupForm.email.$error"
+                             ng-if="signupForm.email.$touched">
                     <div ng-message="required" class="error" >
                         <i class="ion-information-circled"></i>
-                        请提供手机号，方便接收重要通知！
+                        请提供email地址！
                     </div>
                     <div ng-message="pattern" class="error">
                         <i class="ion-information-circled"></i>
-                        无效手机号，请重新输入正确的手机号码！
+                        无效email地址，请重新输入正确的email地址！
                     </div>
-                    <!--<ng-messages-include src="errors-messages"></ng-messages-include>-->
                 </ng-messages>
+            </div>
+            <div class="padding">
 
             </div>
             <div class="padding">
@@ -47,7 +51,6 @@
                 </div>
             </ng-messages>
         </form>
-        <a class="button button-clear" id="enroll" ui_sref="signupByEmail" >使用电子邮件地址注册</a>
-
+        <a class="button button-clear" id="enroll" ui_sref="signupByPhone" >使用手机号注册</a>
     </ion-content>
 </ion-view>

@@ -42,6 +42,7 @@ Package.onUse(function (api) {
     'lib/client/signup/signup.ng.js',
     'lib/client/signup/signup.ng.html',
     'lib/client/signup/signup_with_phone.ng.html',
+      'lib/client/signup/signup_with_email.ng.html',
 
     'lib/client/user/user.ng.js',
     'lib/client/user/user.ng.html',
@@ -51,8 +52,7 @@ Package.onUse(function (api) {
     'lib/client/user/email_edit.ng.html',
     'lib/client/user/mobile/mobile_edit.ng.html',
     'lib/client/user/mobile/mobile_edit.ng.js',
-    'lib/client/user/user_summary.ng.html',
-    //'lib/client/user/user_summary.ng.js'
+    'lib/client/user/user_summary.ng.html'
      ,'lib/client/user/notifications.ng.js'
      ,'lib/client/user/notifications.ng.html'
     ,'lib/client/user/user_change_password.ng.html'

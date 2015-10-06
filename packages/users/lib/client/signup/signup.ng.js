@@ -1,3 +1,5 @@
+
+
 angular.module('shareBJ.users')
     .controller('SignupCtrl',function($scope,$meteor,$state,$stateParams,$location){
         $scope.user = {};
@@ -93,7 +95,6 @@ angular.module('shareBJ.users')
             //console.log($scope.codeButtonName,Session.get("CodeWindow"));
             //console.log($scope.getReactively('codeSent'));
         });
-        $scope.codeButtonName = '请求验证码';
 
         var cleanup = function () {
             Meteor.clearInterval(Session.get('CodeWindow'));
@@ -142,6 +143,107 @@ angular.module('shareBJ.users')
                         disableBack: true
                     });
                     $state.go(ShareBJ.state.home);
+                }
+            });
+        }
+    })
+    .controller('SignupWithEmailCtrl', function ($scope, $meteor, $state, $stateParams, $ionicHistory,$timeout,$ionicLoading,$ionicPopup) {
+        $scope.user = {
+            email:'',
+            email2:'',
+            name:'',
+            code:''
+        };
+        if($stateParams.email){
+            $scope.user.email = $stateParams.email;
+        };
+        if($stateParams.name){
+            $scope.user.name = $stateParams.name;
+        };
+
+        $scope.user.signupError = null;
+
+        $scope.$meteorAutorun(function(){
+            $scope.codeRequestReady =
+                !$scope.getReactively('codeSent')
+                && !!$scope.getReactively('user',true).email
+                && $scope.getReactively('user',true).email.length>0
+                && !$scope.getReactively('user',true).signupError;
+
+            $scope.signupReady = $scope.getReactively('user.code')
+                    && $scope.getReactively('user.code').length>0
+                    && !$scope.getReactively('user',true).signupError;
+
+            $timeout(()=>{$scope.$apply(()=>{})});
+        });
+        //
+        $scope.$meteorAutorun(function() {
+            $scope.getReactively('user.email');
+            $scope.user.signupError = null;
+            $scope.codeSent = false;
+            $scope.user.code = "";
+            $timeout(()=>{$scope.$apply(()=>{})});
+        });
+        $scope.$meteorAutorun(function() {
+            $scope.codeButtonName = '请求验证码';
+            if(Session.get("CodeWindow")){
+                $scope.codeButtonName += '(' + Session.get("CodeWindow") + ')';
+            }
+            $timeout(()=>{$scope.$apply(()=>{})});
+        });
+
+        $scope.getCode = function() {
+            $ionicLoading.show();
+            Meteor.call('signup/createUserByEmail',$scope.user.email,$scope.user.name,function(error,userId){
+                $ionicLoading.hide();
+                if(error){
+                    console.log(error);
+                    $scope.$apply(function() {
+                        $scope.user.signupError = {signup: true};
+                        $scope.user.signupErrorMessage = error.message;
+                    });
+                }else{
+                    $scope.codeSent = true;
+                    Session.set('CodeWindow', 60);
+                    Session.set("timer", Meteor.setInterval(function () {
+                        if (Session.get('CodeWindow'))
+                            Session.set('CodeWindow', Session.get('CodeWindow') - 1);
+                    }, 1000));
+
+                }
+            })
+        }
+        var cleanup = function () {
+            Meteor.clearInterval(Session.get('CodeWindow'));
+            Session.set('CodeWindow', 0);
+            $scope.codeSent = false;
+            $scope.user.code = "";
+        };
+        $scope.signup = function(){
+            $scope.user.signupError = {signup:false};
+            Accounts.callLoginMethod({
+                methodName     : 'signup/verifyEmail',
+                methodArguments: [$scope.user.email,$scope.user.code],
+                userCallback   :   function(error){
+                    if(error){
+                        console.log(error);
+                        $scope.$apply(function() {
+                            $scope.user.signupError = {signup: true};
+                            $scope.user.signupErrorMessage = error.message;
+                        })
+                    }else{
+                        cleanup();
+                        //
+                        $ionicPopup.alert({
+                            title:'注册结果',
+                            template:'您已完成注册，初始密码已发送到您的电子邮箱, 请前往邮箱查收！'
+                        }).then((res)=>{
+                            $ionicHistory.nextViewOptions({
+                                disableBack: true
+                            });
+                            $state.go(ShareBJ.state.home);
+                        })
+                    }
                 }
             });
         }

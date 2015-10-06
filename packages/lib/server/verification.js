@@ -15,7 +15,7 @@ ShareBJ.genResetVerifyCode = function(userId){
     if(user){
         if(user.services.verification && user.services.verification.code && user.services.verification.when){
             var now = new Date();
-            if( now.getTime() - user.services.verification.when.getTime() < ShareBJ.SMSValidTime){ //still valid, no need generation
+            if( now.getTime() - user.services.verification.when.getTime() < Accounts._options.verificationValidDuration*1000){ //still valid, no need generation
                 return null;
             }
             //remove it
@@ -70,12 +70,28 @@ ShareBJ.sendResetVerifyCodeEmail = function(userId){
 
     var user = Meteor.users.findOne({_id: userId});
     Email.send({
-        from: 'byrne_yan@yahoo.com',
+        subject:'密码复位',
+        from: 'ShareBJ <sharebj@hy-cloud.info>',
         to:user.emails[0].address,
-        html:'<p>某人最近请求复位你的ShareBJ密码。<p>' +
-            '<a href="'+process.env.ROOT_URL+'/login/recover/password?userId='+user._id+'&verify='+user.services.verification.code+'">点击这修改你的密码</a>'+
+        html:'<p>有人您请求复位你的ShareBJ密码。<p>' +
+            '<a href="'+process.env.ROOT_URL+'login/recover/password?userId='+user._id+'&verify='+user.services.verification.code+'">点击这修改你的密码</a>'+
             '<p>或者，你可以输入以下密码复位确认码：</p>' +
             '<center>'+user.services.verification.code+'</center>'
+    });
+
+    Meteor.users.update({_id: userId},{$set:{'services.verification.sentByEmail':[{when:new Date()}]}});
+};
+
+ShareBJ.sendRegisterVerifyCodeEmail = function(userId){
+    var err = ShareBJ.genResetVerifyCode(userId);
+    if(err) return err;
+
+    var user = Meteor.users.findOne({_id: userId});
+    Email.send({
+        subject:'注册验证',
+        from: 'ShareBJ <sharebj@hy-cloud.info>',
+        to:user.emails[0].address,
+        html:`<p>您申请注册ShareBJ账号，请输入下面验证码：${user.services.verification.code}完成注册<p>`
     });
 
     Meteor.users.update({_id: userId},{$set:{'services.verification.sentByEmail':[{when:new Date()}]}});
@@ -87,7 +103,7 @@ ShareBJ.validateResetVerify = function(userId,verifyCode,option){
 
     if(user.services.verification && user.services.verification.code===verifyCode){
         var now = new Date();
-        if( now.getTime()-user.services.verification.when.getTime() < ShareBJ.SMSValidTime){
+        if( now.getTime()-user.services.verification.when.getTime() < Accounts._options.verificationValidDuration*1000 ){
             if(option && option.remove){
                 Meteor.users.update({_id:userId},{$unset:{'services.verification':""}});
             }
