@@ -25,7 +25,7 @@
                         }
                     };
                     element.css("overflow-y","hidden");
-                    element.on("keyup", (e)=>{
+                    element.on("keyup", function(e){
                         resize(e.currentTarget)
                     });
                 }

@@ -19,7 +19,7 @@ angular.module('shareBJ.users')
                 }
                 $scope.username= $rootScope.getReactively('currentUser.username');
                 $scope.email = $rootScope.getReactively('currentUser.emails')?$rootScope.currentUser.emails[0]:{address:null,verified:false};
-                $timeout(()=>{$scope.$apply(()=>{})});
+                $timeout(function(){$scope.$apply(function(){})});
             }
         });
         $scope.goBack = function(){
@@ -139,7 +139,7 @@ angular.module('shareBJ.users')
                     console.log('验证邮件已发送！');
                     $scope.sending = false;
                 })
-                .catch((error)=> { console.log(error); $scope.sending = false; });
+                .catch(function(error) { console.log(error); $scope.sending = false; });
 
         };
 
@@ -171,7 +171,7 @@ angular.module('shareBJ.users')
             $scope.modals[field].show();
         };
 
-        $scope.$on('$destroy',()=>{
+        $scope.$on('$destroy',function(){
             if($scope.modals.avatar)
                 $scope.modals.avatar.remove();
         });
@@ -181,9 +181,9 @@ angular.module('shareBJ.users')
             $scope.modals.avatar.remove();
         };
         $scope.saveAvatar = function(dataUrl){
-            return new Promise((resolve,reject)=>{
+            return new Promise(function(resolve,reject){
                 $meteor.call('updateCurrentUserAvatar',$rootScope.currentUser._id,dataUrl)
-                    .then(()=>{
+                    .then(function(){
                         $timeout(function(){
                             $scope.$apply(function(){
                                 $scope.avatar = dataUrl;
@@ -192,7 +192,7 @@ angular.module('shareBJ.users')
 
                         $scope.closeAvatarEditor();
                         resolve();
-                    },(err)=>{
+                    },function(err){
                         reject(err);
                     });
             });

@@ -1,7 +1,7 @@
 angular.module('shareBJ.babies')
-    .controller('BabiesCtrl',()=>{})
-    .controller('NewBabyCtrl',($rootScope,$scope,$state,$stateParams,$ionicHistory,
-                                       $ionicModal,$meteor,$timeout, $ionicLoading, babiesSub) => {
+    .controller('BabiesCtrl',function(){})
+    .controller('NewBabyCtrl',function($rootScope,$scope,$state,$stateParams,$ionicHistory,
+                                       $ionicModal,$meteor,$timeout, $ionicLoading, babiesSub) {
         $scope.newMode = $stateParams.babyId==='new';
 
 
@@ -118,7 +118,7 @@ angular.module('shareBJ.babies')
             );
             $scope.avatarModal.show();
         };
-        $scope.$on('$destroy',()=>{
+        $scope.$on('$destroy',function(){
             if($scope.avatarModal)
                 $scope.avatarModal.remove();
         });
@@ -127,7 +127,7 @@ angular.module('shareBJ.babies')
             $scope.avatarModal.remove();
         };
         $scope.saveAvatar = function(dataURL){
-            return new Promise((resolve,reject)=>{
+            return new Promise(function(resolve,reject){
                 $timeout(function(){
                     $scope.$apply(function(){
                         $scope.baby.avatar = dataURL;

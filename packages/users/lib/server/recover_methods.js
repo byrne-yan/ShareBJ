@@ -14,7 +14,7 @@ Meteor.methods({
                 username: 1, 'phone.number': 1, 'profile.name': 1, 'emails': 1, avatar: 1
             },
             transform: function (user) {
-                if (user.phone.number)
+                if (user.phone && user.phone.number)
                     user.phone.number = user.phone.number.replace(/(\d*)(\d{4})(\d{4})/, function (match, p1, p2, p3) {
                         return [p1, '****', p3].join('');
                     });

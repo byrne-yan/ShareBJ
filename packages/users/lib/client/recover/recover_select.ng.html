@@ -15,12 +15,12 @@
             <div class="item item-devider">
                 你想怎么复位密码？
             </div>
-            <label class="item item-radio" ng-disabled="!user.phone || !user.phone.number">
+            <label class="item item-radio" ng-if="!!user.phone && !!user.phone.number">
                 <input type="radio" name="group" value="phone" ng-model="mode.value">
                 <div class="item-content">{{user.phone.number}}</div>
                 <i class="radio-icon ion-checkmark"></i>
             </label>
-            <label class="item item-radio" ng-disabled="!user.emails || !user.emails[0]">
+            <label class="item item-radio" ng-if="!!user.emails && !!user.emails[0]">
                 <input type="radio" name="group" value="email" ng-model="mode.value">
                 <div class="item-content">{{user.emails[0].address}}</div>
                 <i class="radio-icon ion-checkmark"></i>

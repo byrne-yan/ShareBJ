@@ -110,7 +110,11 @@ angular.module('shareBJ.users')
                         console.log(error);
                         $scope.user.signupError = {signup:true};
 
+
                         $scope.user.signupErrorMessage = (error.error>=500?'内部错误, 请联系管理员或客服。':'')+error.message;
+                        if(error.reason==='phone already used by others'){
+                            $scope.user.signupErrorMessage = "此号码已被注册，请换个号码！ 如果此号码的确是您的，请前往登录页面，通过“忘记密码”流程重新设置密码！";
+                        }
                     } else {
                         console.log('get code done');
                         $scope.codeSent = true;
@@ -123,7 +127,7 @@ angular.module('shareBJ.users')
                             cleanup();
                         }
                     }
-                $timeout(()=>{$scope.$apply(()=>{})});
+                $timeout(function(){$scope.$apply(function(){})});
             });
         };
 
@@ -174,7 +178,7 @@ angular.module('shareBJ.users')
                     && $scope.getReactively('user.code').length>0
                     && !$scope.getReactively('user',true).signupError;
 
-            $timeout(()=>{$scope.$apply(()=>{})});
+            $timeout(function(){$scope.$apply(function(){})});
         });
         //
         $scope.$meteorAutorun(function() {
@@ -182,14 +186,14 @@ angular.module('shareBJ.users')
             $scope.user.signupError = null;
             $scope.codeSent = false;
             $scope.user.code = "";
-            $timeout(()=>{$scope.$apply(()=>{})});
+            $timeout(function(){$scope.$apply(function(){})});
         });
         $scope.$meteorAutorun(function() {
             $scope.codeButtonName = '请求验证码';
             if(Session.get("CodeWindow")){
                 $scope.codeButtonName += '(' + Session.get("CodeWindow") + ')';
             }
-            $timeout(()=>{$scope.$apply(()=>{})});
+            $timeout(function(){$scope.$apply(function(){})});
         });
 
         $scope.getCode = function() {
@@ -237,7 +241,7 @@ angular.module('shareBJ.users')
                         $ionicPopup.alert({
                             title:'注册结果',
                             template:'您已完成注册，初始密码已发送到您的电子邮箱, 请前往邮箱查收！'
-                        }).then((res)=>{
+                        }).then(function(res){
                             $ionicHistory.nextViewOptions({
                                 disableBack: true
                             });

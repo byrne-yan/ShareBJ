@@ -30,17 +30,17 @@ angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'
                     }, console.log);
             }
         });
-        Tracker.autorun(()=>{
+        Tracker.autorun(function(){
             if($rootScope.getReactively('currentUser'))
             {
                 if($rootScope.currentUser.profile){
                     console.log("set profile session",$rootScope.currentUser.profile);
                     Session.set('profile',$rootScope.currentUser.profile);
                 }
-                $timeout(()=>{$scope.$apply(()=>{})});
+                $timeout(function(){$scope.$apply(function(){})});
             }
         });
-        Tracker.autorun(()=>{
+        Tracker.autorun(function(){
             //console.log('respond to profile change:',Session.get('profile'));
             if(Session.get('profile'))
             {
@@ -48,7 +48,7 @@ angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'
                 $scope.name = Session.get('profile').name || $rootScope.currentUser.username;
                 $scope.motto = Session.get('profile').motto;
 
-                $timeout(()=>{$scope.$apply(()=>{})});
+                $timeout(function(){$scope.$apply(function(){})});
             }
         });
 

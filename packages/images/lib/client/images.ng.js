@@ -3,22 +3,22 @@ angular.module('shareBJ.images', ['shareBJ.lib']);
 ShareBJ.menu.uploadDashboard = 'sbj_images_lib/client/uploading_menu.ng.html';
 
 angular.module('shareBJ.images')
-.controller('UploadDashCtrl',($scope, $meteor, $timeout, $state, $ionicHistory,$ionicModal)=>{
+.controller('UploadDashCtrl',function($scope, $meteor, $timeout, $state, $ionicHistory,$ionicModal){
         //$scope.uploads = $scope.$meteorCollection(null,false).find();
         //Uploads.updateProgress();
 
-        Tracker.autorun(()=>{
+        Tracker.autorun(function(){
             $scope.uploads = Uploads.find({$and:[
                 {progress:{$gte:0}},
                 {progress:{$lt:100}}
             ]}).fetch();
             //console.log("=====",$scope.uploads);
-            $timeout( ()=> $scope.$apply(()=>{}) );
+            $timeout( function(){$scope.$apply(function(){})} );
         });
 
-        $scope.cancelUpload = (uploaderId)=>{
+        $scope.cancelUpload = function(uploaderId){
             Uploads.getUploader(uploaderId).abort()
-            .then(()=>{
+            .then(function(){
                     Uploads.removeUploader(uploaderId);
                 })
         }

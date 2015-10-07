@@ -135,11 +135,11 @@
                     });
 
                     $scope.save()(canvas.toDataURL("image/jpeg", 1))
-                        .then((avatarId)=>{
+                        .then(function(avatarId){
                             if ($scope.savingMessage) $ionicLoading.hide();
                             $scope.close();
                         })
-                        .catch((error)=>{
+                        .catch(function(error){
                             if ($scope.savingMessage) $ionicLoading.hide();
                             $scope.sbjError.sharebj = true;
                             $scope.sbjError.sharebjErrorMessage = error.message;

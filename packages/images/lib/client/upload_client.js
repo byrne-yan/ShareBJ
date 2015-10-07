@@ -27,10 +27,10 @@ class MyUploader{
                     },
                     start:new Date(),
                     journal:this._journalId,progress:0}
-                ,(err,res)=>{
+                ,function(err,res){
             if(err) return callback(err);
 
-            Tracker.autorun((c)=>{
+            Tracker.autorun(function(c){
                 self._computation = c;
                 var status = self._uploader.status();
                 var percent = self._uploader.progress();
@@ -61,13 +61,13 @@ class MyUploader{
     abort(){
         var self = this;
         self._uploader.xhr.abort();
-        return new Promise((resolve,reject)=>{
+        return new Promise(function(resolve,reject){
             if(self._uploader.status()!=="transfering") resolve();
         })
     }
 }
 
-Uploads.requestUploader = (category,journalId,imageId,resolution)=>{
+Uploads.requestUploader = function(category,journalId,imageId,resolution){
     var self = Uploads;
     var uploader = new MyUploader(category,journalId,imageId,resolution);
     self._uploaders[uploader._id] = uploader;
@@ -77,7 +77,7 @@ Uploads.getUploader = function(uploaderId){
     var self = Uploads;
     return   self._uploaders[uploaderId];
 };
-Uploads.removeUploader = (uploadId)=>{
+Uploads.removeUploader = function(uploadId){
     var self = Uploads;
       if(self._uploaders[uploadId])
       {
@@ -85,9 +85,9 @@ Uploads.removeUploader = (uploadId)=>{
           delete self._uploaders[uploadId];
       }
 };
-Uploads.clearUploaders = ()=>{
+Uploads.clearUploaders = function(){
     var self = Uploads;
-    _.each(self._uploaders,(uploader)=>{
+    _.each(self._uploaders,function(uploader){
         delete self._uploaders[uploader._id]
     })
 }
@@ -116,7 +116,7 @@ Images.uploadThumbs = function(images,journalId,callback){
 Images.uploadImages = function(images,thumbsInfo,callback){
   return Promise.all(_.map(images,function(image,idx){
 
-      thumb = _.find(thumbsInfo,(thumb)=> {return thumb.no==idx});
+      thumb = _.find(thumbsInfo,function(thumb) {return thumb.no==idx});
       console.log("uploaded thumb info:",thumb);
 
 
@@ -153,7 +153,7 @@ Images.uploadOrigins = function(images,thumbsInfo,callback){
 
     return Promise.all(_.map(images,function(image,idx){
 
-            thumb = _.find(thumbsInfo,(thumb)=> {return thumb.no==idx});
+            thumb = _.find(thumbsInfo,function(thumb) {return thumb.no==idx});
             console.log("uploaded thumb info:",thumb);
 
             var uploaderImage = Uploads.requestUploader("originUploads", thumb.docId,thumb.imageId,

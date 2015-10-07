@@ -4,7 +4,7 @@ Slingshot.createDirective("avatarUploads",Slingshot.S3Storage,{
     acl:Meteor.settings.s3.avatar.acl,
     AWSAccessKeyId: Meteor.settings.s3.avatar.KEY,
     AWSSecretAccessKey:Meteor.settings.s3.avatar.SECRET,
-    authorize: (file,metaContext) => {
+    authorize: function(file,metaContext){
         console.log("upload authorized for:",metaContext);
         //if(!this.userId){
         //    throw new Meteor.Error(400,"Login Required for uploading avatar");

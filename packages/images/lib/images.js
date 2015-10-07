@@ -32,27 +32,27 @@ Slingshot.fileRestrictions("originUploads",{
 
 Uploads = {
     _uploaders:{},
-    find:(selector,options)=>{
+    find:function(selector,options){
         if(!selector) selector={};
         _.extend(selector,{_type:'upload',progress:{$gte: 0}});
         return LocalCollection.find(selector,options);
     },
-    findOne:(selector,options)=>{
+    findOne:function(selector,options){
         if(!selector) selector={};
         _.extend(selector,{_type:'upload',progress:{$gte: 0}});
         return LocalCollection.findOne(selector,options);
     },
-    insert:(doc,callback)=>{
+    insert:function(doc,callback){
         if(doc) _.extend(doc,{_type:'upload'});
 
         return LocalCollection.insert(doc,callback);
     },
-    update:(selector,modifier,options,callback)=>{
+    update:function(selector,modifier,options,callback){
         if(!selector) selector={};
         _.extend(selector,{_type:'upload'});
         return LocalCollection.update(selector,modifier,options,callback);
     },
-    remove:(selector,callback)=>{
+    remove:function(selector,callback){
         if(!selector) selector={};
         _.extend(selector,{_type:'upload',progress:{$gte: 0}});
         return LocalCollection.remove(selector,callback);

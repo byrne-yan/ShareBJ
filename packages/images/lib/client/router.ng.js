@@ -1,5 +1,5 @@
 angular.module('shareBJ.images')
-    .config(($urlRouterProvider,$stateProvider, $locationProvider)=> {
+    .config(function($urlRouterProvider,$stateProvider, $locationProvider){
         $locationProvider.html5Mode(true);
 
         $stateProvider

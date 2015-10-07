@@ -29,7 +29,7 @@ class SMSManger{
     get isReady(){return !!this._current;}
     registerProvider(name, provider){
         check(name,String);
-        //check(provider, Match.Where(()=>{ return provider instanceof SMSProvider }) );
+        //check(provider, Match.Where(function(){ return provider instanceof SMSProvider }) );
 
         this._providers[name] = provider;
     }
@@ -98,7 +98,7 @@ class SMSManger{
 SMSDeliver = new SMSManger();
 
 
-Meteor.startup(()=>{
+Meteor.startup(function(){
    if(Meteor.settings.sms && Meteor.settings.sms.provider){
        SMSDeliver.setProvider(Meteor.settings.sms.provider);
    }
