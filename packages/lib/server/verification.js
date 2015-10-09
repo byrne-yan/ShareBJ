@@ -37,6 +37,7 @@ ShareBJ.sendResetVerifyCodeSMS = function(userId){
     if(!user)
         return "User not found";
 
+    console.log(user.services.verification);
     var now = new Date();
     var smsStatus = user.services.verification.sentBySMS;
     if(smsStatus )
@@ -45,7 +46,8 @@ ShareBJ.sendResetVerifyCodeSMS = function(userId){
             return "Already delivered";
         }
 
-        if(now.getTime() - smsStatus.when.getTime() < ShareBJ.SMSSendWaitTime)
+        console.log(`${smsStatus.when},${now}}`);
+        if(now && smsStatus.when && (now.getTime() - smsStatus.when.getTime() < ShareBJ.SMSSendWaitTime))
         {
             return "Send too often";
         }
@@ -60,7 +62,7 @@ ShareBJ.sendResetVerifyCodeSMS = function(userId){
 
     if(result)
     {
-        Meteor.users.update({_id: userId},{$set:{'services.verification.sentBySMS':[{when:new Date(),messageId:result.messageId,status:result.status}]}});
+        Meteor.users.update({_id: userId},{$set:{'services.verification.sentBySMS':{when:new Date(),messageId:result.messageId,status:result.status}}});
     }
 };
 

@@ -17,7 +17,7 @@ Npm.depends({
 
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
-    const impliables = ['sbj:slingshot@0.7.2'];
+    const impliables = ['edgee:slingshot@0.7.1-test'];
   api.use([
       'ecmascript',
       'meteor-base',

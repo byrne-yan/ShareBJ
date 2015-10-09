@@ -1,14 +1,13 @@
 Package.describe({
-  name: "sbj:slingshot",
+  name: "edgee:slingshot",
   summary: "Directly post files to cloud storage services, such as AWS-S3.",
-  version: "0.7.2",
+  version: "0.7.1-test",
   git: "https://github.com/CulturalMe/meteor-slingshot"
 });
 
 Package.on_use(function (api) {
   api.versionsFrom('METEOR@1.0');
 
-  api.use['meteor-base'];
   api.use(["underscore", "check"]);
   api.use(["tracker", "reactive-var"], "client");
 

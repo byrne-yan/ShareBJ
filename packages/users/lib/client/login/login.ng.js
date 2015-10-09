@@ -1,7 +1,17 @@
 angular.module('shareBJ.users')
-    .controller('LoginCtrl',function($scope,$meteor,$state,$ionicHistory){
+    .controller('LoginCtrl',function($scope,$meteor,$state,$ionicHistory,$timeout){
 
         $scope.user ={};
+
+        Tracker.autorun(function(c){
+            $scope.user.netError = null;
+            if(!Meteor.status().connected){
+                $scope.user.netError = { connect: true};
+                $scope.user.netStatus = Meteor.status().status;
+                $timeout($scope.$apply(function(){}));
+            }
+        });
+
         $scope.login = function(){
             $scope.user.loginError = {'login':false};
             Meteor.loginWithPasswordEx($scope.user.username,$scope.user.password,function(error){

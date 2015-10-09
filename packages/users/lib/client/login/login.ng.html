@@ -3,6 +3,12 @@
     <ion-content class="has-header">
 
         <form name="loginForm" id="loginForm" ng-submit="login()">
+            <div id="errorMessages" ng-messages="user.netError">
+                <div ng-message="connect" class="error" >
+                    <i class="ion-close-circled"></i>
+                    连接服务器:{{user.netStatus}}
+                </div>
+            </div>
             <div class="list">
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">用户名:</span>

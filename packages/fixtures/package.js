@@ -17,7 +17,7 @@ Package.onUse(function(api) {
      'meteor-base',
       'accounts-password'/*,
       'sbj:avatar'*/
-      ,'sbj:slingshot@0.7.2'
+      ,'edgee:slingshot@0.7.1-test'
   ]);
   api.addFiles('fixtures.js','server');
     api.addFiles('helpers.js');

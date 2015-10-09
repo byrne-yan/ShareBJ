@@ -16,6 +16,7 @@ Cordova.depends({
     "cordova-plugin-camera":'1.2.0',
 
     "cordova-plugin-file":"3.0.0",
+    "cordova-plugin-file-transfer":"1.3.0",
     "cordova-plugin-chrome-apps-system-memory":"1.1.1",
     //"cordova-plugin-globalization":"1.0.1"
     //"cordova-plugin-sim":"1.0.2",
@@ -39,8 +40,7 @@ Package.onUse(function(api) {
         'matb33:collection-hooks@0.8.0',
         'driftyco:ionic@1.1.0_1',
         //'jonmc12:ionic-material@0.4.2_1',
-        //'edgee:slingshot@0.7.1',
-        'sbj:slingshot@0.7.2',
+        'edgee:slingshot@0.7.1-test',
         'angular:angular-messages@1.4.2',
         //'ccorcos:clientside-image-manipulation@1.0.4',
         'sbj:clientside-image-manipulation@1.0.4',

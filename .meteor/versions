@@ -40,6 +40,7 @@ diff-sequence@1.0.1
 driftyco:ionic@1.1.0_2
 ecmascript@0.1.5
 ecmascript-collections@0.1.6
+edgee:slingshot@0.7.1-test
 ejson@1.0.7
 email@1.0.7
 fastclick@1.0.7
@@ -96,7 +97,6 @@ sbj:journals@0.1.0
 sbj:lib@0.1.0
 sbj:ng-cordova@0.0.1
 sbj:notifications@0.0.1
-sbj:slingshot@0.7.2
 sbj:sms@0.0.1
 sbj:users@0.1.0
 service-configuration@1.0.5

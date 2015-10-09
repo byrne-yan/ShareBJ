@@ -11,6 +11,7 @@ Meteor.startup(function () {
     BrowserPolicy.content.allowOriginForAll("http://meteor.local");
     BrowserPolicy.content.allowOriginForAll("blob:");
     BrowserPolicy.content.allowOriginForAll("file://*");
+    BrowserPolicy.content.allowOriginForAll("cdvfile://*");
     BrowserPolicy.content.allowOriginForAll(process.env.ROOT_URL);
     BrowserPolicy.content.allowOriginForAll("https://*.amazonaws.com");
     BrowserPolicy.content.allowOriginForAll("https://*.amazonaws.com.cn");
