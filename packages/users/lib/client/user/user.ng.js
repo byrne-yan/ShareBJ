@@ -19,7 +19,7 @@ angular.module('shareBJ.users')
                 }
                 $scope.username= $rootScope.getReactively('currentUser.username');
                 $scope.email = $rootScope.getReactively('currentUser.emails')?$rootScope.currentUser.emails[0]:{address:null,verified:false};
-                $timeout(function(){$scope.$apply(function(){})});
+                $timeout(function(){});
             }
         });
         $scope.goBack = function(){
@@ -184,11 +184,8 @@ angular.module('shareBJ.users')
             return new Promise(function(resolve,reject){
                 $meteor.call('updateCurrentUserAvatar',$rootScope.currentUser._id,dataUrl)
                     .then(function(){
-                        $timeout(function(){
-                            $scope.$apply(function(){
-                                $scope.avatar = dataUrl;
-                            });
-                        },0);
+                        $scope.avatar = dataUrl;
+                        $timeout(function(){});
 
                         $scope.closeAvatarEditor();
                         resolve();

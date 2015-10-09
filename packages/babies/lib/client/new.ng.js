@@ -128,11 +128,8 @@ angular.module('shareBJ.babies')
         };
         $scope.saveAvatar = function(dataURL){
             return new Promise(function(resolve,reject){
-                $timeout(function(){
-                    $scope.$apply(function(){
-                        $scope.baby.avatar = dataURL;
-                    })
-                });
+                $scope.baby.avatar = dataURL;
+                $timeout(function(){ });
                 resolve();
             });
         };

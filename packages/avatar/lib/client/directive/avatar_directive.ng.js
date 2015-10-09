@@ -55,12 +55,9 @@
                         crop:function(){
                             if($scope.cropperImage ){
                                 //console.log("crop");
-                                $timeout(function(){
-                                    $scope.$apply(function(){
-                                        var croppedCanvas = $scope.cropperImage.cropper('getCroppedCanvas');
-                                        $scope.edit.croppedCanvas = croppedCanvas.width?croppedCanvas.toDataURL():null;
-                                    });
-                                })
+                                var croppedCanvas = $scope.cropperImage.cropper('getCroppedCanvas');
+                                $scope.edit.croppedCanvas = croppedCanvas.width?croppedCanvas.toDataURL():null;
+                                $timeout(function(){ });
                             }
                         }
                     });

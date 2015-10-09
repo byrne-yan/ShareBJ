@@ -13,7 +13,7 @@ angular.module('shareBJ.images')
                 {progress:{$lt:100}}
             ]}).fetch();
             //console.log("=====",$scope.uploads);
-            $timeout( function(){$scope.$apply(function(){})} );
+            $timeout( function(){} );
         });
 
         $scope.cancelUpload = function(uploaderId){

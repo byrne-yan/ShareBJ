@@ -19,9 +19,7 @@
                             style.height ="auto";
                             style.height = elm.scrollHeight + "px";
 
-                            $timeout(function(){
-                                style.height = elm.scrollHeight + "px";
-                            });
+                            $timeout(function(){ });
                         }
                     };
                     element.css("overflow-y","hidden");

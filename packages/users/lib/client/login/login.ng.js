@@ -8,7 +8,7 @@ angular.module('shareBJ.users')
             if(!Meteor.status().connected){
                 $scope.user.netError = { connect: true};
                 $scope.user.netStatus = Meteor.status().status;
-                $timeout($scope.$apply(function(){}));
+                $timeout(function(){},0,false);
             }
         });
 

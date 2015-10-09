@@ -127,7 +127,7 @@ angular.module('shareBJ.users')
                             cleanup();
                         }
                     }
-                $timeout(function(){$scope.$apply(function(){})});
+                $timeout(function(){});
             });
         };
 
@@ -178,7 +178,7 @@ angular.module('shareBJ.users')
                     && $scope.getReactively('user.code').length>0
                     && !$scope.getReactively('user',true).signupError;
 
-            $timeout(function(){$scope.$apply(function(){})});
+            $timeout(function(){});
         });
         //
         $scope.$meteorAutorun(function() {
@@ -186,14 +186,14 @@ angular.module('shareBJ.users')
             $scope.user.signupError = null;
             $scope.codeSent = false;
             $scope.user.code = "";
-            $timeout(function(){$scope.$apply(function(){})});
+            $timeout(function(){});
         });
         $scope.$meteorAutorun(function() {
             $scope.codeButtonName = '请求验证码';
             if(Session.get("CodeWindow")){
                 $scope.codeButtonName += '(' + Session.get("CodeWindow") + ')';
             }
-            $timeout(function(){$scope.$apply(function(){})});
+            $timeout(function(){});
         });
 
         $scope.getCode = function() {

@@ -70,12 +70,9 @@
                     $meteor.call('commentOnJournal',journal._id,Meteor.userId(),$scope.edit.saying)
                         .then(function(){
                             //hide commnent box
-                            $timeout(function(){
-                                $scope.$apply(function(){
-                                    $scope.edit.saying = '';
-                                    $scope.commenting = false;
-                                });
-                            })
+                            $scope.edit.saying = '';
+                            $scope.commenting = false;
+                            $timeout(function(){ });
                         },function(err){
                             console.log(err);
                             $scope.error.sbjError = {

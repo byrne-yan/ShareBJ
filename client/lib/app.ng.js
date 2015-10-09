@@ -37,7 +37,7 @@ angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'
                     console.log("set profile session",$rootScope.currentUser.profile);
                     Session.set('profile',$rootScope.currentUser.profile);
                 }
-                $timeout(function(){$scope.$apply(function(){})});
+                $timeout(function(){});
             }
         });
         Tracker.autorun(function(){
@@ -48,7 +48,7 @@ angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'
                 $scope.name = Session.get('profile').name || $rootScope.currentUser.username;
                 $scope.motto = Session.get('profile').motto;
 
-                $timeout(function(){$scope.$apply(function(){})});
+                $timeout(function(){});
             }
         });
 

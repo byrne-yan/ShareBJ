@@ -42,17 +42,14 @@
                                 maxHeight:Images.NormalQualityHeight,
                                 quality:1,exif:exif}, function(data){
                                 //console.log("got processed image:"+ Date.now());
+                                $scope.slideImages[idx] = {
+                                    src: data,
+                                    thumb: false
+                                };
 
                                 $timeout(function() {
-                                    $scope.$apply(function () {  //change to original picture
-                                        //console.log("image applied:" + idx + ':' + Date.now());
-                                        $scope.slideImages[idx] = {
-                                            src: data,
-                                            thumb: false
-                                        };
-                                        $ionicSlideBoxDelegate.update();
-                                    })
-                                },0);
+                                    $ionicSlideBoxDelegate.update();
+                                });
                             })
                         };
                         getImage(imgSrc,$scope.images[i][$scope.exif],i);
