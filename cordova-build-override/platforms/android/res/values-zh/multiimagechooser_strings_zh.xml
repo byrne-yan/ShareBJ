@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="multi_app_name">MultiImageChooser</string>
+    <string name="free_version_label">还可选择图片: %d</string>
+    <string name="error_database">打开图片数据库时出错。</string>
+    <string name="requesting_thumbnails">正在生成缩略图，请稍候</string>
+    <string name="discard">取消</string>
+    <string name="all">全选</string>
+    <string name="clear">不选</string>
+    <string name="done">确定</string>
+    <string name="chosen">已选择: </string>
+    <string name="processing">图片处理中</string>
+    <string name="processing_time">可能需要一点点时间</string>
+    <string name="max_1">最多</string>
+    <string name="max_2">张照片</string>
+    <string name="max_3">你只能选择</string>
+    <string name="max_4">张照片。</string>
+</resources>
