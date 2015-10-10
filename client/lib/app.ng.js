@@ -71,6 +71,28 @@ angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'
             )
         }
     })
+    .run(function($ionicPlatform,$ionicPopup,$ionicHistory){
+         $ionicPlatform.registerBackButtonAction(function(event){
+             if(!$ionicHistory.backView())//check prevent condition
+             {
+                 var moreInfo = '';
+                 if(Uploads.isUploading())
+                    moreInfo = '还有照片正在上传，此时退出可能会导致上传失败。';
+
+                 $ionicPopup.confirm({
+                     title:'退出应用确认',
+                     template: moreInfo + "你要确定要退出ShareBJ吗？"
+                 })
+                 .then(function(res){
+                     if(res){//yes
+                        ionic.Platform.exitApp();
+                     }
+                 });
+             }else{
+                 $ionicHistory.goBack();
+             }
+         }, 100);
+    })
 ;
 
 

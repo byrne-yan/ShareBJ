@@ -1,6 +1,7 @@
 <ion-view view-title="新日记">
     <ion-nav-buttons side="secondary">
-        <button type="submit" class="button button-balanced " ng-click="newJournal(journal)" ng-disabled="sending">
+        <button type="submit" class="button button-balanced " ng-click="newJournal(journal)"
+                ng-disabled="!hasContent || sending">
             发送
         </button>
     </ion-nav-buttons>

@@ -8,11 +8,8 @@ angular.module('shareBJ.images')
         //Uploads.updateProgress();
 
         Tracker.autorun(function(){
-            $scope.uploads = Uploads.find({$and:[
-                {progress:{$gte:0}},
-                {progress:{$lt:100}}
-            ]}).fetch();
-            //console.log("=====",$scope.uploads);
+            $scope.uploads = Uploads.find({status:{$nin:['failed','aborted','done']}}).fetch();
+
             $timeout( function(){} );
         });
 

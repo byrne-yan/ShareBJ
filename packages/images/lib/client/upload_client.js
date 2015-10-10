@@ -62,7 +62,12 @@ class MyUploader{
         var self = this;
         self._uploader.xhr.abort();
         return new Promise(function(resolve,reject){
-            if(self._uploader.status()!=="transfering") resolve();
+            Tracker.autorun(function(c){
+                if(self._uploader.status()!=="transfering"){
+                    c.stop();
+                    resolve();
+                }
+            })
         })
     }
 }

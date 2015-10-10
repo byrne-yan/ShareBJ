@@ -32,6 +32,9 @@ Slingshot.fileRestrictions("originUploads",{
 
 Uploads = {
     _uploaders:{},
+    isUploading:function(){
+        return !!LocalCollection.findOne({_type:'upload', end: {$exists:false}});
+    },
     find:function(selector,options){
         if(!selector) selector={};
         _.extend(selector,{_type:'upload',progress:{$gte: 0}});

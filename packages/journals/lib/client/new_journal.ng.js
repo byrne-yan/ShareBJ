@@ -1,5 +1,5 @@
 angular.module('shareBJ.journals')
-    .controller('NewJournalCtrl', function ($scope, $rootScope, $state, $stateParams,
+    .controller('NewJournalCtrl', function ($scope, $rootScope, $state, $stateParams,$timeout,
                                             $cordovaImagePicker,$cordovaCamera,$ionicModal,$ionicLoading
         ,$ionicActionSheet) {
         if($rootScope.currentUser){
@@ -19,6 +19,15 @@ angular.module('shareBJ.journals')
         $scope.picking = false;
         $scope.edit = {};
         $scope.journal.images = [];
+
+        $scope.$meteorAutorun(function(){
+            var desc = $scope.getReactively('journal.description');
+            var images = $scope.getReactively('journal.images',true);
+            console.log(images.length);
+            $scope.hasContent = (!!desc && desc.length > 0) || (!!images && images.length > 0 );
+            $timeout(function(){});
+        });
+
 
         $ionicModal.fromTemplateUrl('svj_journals_lib/client/addendum_modal.ng.html',{
             scope:$scope,
