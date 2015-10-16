@@ -15,6 +15,7 @@ Images.ThumbWidth = 143;
 Images.ThumbHeight = 143;
 
 
+
 Slingshot.fileRestrictions("imageUploads",{
     allowedFileTypes:["image/png","image/jpeg","image/gif"],
     maxSize: Images.NormalQualityMaxSize

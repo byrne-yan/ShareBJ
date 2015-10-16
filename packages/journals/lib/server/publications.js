@@ -27,7 +27,9 @@ Meteor.publish('myOwnJournals',function(options, extra){
 
        if(ip)
        {
+           console.time('Images.getPresignedUrls');
            doc.images = Images.getPresignedUrls(doc.images,ip);
+           console.timeEnd('Images.getPresignedUrls');
        }
        else{
            doc.images = [];
@@ -125,7 +127,9 @@ Meteor.publish('myJournals',function(options, extra){
         const ip = ShareBJ.getPublicIp(connID,connClientAddress);
         if(ip)
         {
+            console.time('Images.getPresignedUrls');
             doc.images = Images.getPresignedUrls(doc.images,ip);
+            console.timeEnd('Images.getPresignedUrls');
         }
         else　{
             doc.images = [];

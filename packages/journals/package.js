@@ -31,7 +31,7 @@ Package.onUse(function(api) {
 
   api.addFiles([
           'lib/client/style.css',
-          'lib/client/journal_directive.css',
+          'lib/client/directive/journal_directive.css',
         'lib/client/app.ng.js',
         'lib/client/journals.ng.js',
           'lib/client/new_journal.ng.js',
@@ -40,8 +40,8 @@ Package.onUse(function(api) {
           'lib/client/journals_main.ng.html',
           'lib/client/new_journal.ng.html',
         'lib/client/journals.ng.html',
-          'lib/client/journal_directive.ng.html',
-          'lib/client/journal_directive.ng.js',
+          'lib/client/directive/journal_directive.ng.html',
+          'lib/client/directive/journal_directive.ng.js',
           'lib/client/input_popover.ng.html'
       ], ['client']
   );

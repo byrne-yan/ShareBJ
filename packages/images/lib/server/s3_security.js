@@ -44,10 +44,7 @@ Images.getPresignedUrls = function(images,ip){
                 sessionToken: AWS.config.credentials.sessionToken
             });
 
-            return {
-                thumb: Images.getPresignedUrl(image.thumb,ip),
-                url: Images.getPresignedUrl(image.url,ip)
-            }
+            return _.extend(image,{ thumb: Images.getPresignedUrl(image.thumb,ip), url: Images.getPresignedUrl(image.url,ip)  })
         }
         return image;
     });

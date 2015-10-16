@@ -9,7 +9,7 @@
                 journal: '=' //must have propeties: images,
             },
             replace: "true",
-            templateUrl: "sbj_journals_lib/client/journal_directive.ng.html",
+            templateUrl: "sbj_journals_lib/client/directive/journal_directive.ng.html",
             //link:function(scope,element,attrs){
             //
             //},
@@ -43,7 +43,7 @@
                     $scope.slideStart = index;
 
                     $scope.slideModal = $ionicModal.fromTemplate(
-                        '<sbj-slide-box images="currentImages" thumb="thumb" src="url" orientation-fix="true" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
+                        '<sbj-slide-box images="currentImages" thumb="thumb" src="url" orientation="orientation" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
                             scope: $scope,
                             animation: 'slide-in-up'
                         });

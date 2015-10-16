@@ -1,0 +1,21 @@
+<ion-modal-view class="modal image-modal" ng-click="closeModal()" data-tap-disabled="false">
+    <ion-slide-box on-slide-changed="slideChanged(index)" active-slide="activeSlide" show-pager="true">
+        <ion-slide ng-repeat="image in slideImages" repeat-done="repeatDone()">
+            <ion-scroll zooming="true" direction="y" scrollbar-x="false" scrollbar-y="false"
+                    min-zoom="{{zoomMin}}" style="width:100%;height:100%"
+                    delegate-handle="scrollHandle{{$index}}" on-scroll="updateSlideStatus(activeSlide)"
+                    on-release="updateSlideStatus(activeSlide)" >
+                <div class="image image-orientation-{{image.orientation}}" ng-style="{'background-image':bgImage(image)}">
+                    <img ng-src="{{image.src}}" class="DummyImage" sbj-load="onImgLoad($event,$data)" sbj-data="$index">
+                    <div ng-if="!image.loaded">
+                        <img ng-src="{{image.thumb}}" ng-class="{'thumb-image':!image.loaded}">
+                        <ion-spinner class="thumb-spinner spinner-balanced"></ion-spinner>
+                    </div>
+                </div>
+            </ion-scroll>
+        </ion-slide>
+    </ion-slide-box>
+    <div class="trash-button button button-icon" ng-click="deleteImage()" ng-if="showTrash">
+        <i class="icon ion-trash-a"></i>
+    </div>
+</ion-modal-view>

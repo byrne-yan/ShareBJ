@@ -30,7 +30,7 @@ Package.onUse(function(api) {
     var packages =[
         'ecmascript',
         'meteor-platform@1.2.2',
-        'angular@1.0.0-rc.11',
+        'angular@1.0.2',
         'momentjs:moment@2.10.6',
         'accounts-password@1.1.1',
         //'angularui:angular-ui-router@0.2.15',
@@ -74,10 +74,8 @@ Package.onUse(function(api) {
         'client/lib.ng.js',
         'client/ngletteravatar.js',
         'client/photos.js',
-        'client/directive/slidebox_directive.ng.html',
-        'client/directive/slidebox_directive.ng.js',
-        'client/directive/thumbnail_directive.ng.html',
-        'client/directive/thumbnail_directive.ng.js',
+        //'client/directive/slidebox_directive.ng.html',
+        //'client/directive/slidebox_directive.ng.js',
         'client/directive/autosize_directive.ng.js',
         'client/style.css',
         'client/net_client.js'
@@ -88,6 +86,7 @@ Package.onUse(function(api) {
     api.export('ageOf');
     api.export('clone');
     api.export('LocalCollection','client');
+    api.export('SBJ_DEBUG');
 
     //testing purpose
     api.export('_lib_methods4Testing')

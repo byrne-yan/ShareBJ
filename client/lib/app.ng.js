@@ -1,21 +1,7 @@
 angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals','shareBJ.images'])
     .controller('AppCtrl',function($scope,$state,$meteor,$ionicHistory,$rootScope,$timeout) {
-        //$scope.popover = $ionicPopover.fromTemplate( '<ion-popover-view>' +
-        //    '<ion-content><div class="list">' +
-        //        '<div class="item item-button-left">' +
-        //        '<button class="button button-clear" ui-sref="shareBJ.babies.requests">' +
-        //        '   <i class="icon ion-email-unread assertive"></i>' +
-        //        '</button>' +
-        //        '</div>' +
-        //    '</list></ion-content>' +
-        //'</ion-popover-view>'
-        //,{scope:$scope});
-
-        //$scope.subs = [];
         $scope.$meteorAutorun(function () {
-            //console.log("Autorun");
             if (Meteor.userId()) {
-                //console.log("Autorun with userId");
                 $scope.notifications = $scope.$meteorCollection(function () {
                     return Herald.getNotifications({medium: 'onsite'});
                 });
@@ -23,8 +9,6 @@ angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'
 
                 $scope.$meteorSubscribe('myRequests')
                     .then(function (subId) {
-                        //console.log("myRequests id:",subId);
-                        //$scope.subs.push(subId);
                         $scope.requestsCount = $scope.$meteorObject(Counts, 'numOfMyRequests', false);
 
                     }, console.log);
@@ -34,14 +18,13 @@ angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'
             if($rootScope.getReactively('currentUser'))
             {
                 if($rootScope.currentUser.profile){
-                    console.log("set profile session",$rootScope.currentUser.profile);
+                    //console.log("set profile session",$rootScope.currentUser.profile);
                     Session.set('profile',$rootScope.currentUser.profile);
                 }
                 $timeout(function(){});
             }
         });
         Tracker.autorun(function(){
-            //console.log('respond to profile change:',Session.get('profile'));
             if(Session.get('profile'))
             {
                 $scope.avatar = Session.get('profile').avatar;
@@ -58,10 +41,6 @@ angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'
         $scope.logout = function(){
             $meteor.logout().then(
                 function(){
-                    //console.log("UserId after logout:",Meteor.userId());
-                    //_.each($scope.subs,function(sub){
-                    //    sub.stop();
-                    //});
                     $ionicHistory.nextViewOptions({
                         disableBack: true
                     });
@@ -101,6 +80,10 @@ angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'
 Meteor.startup(function(){
     function onReady() {
         angular.bootstrap(document, ['ShareBJ']);
+
+        _.each(ShareBJ.deviceReadyCallbacks,function(cb){
+            cb();
+        });
         //if(Meteor.isCordova){
         //    window.plugins.sim.getSimInfo(function(info){
         //        ShareBJ.phoneInfo = info;

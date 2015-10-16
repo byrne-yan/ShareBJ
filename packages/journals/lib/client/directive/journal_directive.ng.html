@@ -17,7 +17,7 @@
     </div>
     <div class="journal-image-list">
         <sbj-thumbnail class="journal-thumb rounded" thumb-width="80" thumb-height="80"
-                       ng-repeat="image in journal.images" ng-src="image.thumb"
+                       ng-repeat="image in journal.images" ng-src="image.thumb" orientation="{{image.orientation}}"
                        ng-click="showSlides(journal.images,$index)"></sbj-thumbnail>
         <div class="journal-date">{{journal.author.profile.name || journal.author.username}}@{{timeFromNow(journal.createdAt)}}</div>
     </div>

@@ -13,7 +13,10 @@ Package.describe({
 Npm.depends({
   "aws-sdk":'2.2.4'
 });
-
+Cordova.depends({
+    "com.rjfun.cordova.httpd":"file://../cordova-plugins/cordova-httpd",
+    "com.raananw.imageResizer":"https://github.com/RaananW/PhoneGap-Image-Resizer/tarball/708b0091048a9f494e7efed7bf0ca2002501d66a"
+});
 
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
@@ -23,6 +26,7 @@ Package.onUse(function(api) {
       'meteor-base',
       'mongo',
       "random",
+      'reactive-var',
       'sbj:lib',
       'sbj:users'
     ]);
@@ -31,9 +35,19 @@ Package.onUse(function(api) {
   api.addFiles('lib/images.js');
 
   api.addFiles([
+      'lib/client/images_client.js',
+      'lib/client/image_cache.js',
       'lib/client/upload_client.js',
+      'lib/client/upimage.js',
+      'lib/client/image_server.js',
       'lib/client/images.ng.js',
       'lib/client/router.ng.js',
+      'lib/client/directive/imageslides_directive.ng.html',
+      'lib/client/directive/imageslides_directive.ng.js',
+      'lib/client/directive/imageslides_directive.css',
+      'lib/client/directive/thumbnail_directive.ng.html',
+      'lib/client/directive/thumbnail_directive.ng.js',
+
       'lib/client/uploading_menu.ng.html',
       'lib/client/uploading_dashboard.ng.html'
   ],'client');
@@ -44,6 +58,7 @@ Package.onUse(function(api) {
     ],'server');
   api.export('Images');
     api.export('Uploads');
+    api.export('UpImage');
 
 
 });

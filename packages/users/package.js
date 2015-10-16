@@ -30,6 +30,7 @@ Package.onUse(function (api) {
   ], ['client', 'server']);
 
   api.addFiles([
+      'lib/client/user_info.js',
      'lib/client/app.ng.js',
     'lib/client/users_router.ng.js',
 

@@ -1,26 +1,18 @@
 <ion-view view-title="上载管理" >
     <ion-content class="has-header">
         <div class="row">
-            <div class="col">文件名</div>
-            <div class="col">类别</div>
-            <div class="col">分辨率</div>
-            <div class="col">关联日记</div>
-            <div class="col">大小</div>
-            <div class="col">状态</div>
-            <div class="col">开始时间</div>
+            <!--<div class="col">文件名</div>-->
+            <div class="col col-67">类别|大小|状态|开始时间</div>
             <div class="col">进度</div>
             <div class="col">动作</div>
         </div>
         <div ng-repeat="upload in uploads" class="row">
-            <div class="col">{{upload.filename}} </div>
-            <div class="col">{{upload.category}} </div>
-            <div class="col">{{upload.resolution.width}}X{{upload.resolution.height}}</div>
-            <div class="col">{{upload.size/1024 | number:0}}K </div>
-            <div class="col">{{upload.status}} </div>
-            <div class="col">{{upload.start | date:'H:mm:ss'}}</div>
-            <a class="col" ui_sref="shareBJ.journals.list({'#':'{{upload.journal}}'})">{{upload.journal}} </a>
+            <!--<div class="col">{{upload.filename}} </div>-->
+            <div class="col col-67">{{upload.category==='origin'?'O':'S'}}|{{upload.size/1024 | number:0}}K|{{upload.status}}
+                |{{upload.start | date:'H:mm'}}
+            </div>
             <div class="col">{{upload.progress}}% </div>
-            <a class="col button" ng-click="cancelUpload(upload.uploader)">取消</a>
+            <a class="col button button-small button-assertive" ng-click="cancelUpload(upload.uploader)">取消</a>
         </div>
     </ion-content>
 </ion-view>

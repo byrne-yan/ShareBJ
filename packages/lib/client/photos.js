@@ -53,7 +53,7 @@ ShareBJ.uri2DataURL = function (uri){
                     if(reader.error){
                         return reject(reader.error);
                     }
-                    return resolve({dataURL:reader.result,filename:file.name});
+                    return resolve({_dataURL:reader.result,filename:file.name});
                 };
                 reader.readAsDataURL(file);
             },function(error){
@@ -75,5 +75,17 @@ ShareBJ.blob2DataURL = function(blob){
             return resolve(reader.result);
         };
         reader.readAsDataURL(blob);
+    });
+}
+
+ShareBJ.getFileSize = function(uri,callback){
+    window.resolveLocalFileSystemURL(uri,function(fileEntry) {
+        fileEntry.file(function (file) {
+            callback(undefined, file.size);
+        }, function (error) {
+            callback(error);
+        })
+    },function(error){
+        callback(error);
     });
 }

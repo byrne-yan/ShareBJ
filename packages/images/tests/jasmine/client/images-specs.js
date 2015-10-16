@@ -217,10 +217,10 @@ describe('Images_on_client',()=> {
             }
         });
 
-        Images.uploadThumbs([{filename: 'test.jpg', dataAsUrl: ""}], journalId,function(resolve,reject,jId,idx,downloadUrl,imageId) {
+        Images.uploadThumbs([{filename: 'test.jpg', dataAsUrl: ""}], journalId,function(resolve,reject,jId,idx,downloadUrl,babyId) {
             expect(idx).toEqual(0);
             expect(jId).toEqual(journalId);
-            expect(imageId).toBeDefined();
+            expect(babyId).toBeDefined();
             expect(downloadUrl).toEqual(expectedUrl);
             reject();
         }).then((res)=>{

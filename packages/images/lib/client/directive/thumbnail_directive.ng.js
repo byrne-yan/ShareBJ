@@ -47,10 +47,11 @@
                 thumbWidth:'@',
                 thumbHeight:'@',
                 thumbStamp:'@',
+                orientation:'@',
                 ngSrc:'='
             },
             replace:"true",
-            templateUrl: "sbj_lib_client/directive/thumbnail_directive.ng.html",
+            templateUrl: "sbj_images_lib/client/directive/thumbnail_directive.ng.html",
             link:function(scope,element,attrs){
                 function fit(e){
                     //console.log("img.load：",e,this);

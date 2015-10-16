@@ -33,10 +33,11 @@
                 </label>
                 <input type="file" id="imagePicker" multiple accept="image/*" class="sharebj-imgPicker" >
                 <div class="item item-text-wrap">
-                    <a class="subdued " href="#" ng-repeat="image in journal.images track by image.filename" ng-click="showSlides($index)">
-                        <sbj-thumbnail thumb-width="80" thumb-height="80" ng-src="image.dataAsUrl"
-                                       thumb-stamp="{{dateTaken(image.exif.DateTime)}}"></sbj-thumbnail>
+                    <a class="subdued " href="#" ng-repeat="image in journal.images track by image.origin.uri" ng-click="showSlides($index)">
+                        <sbj-thumbnail thumb-width="80" thumb-height="80" ng-src="image.thumb.url" orientation="{{image.origin.orientation}}"
+                                       thumb-stamp="{{dateTaken(image.origin.takenAt)}}"></sbj-thumbnail>
                     </a>
+
                     <a class="subdued" href="#" id="imageFacade" ng-show="journal.images.length < 9">
                         <img class="journal-img" src="images/plus.jpg"  >
                     </a>

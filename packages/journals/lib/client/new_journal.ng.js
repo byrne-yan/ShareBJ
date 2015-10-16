@@ -14,20 +14,19 @@ angular.module('shareBJ.journals')
         if ($stateParams.baby) {
             $scope.journal.baby = $stateParams.baby;
         }
-
         $scope.sending = false;
         $scope.picking = false;
         $scope.edit = {};
         $scope.journal.images = [];
+        $scope.journal.imagesCount = 0;
 
         $scope.$meteorAutorun(function(){
             var desc = $scope.getReactively('journal.description');
-            var images = $scope.getReactively('journal.images',true);
-            console.log(images.length);
-            $scope.hasContent = (!!desc && desc.length > 0) || (!!images && images.length > 0 );
+            var imagesCount = $scope.getReactively('journal.imagesCount',false);
+            //console.log(images.length);
+            $scope.hasContent = (!!desc && desc.length > 0) || (!!imagesCount && imagesCount > 0 );
             $timeout(function(){});
         });
-
 
         $ionicModal.fromTemplateUrl('svj_journals_lib/client/addendum_modal.ng.html',{
             scope:$scope,
@@ -73,10 +72,11 @@ angular.module('shareBJ.journals')
                 .then(function(docIds){
                     console.log("saved journals:", docIds);
                     $ionicLoading.show('上传照片中...');
-                    return Images.uploadThumbs($scope.journal.images,docIds[0]._id,function(resolve,reject,docId,no,downloadUrl,imageId){
+                    return Images.uploadThumbs($scope.journal.images,docIds[0]._id,journal.baby,function(resolve,reject,docId,no,downloadUrl,babyId){
                         Journals.update({_id: docId},
                             {$push:{images:{
                                 no:no,
+                                orientation:$scope.journal.images[no].origin.orientation,
                                 thumb:downloadUrl,
                                 url:null
                             }}},
@@ -86,12 +86,13 @@ angular.module('shareBJ.journals')
                                     return reject(error);
                                 } else {
                                     console.log("update journal's images done", docId, affected);
-                                    return resolve({docId:docId,imageId:imageId,no:no});
+                                    return resolve({docId:docId,babyId:babyId,no:no});
                                 }
                             }
                         );
                     });
                 }).then(function(res){ //once all thumbs uploaded, starting upload images and then go to journal list
+                    console.time('save journal');
                     console.log(res);
                     $ionicLoading.hide();
                     $scope.sending = false;
@@ -113,7 +114,7 @@ angular.module('shareBJ.journals')
                     });
 
                     Images.uploadOrigins($scope.journal.images,res,function(resolve,reject,docId,no,downloadUrl){
-                        Meteor.call('updateJournalImageURL', docId, no, downloadUrl,true, function (error, num) {
+                        Meteor.call('updateJournalImageURL', docId, no, downloadUrl,false, function (error, num) {
                             if (error) {
                                 return reject(error);
                             } else {
@@ -123,6 +124,7 @@ angular.module('shareBJ.journals')
                         });
                     });
 
+                    console.timeEnd('save journal');
                     $state.go(ShareBJ.state.journals);
                 }).catch(function(error){
                     $ionicLoading.hide();
@@ -142,49 +144,41 @@ angular.module('shareBJ.journals')
 
             Promise.all(
                 _.map(dedup, function(image){
-                    //console.log(image);
-
+                    var objImage = new UpImage();
                     return new Promise(function(resolve,reject){
-                        //get thumbnail
-                        EXIF.readExifFromFileURI(image,function(exif) {
-                            console.log("Image exif:", exif);
-                            var doImgProcess = function(exifdata){
-                                processImage(image, {maxWidth:Images.ThumbWidth, maxHeight:Images.ThumbHeight,quality: 1,exif:exif}, function (data) {
-                                    console.log("processed image:", data);
-                                    return resolve({
-                                        category: "File",
-                                        filename: image.name,
-                                        dataAsUrl: data,
-                                        file: image,
-                                        exif: exifdata
-                                    })
-                                });
-                            };
-                            doImgProcess(exif);
-                        });
-                        moreImages --;
-                        if(moreImages<0)//ignore rest
-                            return resolve(null);
+                        objImage.attachFile(image)
+                            .then(function(){
+                                resolve(objImage);
+                                moreImages --;
+                                if(moreImages<0)//ignore rest
+                                    resolve(null);
+                        })
+                        .catch(function(err){
+                                reject(err);
+                        })
                     })
                 })
-            )
-            .then(function(results){
-                $scope.$apply(function(){
-                    _.each(results,function(result){
-                        //console.log(result);
-                        if(result) {
+            ).then(function(results){
+                _.each(results,function(result){
+                    //console.log(result);
+                    if(result) {
+                        $timeout(function(){
                             $scope.journal.images.push(result);
-                        }
-                    });
-                    var farDate = calcOldestPhoto();
-                    //one of photo took more than 3 days,then ask if a journal addendum?
-                    if(moment(farDate).add(3,'days').isBefore(new Date())){
+                            $scope.journal.imagesCount++;
+                        })
+                    }
+                });
+
+                var farDate = calcOldestPhoto();
+                //one of photo took more than 3 days,then ask if a journal addendum?
+                if(moment(farDate).add(3,'days').isBefore(new Date())){
+                    $timeout(function() {
                         $scope.tookDate = moment(farDate).format('LL');
                         $scope.askAddendum = true;
                         $scope.edit.isAddendum = true;
                         $scope.edit.addendumDate = farDate;
-                    }
-                });
+                    })
+                }
                 $scope.picking = false;
             }).catch(function(error){
                 console.log(error);
@@ -205,85 +199,89 @@ angular.module('shareBJ.journals')
 
                 ShareBJ.pictureSource($ionicActionSheet)
                     .then(function(source){
+                        var limits = Session.get('UploadLimits');
+
                         switch (source){
                             case 0:　//camera
                                 //using $cordovaCamera
+                                var type = Camera.DestinationType.FILE_URI;
+
                                 var options = {
-                                    destinationType: Camera.DestinationType.DATA_URL,
+                                    destinationType: type,
                                     targetWidth: Images.HighQualityWidth,
                                     targetWidth: Images.HighQualityHeight,
-                                    sourceType:Camera.PictureSourceType.CAMERA
+                                    sourceType:Camera.PictureSourceType.CAMERA,
+                                    saveToPhotoAlbum:false,
+                                    correctOrientaton:false,
+                                    allowEdit:false
                                 };
                                 $cordovaCamera.getPicture(options)
-                                    .then(function(imageData){
-                                        var dataURI = "data:image/jpeg;base64," + imageData;
-                                        $scope.journal.images.push({
-                                            category:"DataURL",
-                                            filename:"camera"+ (new Date()),//unique name
-                                            dataAsUrl:dataURI,
-                                            file:dataURI
-                                        });
-                                    }, function(error) {
-                                            $scope.picking = false;
-                                            console.log("getPictures error:",error);
-                                    });
-                                break;
-                            case 1:
-                                //using imagePicker
+                                .then(function(res){
+                                    var image = new UpImage();
 
+                                    var done;
+                                    if(type === Camera.DestinationType.DATA_URL)
+                                    {
+                                        var dataURI = "data:image/jpeg;base64," + res;
+                                        done = image.attachDataURL(dataURI);
+                                    }else{
+                                        done = image.attachURI(res);
+                                    }
+
+                                    done.then(function(promiseScale){
+                                        $timeout(function() {
+                                            $scope.journal.images.push(image);
+                                            $scope.journal.imagesCount++;
+                                        });
+                                    }).catch(function(err){
+                                        throw err;
+                                    });
+
+                                }, function(error) {
+                                        $scope.picking = false;
+                                        console.log("getPictures error:",error);
+                                });
+                                break;
+                            case 1: //using imagePicker
                                 var options = {
                                     //maxImages: 9-$scope.journal.images.length,
                                     maximumImagesCount:9-$scope.journal.images.length,
                                     useOriginal:true,
-                                    createThumbnail:true,
+                                    createThumbnail:false
                                     //saveToDataDirectory:true,
-                                    width: Images.NormalQualityWidth,
-                                    height: Images.NormalQualityHeight,
-                                    quality: 100
+                                    //width: scaleWidth,
+                                    //height: scaleHeight,
+                                    //quality: quality
                                 };
                                 $scope.picking = true;
                                 $cordovaImagePicker.getPictures(options)
-                                    .then(function (results) {
-                                        for (var i = 0; i < results.length; i++) {
-                                            function read(uri){
-                                                console.log('Image URI: ' + uri);
-                                                EXIF.readExifFromFileURI(uri,function(exifdata){
-                                                    console.log("Image exif:",exifdata);
+                                .then(function (results) {
+                                    var composeImage = function(uri,exifdata){
+                                        var image = new UpImage();
+                                        image.attachURI(uri).then(function(promiseScale){
+                                            $timeout(function () {
+                                                $scope.journal.images.push(image);
+                                                $scope.journal.imagesCount++;
+                                                var farDate = calcOldestPhoto();
+                                                //one of photo took more than 3 days,then ask if a journal addendum?
+                                                if (moment(farDate).add(3, 'days').isBefore(new Date())) {
+                                                    $scope.tookDate = moment(farDate).format('LL');
+                                                    $scope.askAddendum = true;
+                                                    $scope.edit.isAddendum = true;
+                                                    $scope.edit.addendumDate = farDate;
+                                                }
+                                            })
+                                        })
+                                    }
 
-                                                    //var thumb_uri = uri.replace(cordova.file.dataDirectory,cordova.file.dataDirectory+'thumb_');
-                                                    var thumb_uri = uri.replace(cordova.file.cacheDirectory,cordova.file.cacheDirectory+'thumb_');
-                                                    console.log('Thumb URI: ' + thumb_uri);
-                                                    //processImage(uri,Images.ThumbWidth,Images.ThumbHeight,1,function(data,exifdata){
-                                                    processImage(thumb_uri,{exif:exifdata},function(data){
-                                                        console.log("processed image:",data);
-                                                        $scope.$apply(function(){
-                                                            $scope.journal.images.push({
-                                                                category:"URI",
-                                                                filename:uri,
-                                                                dataAsUrl:data,
-                                                                file:uri,
-                                                                exif:exifdata
-                                                            });
-                                                            var farDate = calcOldestPhoto();
-                                                            //one of photo took more than 3 days,then ask if a journal addendum?
-                                                            if(moment(farDate).add(3,'days').isBefore(new Date())){
-                                                                $scope.tookDate = moment(farDate).format('LL');
-                                                                $scope.askAddendum = true;
-                                                                $scope.edit.isAddendum = true;
-                                                                $scope.edit.addendumDate = farDate;
-                                                            }
-
-                                                        })
-                                                    });
-                                                });
-                                            };
-                                            read(results[i]);
-                                        }
-                                        $scope.picking = false;
-                                    }, function(error) {
-                                        $scope.picking = false;
-                                        console.log("getPictures error:",error);
-                                    });
+                                    for (var i = 0; i < results.length; i++) {
+                                        composeImage(results[i]);
+                                    }
+                                    $scope.picking = false;
+                                }, function(error) {
+                                    $scope.picking = false;
+                                    console.error("getPictures error:",error);
+                                });
                                 break
                         }
                     })
@@ -296,10 +294,12 @@ angular.module('shareBJ.journals')
         };
 
         $scope.showSlides = function(index){
-            //console.log($scope.journal.images);
             $scope.slideStart = index;
             $scope.slideModal = $ionicModal.fromTemplate(
-                '<sbj-slide-box images="journal.images" thumb="dataAsUrl" src="file" exif="exif" orientation-fix="true" show-trash="true" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
+                '<sbj-slide-box images="journal.images" thumb="thumb.url" src="origin.uri" ' +
+                'orientation="origin.orientation" show-trash="true" start="{{slideStart}}"' +
+                ' onclose="closeSlides()"></sbj-slide-box>',
+                {
                     scope: $scope,
                     animation: 'slide-in-up'
                 });

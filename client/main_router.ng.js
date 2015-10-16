@@ -17,24 +17,29 @@ angular.module('ShareBJ')
     })
     .run(function($rootScope,$state,$meteor,$ionicHistory){
         $rootScope.$on('$stateChangeError',function(event,toState,toParams,fromState,fromParams,error){
-            console.log("$stateChangeError:",event,toState,toParams,fromState,fromParams,error);
+            //console.log("$stateChangeError:",event,toState,toParams,fromState,fromParams,error);
             if (error === 'AUTH_REQUIRED'){
                 $state.go(ShareBJ.state.login);
             }
         });
-        $rootScope.$on('$stateChangeStart',function(event,toState,toParams,fromState,fromParams){
+/*        $rootScope.$on('$stateChangeStart',function(event,toState,toParams,fromState,fromParams){
             console.log("$stateChangeStart:",event,toState,toParams,fromState,fromParams);
             console.log($ionicHistory.viewHistory());
+
+            if(toState.name==='shareBJ.journals.list')
+                console.time('shareBJ.journals.list');
         });
         $rootScope.$on('$stateChangeSuccess',function(event,toState,toParams,fromState,fromParams,error){
             console.log("$stateChangeSuccess:",event,toState,toParams,fromState,fromParams);
+            //if(toState.name==='shareBJ.journals.list')
+            //    console.timeEnd('shareBJ.journals.list');
             //console.log($ionicHistory.viewHistory());
             //if done from login to any state, resotre backView setting
             //if(fromState.name==='shareBJ.users_login')
             //{
             //    $ionicHistory.nextViewOptions(null);
             //}
-        });
+        });*/
         //$rootScope.$on('$viewContentLoading',function(event){
         //    console.log('$viewContentLoading',event);
         //});

@@ -26,7 +26,7 @@ angular.module('shareBJ.journals')
                     search:$scope.getReactively('filter.search')
                 }
             ).then(function(){
-                $scope.journalsCount = $scope.$meteorObject(Counts,'numOfMyJournals',false);
+                    $scope.journalsCount = $scope.$meteorObject(Counts,'numOfMyJournals',false);
             });
 
             $scope.timeFromNow = function(date){
@@ -37,8 +37,12 @@ angular.module('shareBJ.journals')
             }
         });
 
+        $scope.$meteorAutorun(function(){
+            if($scope.getReactively('journals',true))
+                console.timeEnd('shareBJ.journals.list');
+        });
 
-        $scope.journals = $scope.$meteorCollection( function() {
+        $scope.journals = $meteor.collection( function() {
                     return Journals.find({},{
                     sort: {createdAt: -1}
                 })

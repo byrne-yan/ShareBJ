@@ -17,6 +17,10 @@
     max-height: 400px;
 }
 
+.cropper-container img{
+    max-height: 100% !important;
+}
+
 #avatarCandidate {
     float: left;
     width: 32px ;

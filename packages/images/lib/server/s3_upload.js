@@ -27,7 +27,8 @@ Slingshot.createDirective("imageUploads",Slingshot.S3Storage,{
     AWSSecretAccessKey:Meteor.settings.s3.image.SECRET,
     authorize: authorizeFn,
     key: function(file, metaContext){
-        const s3key = Meteor.settings.s3.image.prefix + metaContext.journalId + '/'+ metaContext.imageId + '.' + file.type.split("/")[1];
+        const s3key = Meteor.settings.s3.image.prefix + metaContext.babyId + '/'+  metaContext.journalId + '-'
+            + metaContext.imageNo + '-scaled'+ '.' + file.type.split("/")[1];
         console.log(s3key);
         return s3key;
     }
@@ -41,7 +42,8 @@ Slingshot.createDirective("thumbUploads",Slingshot.S3Storage,{
     AWSSecretAccessKey:Meteor.settings.s3.image.SECRET,
     authorize: authorizeFn,
     key: function(file, metaContext){
-        const s3key = Meteor.settings.s3.image.prefix + metaContext.journalId + '/'+ metaContext.imageId + '_thumbnail' + '.' + file.type.split("/")[1];
+        const s3key = Meteor.settings.s3.image.prefix + metaContext.babyId + '/'+ metaContext.journalId + '-'
+                        + metaContext.imageNo + '-thumbnail' + '.' + file.type.split("/")[1];
         console.log(s3key);
         return s3key;
     }
@@ -55,7 +57,8 @@ Slingshot.createDirective("originUploads",Slingshot.S3Storage,{
     AWSSecretAccessKey:Meteor.settings.s3.image.SECRET,
     authorize: authorizeFn,
     key: function(file, metaContext){
-        const s3key = Meteor.settings.s3.image.prefix + metaContext.journalId + '/'+ metaContext.imageId + '_origin' + '.' + file.type.split("/")[1];
+        const s3key = Meteor.settings.s3.image.prefix + metaContext.babyId + '/'+ metaContext.journalId + '-'
+                + metaContext.imageNo  + '.' + file.type.split("/")[1];
         console.log(s3key);
         return s3key;
     }
