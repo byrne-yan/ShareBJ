@@ -37,10 +37,10 @@ angular.module('shareBJ.journals')
             }
         });
 
-        $scope.$meteorAutorun(function(){
-            if($scope.getReactively('journals',true))
-                console.timeEnd('shareBJ.journals.list');
-        });
+        //$scope.$meteorAutorun(function(){
+        //    if($scope.getReactively('journals',true))
+        //        console.timeEnd('shareBJ.journals.list');
+        //});
 
         $scope.journals = $meteor.collection( function() {
                     return Journals.find({},{

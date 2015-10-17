@@ -5,10 +5,23 @@ Images.NormalQualityMaxSize = 2 * 1024 * 1024; //4M
 Images.ThumbMaxSize = 128 * 1024; //128K
 Images.ThumbExpires =  60 * 60; //one hour expires
 
-Images.HighQualityWidth = 1600;
-Images.HighQualityHeight = 1600;
-Images.NormalQualityHeight = 800;
-Images.NormalQualityWidth = 800;
+
+Images.Quality4KWidth = 3840; //3840x2160 4K
+Images.Quality4KHeight = 3840;
+Images.Quality2KWidth = 2560; //2560x1440 2K 1440p
+Images.Quality2KHeight = 2560;
+Images.Quality1080Width = 1920; //1920*1080 1080p
+Images.Quality1080Height = 1920;
+Images.Quality720Height = 1280; // 1280*720 720p
+Images.Quality720Width = 1280;
+
+
+Images.HighQualityWidth = Images.Quality4KWidth;
+Images.HighQualityHeight = Images.Quality4KHeight;
+Images.NormalQualityHeight = Images.Quality720Height;
+Images.NormalQualityWidth = Images.Quality720Width;
+
+
 //Images.ThumbWidth = 80;
 //Images.ThumbHeight = 80;
 Images.ThumbWidth = 143;

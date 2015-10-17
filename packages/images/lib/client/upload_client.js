@@ -10,7 +10,7 @@ class MyUploader{
         this._resolution = resolution;
         this._journalId = journalId;
         this._babyId = babyId;
-        this._id = journalId + '-' + imageNo;
+        this._id = journalId + '-' + category + '-' + imageNo;
         if(category==="imageUploads")
             this._category = "scaled";
         else if(category==="originUploads")

@@ -59,7 +59,7 @@
                     var h = parseInt( imageDiv.css('height'));
                     ////imageDiv.css('background-size',w);
                     var ratio = 1.0*h/w;
-                    console.log('get size:',w,h,ratio, typeof w);
+                    //console.log('get size:',w,h,ratio, typeof w);
                     var nw = Math.floor(h*ratio);
                     var nh = Math.floor(w*ratio);
                     imageDiv.css('width',nh);

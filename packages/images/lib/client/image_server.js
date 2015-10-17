@@ -64,15 +64,15 @@ Images.server.remapuri = function(uri){
 
         } else if (0 === path.indexOf(Images.server.local_ext_path_cache)) {
 
-            return Images.server.url + path.substring(Images.server.local_ext_path_cache.length);
+            return Images.server.url + Images.server.ext_cache_url + path.substring(Images.server.local_ext_path_cache.length);
 
         } else if (0 === path.indexOf(Images.server.local_ext_path_data)) {
 
-            return Images.server.url + Images.server.ext_data_url + path.substring(Images.server.local_ext_path_data.length);
+            return Images.server.url + Images.server.ext_data_url + Images.server.ext_data_url + path.substring(Images.server.local_ext_path_data.length);
 
         } else if (0 === path.indexOf(Images.server.local_ext_path)) {
 
-            return Images.server.url + Images.server.ext_url + path.substring(Images.server.local_ext_path.length);
+            return Images.server.url + Images.server.ext_url + Images.server.ext_url + path.substring(Images.server.local_ext_path.length);
         }
     }
     //console.log('warn: not remap,',uri);

@@ -208,8 +208,11 @@ angular.module('shareBJ.journals')
 
                                 var options = {
                                     destinationType: type,
-                                    targetWidth: Images.HighQualityWidth,
-                                    targetWidth: Images.HighQualityHeight,
+                                    quality:100,
+                                    //targetWidth: Images.Quality1080Width,
+                                    //targetHeight: Images.Quality1080Height,
+                                    targetWidth: 0,
+                                    targetHeight: 0,
                                     sourceType:Camera.PictureSourceType.CAMERA,
                                     saveToPhotoAlbum:false,
                                     correctOrientaton:false,
@@ -219,16 +222,8 @@ angular.module('shareBJ.journals')
                                 .then(function(res){
                                     var image = new UpImage();
 
-                                    var done;
-                                    if(type === Camera.DestinationType.DATA_URL)
-                                    {
-                                        var dataURI = "data:image/jpeg;base64," + res;
-                                        done = image.attachDataURL(dataURI);
-                                    }else{
-                                        done = image.attachURI(res);
-                                    }
-
-                                    done.then(function(promiseScale){
+                                    image.attachURI(res)
+                                    .then(function(promiseScale){
                                         $timeout(function() {
                                             $scope.journal.images.push(image);
                                             $scope.journal.imagesCount++;
@@ -272,7 +267,7 @@ angular.module('shareBJ.journals')
                                                 }
                                             })
                                         })
-                                    }
+                                    };
 
                                     for (var i = 0; i < results.length; i++) {
                                         composeImage(results[i]);
