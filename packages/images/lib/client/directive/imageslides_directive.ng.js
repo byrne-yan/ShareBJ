@@ -21,8 +21,10 @@
                         var newVal = _.reduce(props,function(newObj,prop){
                             return  newObj[prop];
                         },obj);
-
-                        return Images.server.remapuri(newVal);
+                        if(Meteor.isCordova)
+                            return Images.server.remapuri(newVal);
+                        else
+                            return newVal;
                     }
                 };
 

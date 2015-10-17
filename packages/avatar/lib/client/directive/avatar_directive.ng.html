@@ -8,28 +8,28 @@
         <button class="button button-balanced" ng-click="saveAvatar()" ng-disabled="!edit.hasCroppedCanvas">保存</button>
     </ion-header-bar>
     <ion-content class="has-header" scroll="false">
-        <div class="list card" >
+        <div class="padding" >
             <div class="item" ng-messages="sbjError" ng-show="sbjError.sharebj">
                 <div ng-message="sharebj" class="error" >
                     <i class="ion-information-circled"></i>
                     {{sbjError.sharebjErrorMessage}}
                 </div>
             </div>
-            <div class="item item-avatar item-avatar-left">
-                <!--<div id="avatarCandidate"> </div>-->
-                <img ng-src="{{edit.croppedCanvas}}">
-                <input type="file" id="imagePicker" multiple accept="image/*" class="sharebj-imgPicker"
-                       onchange="angular.element(this).scope().fileSelected(this)">
-                <div class="text-left">
+            <div class="avatar-line">
+                <div class="directive-avatar">
+                    <img ng-src="{{edit.croppedCanvas}}" >
+                </div>
+                <div class="directive-button">
+                    <input type="file" id="imagePicker" multiple accept="image/*" class="sharebj-imgPicker"
+                           onchange="angular.element(this).scope().fileSelected(this)">
                     <button id="imageFacade" class="button button-outline button-positive icon-left ion-camera"
                             ng-click="pick()">选择照片</button>
                 </div>
             </div>
-            <div id="cropper-container" class="item item-image" >
+            <div class="cropper-container" >
                 <img id="cropper-origin-img">
             </div>
-            <!--<div class="item item-divider"></div>-->
-            <!--<div class="item text-center" ng-show="edit.fileAsUrl"><button class="button icon-left ion-refresh center" ng-click="rotate()"></button></div>-->
+            <div class="text-center" ng-show="edit.croppedCanvas"><button class="button icon-left ion-refresh center" ng-click="rotate()"></button></div>
         </div>
 
     </ion-content>

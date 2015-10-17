@@ -2,22 +2,28 @@
     var directive = function(){
         function takePhoto(source,$scope,$cordovaCamera){
             var options = {
-                destinationType: Camera.DestinationType.DATA_URL,
-                targetWidth: 800,
-                targetWidth: 800,
+                destinationType: Camera.DestinationType.FILE_URI,
+                quality:100,
+                targetWidth: 640,
+                targetHeight: 640,
+                saveToPhotoAlbum:false,
+                correctOrientaton:true,
+                allowEdit:false,
                 sourceType:source?Camera.PictureSourceType.PHOTOLIBRARY:Camera.PictureSourceType.CAMERA
             };
             $cordovaCamera.getPicture(options)
-                .then(function(imageData){
-                    $scope.edit.fileAsUrl = "data:image/jpeg;base64," + imageData;
-                    //if($scope.cropperImage)
-                        $scope.cropperImage.cropper('replace',$scope.edit.fileAsUrl);
+                .then(function(uri){
+                    var httpURI = Images.server.remapuri(uri);
+                    console.log("uri and httpURI:",uri,httpURI);
+
+                    $scope.cropperImage.cropper('replace',httpURI);
                 }, function(error) {
                     console.log("getPictures error:",error);
                     $scope.sbjError.sharebj = true;
                     $scope.sbjError.sharebjErrorMessage = error.message;
                 });
         };
+
 
         return {
             restrict: 'E',
@@ -43,18 +49,28 @@
                     $scope.cropperImage = $('#cropper-origin-img');
                     console.log("$scope.cropperImage",$scope.cropperImage);
                     $scope.cropperImage.cropper({
-                        //preview:"#avatarCandidate",
-                        aspectRatio: 1 / 1,
-                        autoCropArea: 0.5,
-                        rounded:true,
-                        strict:true,
+                        aspectRatio: 1,
+                        autoCropArea: 0.8,
+                        autoCrop:true,
+                        strict: false,
+                        checkImageOrigin:true,
                         minCanvasWidth:32,
                         minCanvasHeight:32,
                         minCropBoxWidth:32,
                         minCropBoxHeight:32,
-                        crop:function(){
-                            if($scope.cropperImage ){
-                                //console.log("crop");
+                        build:function(){
+                            $scope.cropperBuilt = false;
+                        },
+                        built:function(){
+                            console.log('built');
+                            $scope.cropperBuilt = true;
+                            var croppedCanvas = $scope.cropperImage.cropper('getCroppedCanvas');
+                            $scope.edit.croppedCanvas = croppedCanvas.width?croppedCanvas.toDataURL():null;
+                            $timeout(function(){ });
+                        },
+                        cropend:function(){
+                            if($scope.cropperImage && $scope.cropperBuilt){
+                                console.log("cropend");
                                 var croppedCanvas = $scope.cropperImage.cropper('getCroppedCanvas');
                                 $scope.edit.croppedCanvas = croppedCanvas.width?croppedCanvas.toDataURL():null;
                                 $timeout(function(){ });
@@ -86,41 +102,20 @@
                 };
 
                 $scope.fileSelected =function(input){
-                    //console.log(input);
                     if(input.files && input.files[0])
                     {
-                        console.log(input.files[0]);
                         processImage(input.files[0],{maxWidth:Images.NormalQualityWidth,maxHeight:Images.NormalQualityHeight,quality:1},function(dataURL){
-                            console.log(dataURL);
-                            console.log('$scope.cropperImage.cropperreplace');
-                                        $scope.cropperImage.cropper('replace',dataURL);
+                            $timeout(function(){
+                                $scope.cropperImage.cropper('replace',dataURL);
+                            })
                         })
                     }
                 };
                 $scope.$watch('edit.croppedCanvas',
                     function(newValue,oldValue,scope){
-                        //console.log("$scope.edit.croppedCanvas:",newValue,oldValue);
-                        //console.log(scope);
                         if(scope.edit)
                             scope.edit.hasCroppedCanvas = !!newValue;
                 },true);
-
-                //$scope.$watch('edit.fileAsUrl',function(newValue,oldValue,scope){
-                //   console.log("$scope.edit.fileAsUrl:",newValue,oldValue,scope.edit);
-                //    if(scope.edit)
-                //        scope.edit.hasImage = !!newValue;
-                //},true);
-                //$scope.$meteorAutorun(function(){
-                //    var newUrl = $scope.getReactively('edit.fileAsUrl');
-                //    console.log('replace url '+newUrl);
-                //    //if($scope.cropperImage)
-                //    //    $scope.cropperImage.cropper('replace',newUrl);
-                //    $timeout(function(){
-                //        $scope.$apply(function(){
-                //            $scope.hasImage = !!$scope.edit && !!$scope.edit.fileAsUrl;
-                //        })
-                //    });
-                //});
 
                 $scope.saveAvatar = function(){
                     if($scope.savingMessage)
@@ -143,13 +138,19 @@
                             });
 
                 };
+                $scope.rotate = function(){
+                    if($scope.cropperImage)
+                    {
+                        $scope.cropperImage.cropper('rotate',90);
+                        var croppedCanvas = $scope.cropperImage.cropper('getCroppedCanvas');
+                        $scope.edit.croppedCanvas = croppedCanvas.width?croppedCanvas.toDataURL():null;
+                    }
+                };
 
-                $scope.close =  function(){
-                    if($scope.$image)
-                        $scope.$image.cropper('destroy');
+                $scope.close = function(){
                     $scope.edit = {};
                     $scope.onclose();
-                };
+                }
             }
         }
 

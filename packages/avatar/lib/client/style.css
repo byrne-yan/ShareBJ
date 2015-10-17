@@ -1,24 +1,50 @@
+.avatar-line{
+    display: flex;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+.directive-button{
+    flex: auto;
+}
+
 .SBJ-AVATAR{
-    margin-right:16px;
+    height: 32px;
+}
+.SBJ-AVATAR img{
+    margin-right:32px;
     width: 32px;
     height: 32px;
     border-radius: 50%;
 }
 
+.directive-avatar img{
+    margin-right:16px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+
+
 .sharebj-imgPicker{
     display: none;
 }
-#cropper-container{
-    max-height: 400px;
-    padding-bottom: 28px;
-}
+/*#cropper-container{*/
+    /*max-height: 400px;*/
+    /*padding-bottom: 28px;*/
+    /*overflow: hidden;*/
+/*}*/
 
 .cropper-container{
     max-height: 400px;
+    width: 100%;
+    min-height:300px;
+    padding-bottom: 28px;
+    overflow: hidden;
+    width: 100%;
 }
 
-.cropper-container img{
-    max-height: 100% !important;
+.cropper-container > img{
+    max-width: 100%;
 }
 
 #avatarCandidate {

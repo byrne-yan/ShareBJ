@@ -1,3 +1,4 @@
+if(Meteor.isCordova){
 var startImageServer = function(){
     httpd = cordova && cordova.plugins && cordova.plugins.CorHttpd;
     if(!httpd){
@@ -22,7 +23,11 @@ var startImageServer = function(){
             'custom_paths': paths
         },function(url){
             Images.server.url = url;
-            console.log("Image server run on " + url);
+            //var a = document.createElement('a');
+            //a.href = url;
+            //Images.server.meteor_url = a.protocol + '//' + 'meteor.local' + ':' + a.port;
+
+            console.log("Image server run on " + url/*, Images.server.meteor_url*/);
             httpd.getLocalPath(function(path){
                 console.log("Image server work on local path:"+path);
             })
@@ -46,35 +51,37 @@ var startImageServer = function(){
 
 ShareBJ.deviceReadyCallbacks.push(startImageServer);
 
-Images.server.remapuri = function(uri){
+Images.server.remapuri = function(uri, meteorWay=false){
+    var url = meteorWay?Images.server.meteor_url:Images.server.url;
 
     if(/^file:\/\/.*/i.test(uri)) {
         var path = uri.replace(/^file:\/\//i, '');
         if (0 === path.indexOf(Images.server.local_path_cache)) {
 
-            return Images.server.url + Images.server.cache_url + path.substring(Images.server.local_path_cache.length);
+            return url + Images.server.cache_url + path.substring(Images.server.local_path_cache.length);
 
         } else if (0 === path.indexOf(Images.server.local_path_data)) {
 
-            return Images.server.url + path.substring(Images.server.local_path_data.length);
+            return url + path.substring(Images.server.local_path_data.length);
 
         } else if (0 === path.indexOf(Images.server.local_path)) {
 
-            return Images.server.url + Images.server.data_url + path.substring(Images.server.local_path_data.length);
+            return url + Images.server.data_url + path.substring(Images.server.local_path_data.length);
 
         } else if (0 === path.indexOf(Images.server.local_ext_path_cache)) {
 
-            return Images.server.url + Images.server.ext_cache_url + path.substring(Images.server.local_ext_path_cache.length);
+            return url + Images.server.ext_cache_url + path.substring(Images.server.local_ext_path_cache.length);
 
         } else if (0 === path.indexOf(Images.server.local_ext_path_data)) {
 
-            return Images.server.url + Images.server.ext_data_url + Images.server.ext_data_url + path.substring(Images.server.local_ext_path_data.length);
+            return url + Images.server.ext_data_url + Images.server.ext_data_url + path.substring(Images.server.local_ext_path_data.length);
 
         } else if (0 === path.indexOf(Images.server.local_ext_path)) {
 
-            return Images.server.url + Images.server.ext_url + Images.server.ext_url + path.substring(Images.server.local_ext_path.length);
+            return url + Images.server.ext_url + Images.server.ext_url + path.substring(Images.server.local_ext_path.length);
         }
     }
     //console.log('warn: not remap,',uri);
     return uri;
+}
 }

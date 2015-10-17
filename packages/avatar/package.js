@@ -18,7 +18,7 @@ Package.onUse(function(api) {
         'ecmascript',
         'random',
         'sbj:lib',
-      'jonblum:jquery-cropper@0.11.0'
+      'jonblum:jquery-cropper@1.0.0'
 
   ]);
   api.addFiles('lib/avatar.js');
