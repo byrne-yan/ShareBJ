@@ -114,7 +114,7 @@ angular.module('shareBJ.journals')
                     });
 
                     Images.uploadOrigins($scope.journal.images,res,function(resolve,reject,docId,no,downloadUrl){
-                        Meteor.call('updateJournalImageURL', docId, no, downloadUrl,false, function (error, num) {
+                        Meteor.call('updateJournalImageURL', docId, no, downloadUrl,true, function (error, num) {
                             if (error) {
                                 return reject(error);
                             } else {
