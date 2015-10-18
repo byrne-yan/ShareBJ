@@ -23,6 +23,7 @@ Meteor.publish('myBabies',function(){
             self.added('babies', doc._id, transform(doc));
         },
         changed: function (newDoc, oldDoc) {
+            console.log("babies changed:",oldDoc,newDoc);
             self.changed('babies',newDoc._id, transform(newDoc));
         },
         removed:function(oldDoc){
@@ -138,6 +139,9 @@ Meteor.publish('allBabies',function(options, extra){
 
 });
 
+/**
+ * 等待我处理的请求
+ */
 Meteor.publish('myRequests', function(){
     if(!this.userId){
         //throw Meteor.Error(403,'Authorization Required');
@@ -185,5 +189,15 @@ Meteor.publish('myRequests', function(){
     self.ready();
 });
 
+/**
+ * 我发送的未处理请求
+ */
+Meteor.publish('myDeliveredPendingRequests', function(){
+    if(!this.userId){
+        //throw Meteor.Error(403,'Authorization Required');
+        return;
+    }
 
+    return Requests.find({requester:this.userId})
+});
 

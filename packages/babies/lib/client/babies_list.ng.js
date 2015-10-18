@@ -38,7 +38,7 @@ angular.module('shareBJ.babies')
             console.log("$scope.babiesCount", $scope.getReactively('babiesCount'));
         });
         if($rootScope.currentUser) {
-            $scope.$meteorSubscribe('myRequests')
+            $scope.$meteorSubscribe('myDeliveredPendingRequests')
                 .catch(console.log);
         }
 
