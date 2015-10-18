@@ -1,4 +1,4 @@
-<ion-view view-title="宝宝管理">
+<ion-view view-title="正监护的宝宝们">
     <ion-nav-buttons>
         <div class="item-button-right">
             <button class="button button-icon ion-person-add" ui-sref="shareBJ.babies.edit({babyId:'new'})"></button>
@@ -29,9 +29,9 @@
                     </div>
                 </a>
                 <div class="item item-divider">
-                    当前监护人({{baby.guardiansDetail.length}}人)：
+                    当前监护人({{count(baby.guardiansDetail)}}人)：
                 </div>
-                <div class="item item-avatar item-button-right" ng-repeat="guardian in baby.guardiansDetail">
+                <div class="item item-avatar item-button-right" ng-repeat="guardian in baby.guardiansDetail | filter: isDefined">
                     <img ng-src="{{guardian.profile.avatar}}" ng-if="guardian.profile.avatar">
                     <ng-letter-avatar class="item-image" data="{{guardian.profile.name || guardian.username}}"
                                       charCount="1" shape="round" ng-if="!guardian.profile.avatar">
@@ -40,17 +40,24 @@
                     <h2>{{guardian.profile.name}}</h2>
                     <button class="button button-assertive" ng-click="cancelGuardian(baby,guardian)"
                             ng-if="isOwner(baby,$root.currentUser) && !isOwner(baby,guardian)">取消监护</button>
+                    <button class="button button-assertive" ng-click="abandomGuardian(baby,guardian)"
+                            ng-if="$root.currentUser._id===guardian._id && !isOwner(baby,guardian)">放弃监护</button>
                 </div>
                 <div class="item button-bar">
                     <button class="button button-balanced" ui-sref="shareBJ.babies.inviteFor({babyId:baby._id,type:'guard'})">邀请他人一起来监护</button>
                 </div>
                 <div class="item item-divider">
-                    当前关注人({{baby.followersDetail.length}}人)：
+                    当前关注人({{count(baby.followers)}}人)：
                 </div>
-                <div class="item item-avatar item-button-right" ng-repeat="follower in baby.followersDetail">
+                <div class="item item-avatar item-button-right" ng-repeat="follower in baby.followersDetail | filter: isDefined">
                     <img ng-src="{{follower.profile.avatar}}">
+                    <ng-letter-avatar class="item-image" data="{{follower.profile.name || follower.username}}"
+                                      charCount="1" shape="round" ng-if="!follower.profile.avatar">
+
+                    </ng-letter-avatar>
                     <h2>{{follower.profile.name}}</h2>
-                    <button class="button button-assertive" ng-click="cancelFollowing(baby,follower)">取消关注</button>
+                    <button class="button button-assertive" ng-click="cancelFollowing(baby,follower)" ng-if="$root.currentUser._id !== follower._id">取消关注</button>
+                    <button class="button button-assertive" ng-click="abandomFollowing(baby,follower)" ng-if="$root.currentUser._id === follower._id">放弃关注</button>
                 </div>
                 <div class="item button-bar">
                     <button class="button button-balanced" ui-sref="shareBJ.babies.inviteFor({babyId:baby._id,type:'follow'})">邀请他人一起来关注</button>

@@ -23,7 +23,6 @@ Meteor.publish('myBabies',function(){
             self.added('babies', doc._id, transform(doc));
         },
         changed: function (newDoc, oldDoc) {
-            console.log("babies changed:",oldDoc,newDoc);
             self.changed('babies',newDoc._id, transform(newDoc));
         },
         removed:function(oldDoc){

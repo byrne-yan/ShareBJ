@@ -1,4 +1,4 @@
-<ion-view view-title="关注宝宝管理">
+<ion-view view-title="正关注的宝宝们">
     <ion-nav-buttons>
         <div class="item-button-right">
             <button class="button button-icon ion-person-add" ui-sref="shareBJ.babies.list"></button>
@@ -12,6 +12,9 @@
                 </div>
                 <a class="item item-avatar" href='#'>
                     <img  ng-src="{{baby.avatar}}">
+                    <ng-letter-avatar class="item-image" data="{{baby.nickname || baby.name}}" charCount="1"
+                                      shape="round" ng-if="!baby.avatar"></ng-letter-avatar>
+
                     <h2>{{baby.name}}</h2>
                     <h3>{{baby.nickname}}</h3>
                     <div ng-if="baby.birth">
@@ -31,16 +34,24 @@
                 </div>
                 <div class="item item-avatar item-button-right" ng-repeat="guardian in baby.guardiansDetail">
                     <img ng-src="{{guardian.profile.avatar}}">
-                    <h2>{{guardian.profile.name}}</h2>
+                    <ng-letter-avatar class="item-image" data="{{guardian.profile.name || guardian.username}}"
+                                      charCount="1" shape="round" ng-if="!guardian.profile.avatar">
+
+                    </ng-letter-avatar>
+
+                    <h2>{{guardian.profile.name || guardian.username}}</h2>
                 </div>
                 <div class="item item-divider">
                     当前关注人({{baby.followersDetail.length}}人)：
                 </div>
                 <div class="item item-avatar item-button-right" ng-repeat="follower in baby.followersDetail">
                     <img ng-src="{{follower.profile.avatar}}">
+                    <ng-letter-avatar class="item-image" data="{{follower.profile.name || follower.username}}"
+                                      charCount="1" shape="round" ng-if="!follower.profile.avatar">
+                    </ng-letter-avatar>
                     <h2>{{follower.profile.name}}</h2>
                     <button class="button button-assertive" ng-if="$root.currentUser._id === follower._id"
-                            ng-click="cancelFollowing(baby)">取消关注</button>
+                            ng-click="cancelFollowing(baby)">放弃关注</button>
                 </div>
             </div>
         </div>

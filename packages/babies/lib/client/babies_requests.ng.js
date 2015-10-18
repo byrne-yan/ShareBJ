@@ -1,5 +1,5 @@
 angular.module('shareBJ.babies')
-    .controller('BabiesRequestsCtrl',function($scope,$rootScope, $meteor,$state,$ionicPopup,$ionicNavBarDelegate) {
+    .controller('BabiesRequestsCtrl',function($scope,$rootScope, $meteor,$state,$ionicPopup,$ionicNavBarDelegate,$ionicHistory) {
 
         if($rootScope.currentUser){
             $meteor.subscribe('myRequests');
@@ -23,6 +23,9 @@ angular.module('shareBJ.babies')
         $scope.approve = function(request){
             $meteor.call('ApproveRequest',request._id).then(function(){
                 if($scope.requests.length === 0){
+                    $ionicHistory.nextViewOptions({
+                        disableBack:true
+                    });
                     $state.go(ShareBJ.state.home);
                 }
             },function(error){
@@ -36,6 +39,9 @@ angular.module('shareBJ.babies')
         $scope.reject = function(request){
             $meteor.call('RejectRequest',request._id).then(function(){
                 if($scope.requests.length === 0){
+                    $ionicHistory.nextViewOptions({
+                        disableBack:true
+                    });
                     $state.go(ShareBJ.state.home);
                 }
             },function(error){

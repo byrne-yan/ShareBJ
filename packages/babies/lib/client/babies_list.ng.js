@@ -141,14 +141,14 @@ angular.module('shareBJ.babies')
         $scope.cancelFollowing = function(baby){
             $meteor.call('CancelFollowing',baby._id).then(function(){
                 $ionicPopup.alert({
-                    title:"取消关注",
+                    title:"放弃关注",
                     template:'关注已取消'
                 })
             },function(error){
                 console.log(error);
                 $ionicPopup.alert({
-                    title:"取消关注",
-                    template:'取消关注失败：' + error.message
+                    title:"放弃关注",
+                    template:'放弃关注失败：' + error.message
                 }).then(function(){
                 })
             });
@@ -171,14 +171,14 @@ angular.module('shareBJ.babies')
         $scope.cancelGuardian = function(baby){
             $meteor.call('CancelGuardian',baby._id).then(function(){
                 $ionicPopup.alert({
-                    title:"取消监护",
-                    template:'监护已取消'
+                    title:"放弃监护",
+                    template:'监护已放弃'
                 })
             },function(error){
                 console.log(error);
                 $ionicPopup.alert({
-                    title:"取消监护",
-                    template:'取消监护失败：' + error.message
+                    title:"放弃监护",
+                    template:'放弃监护失败：' + error.message
                 }).then(function(){
                 })
             });

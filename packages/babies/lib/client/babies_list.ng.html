@@ -27,14 +27,14 @@
                     <a class="tab-item balanced" href="#" ng-click="requestGuardian(baby)"
                        ng-if="!isGuardianOrRequested(baby)">监护</a>
                     <a class="tab-item balanced" href="#" ng-click="cancelGuardian(baby)"
-                       ng-if="isGuardian(baby)">取消监护</a>
+                       ng-if="isGuardian(baby)">放弃监护</a>
                     <a class="tab-item balanced" href="#" ng-click="cancelRequestGuardian(baby)"
                        ng-if="isRequestedGuardian(baby)">撤回监护申请</a>
 
                     <a class="tab-item balanced" href="#" ng-click="requestFollowing(baby)"
                        ng-if="!isGuardianOrFollowOrRequested(baby)">关注</a>
                     <a class="tab-item balanced" href="#" ng-click="cancelFollowing(baby)"
-                       ng-if="isFollow(baby)">取消关注</a>
+                       ng-if="isFollow(baby)">放弃关注</a>
                     <a class="tab-item balanced" href="#" ng-click="cancelRequestFollowing(baby)"
                        ng-if="isRequestedFollow(baby)">撤回关注申请</a>
                 </div>

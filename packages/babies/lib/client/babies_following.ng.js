@@ -1,5 +1,5 @@
 angular.module('shareBJ.babies')
-    .controller('BabiesFollowCtrl',function($scope,$meteor,$ionicPopup,$rootScope) {
+    .controller('BabiesFollowCtrl',function($scope,$meteor,$ionicPopup,$rootScope,$timeout) {
         $scope.$meteorSubscribe('myFollowingBabies');
 
         $scope.babies = $scope.$meteorCollection(function(){
@@ -7,15 +7,25 @@ angular.module('shareBJ.babies')
         },false);
 
         $scope.cancelFollowing = function(baby){
-            $meteor.call('CancelFollowing',baby._id).then(function(){
-
-            },function(error){
-                console.log(error);
-                $ionicPopup.alert({
-                    title:"取消关注",
-                    template:'取消失败：' + error.message
-                });
-            })
+            $ionicPopup.confirm({
+                title:'动作确认',
+                template:'您正在试图放弃对宝宝【'+ baby.name + '】的关注权限。放弃后您将不再能够阅读该宝宝的日记。您确认要放弃吗？'
+            }).then(function(res){
+                if(res)//yes
+                {
+                    $meteor.call('CancelFollowing',baby._id).then(function(){
+                        $scope.actionPerformed = true;
+                        //update view
+                        $timeout(function(){});
+                    },function(error){
+                        console.log(error);
+                        $ionicPopup.alert({
+                            title:"放弃关注",
+                            template:'放弃关注失败：' + error.message
+                        });
+                    })
+                }
+            });
         };
 
         $scope.age = function(baby){
