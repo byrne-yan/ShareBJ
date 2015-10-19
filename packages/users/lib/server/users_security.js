@@ -40,7 +40,7 @@ Accounts.onCreateUserEx(function(options, user){
                 //console.log(baby);
                 if(invitation.type==='guard'){
                     var n = Babies.update(baby._id,{
-                        $addToSet: {owners:user._id},
+                        $push: {owners:user._id},
                         $pull:{followers: user._id}
                     });
                     //console.log('attach to owners',n);

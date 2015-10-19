@@ -20,6 +20,48 @@ class MyUploader{
     send(blob,callback){
         var self = this;
         console.log("send args:",blob);
+
+        var doSend =function(){
+            console.log("upload size:",size);
+            Uploads.insert({uploader:self._id,filename:filename,size:size,category:self._category,
+                    resolution:{
+                        width:self._resolution.width,
+                        height:self._resolution.height
+                    },
+                    start:new Date(),
+                    journal:self._journalId,progress:0}
+                ,function(err,res){
+                    if(err) return callback(err);
+
+                    Tracker.autorun(function(c){
+                        self._computation = c;
+                        var status = self._uploader.status();
+                        var percent = self._uploader.progress();
+                        //console.log("atuorun progress",percent);
+                        //if(_.isFinite(percent))
+                        //{
+                        Uploads.update({uploader:self._id},{$set:{progress:Math.ceil(percent*100),status:status}},null);
+                        //}
+                    });
+
+                    var ret= self._uploader.send(blob,function(err,downlaodUrl){
+                        self._computation.stop();
+                        Uploads.removeUploader(self._uploader);
+                        if(err)
+                        {
+                            Uploads.update({uploader:self._id},{$set:{
+                                progress:Math.ceil(100*self._uploader.progress()),
+                                status:self._uploader.status(),
+                                end: new Date()}
+                            });
+                        }else{
+                            Uploads.update({uploader:self._id},{$set:{progress:100,status:'done', end:new Date()}});
+                        }
+                        callback(err,downlaodUrl);
+                    });
+                });
+        }
+
         var filename,size;
         if(blob instanceof Blob){
             filename = blob.name;
@@ -35,46 +77,7 @@ class MyUploader{
             });
         }
 
-        var doSend =function(){
-            console.log("upload size:",size);
-            Uploads.insert({uploader:self._id,filename:filename,size:size,category:self._category,
-                        resolution:{
-                            width:self._resolution.width,
-                            height:self._resolution.height
-                        },
-                        start:new Date(),
-                        journal:self._journalId,progress:0}
-                    ,function(err,res){
-                if(err) return callback(err);
 
-                Tracker.autorun(function(c){
-                    self._computation = c;
-                    var status = self._uploader.status();
-                    var percent = self._uploader.progress();
-                    //console.log("atuorun progress",percent);
-                    //if(_.isFinite(percent))
-                    //{
-                    Uploads.update({uploader:self._id},{$set:{progress:Math.ceil(percent*100),status:status}},null);
-                    //}
-                });
-
-                var ret= self._uploader.send(blob,function(err,downlaodUrl){
-                    self._computation.stop();
-                    Uploads.removeUploader(self._uploader);
-                    if(err)
-                    {
-                        Uploads.update({uploader:self._id},{$set:{
-                            progress:Math.ceil(100*self._uploader.progress()),
-                            status:self._uploader.status(),
-                            end: new Date()}
-                        });
-                    }else{
-                        Uploads.update({uploader:self._id},{$set:{progress:100,status:'done', end:new Date()}});
-                    }
-                    callback(err,downlaodUrl);
-                });
-            });
-        }
     }
     abort(){
         var self = this;

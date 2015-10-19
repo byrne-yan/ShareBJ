@@ -41,9 +41,9 @@ angular.module('shareBJ.journals')
         function calcOldestPhoto(){
             var now = new Date();
             var farDate = _.reduce($scope.journal.images, function(memo,image){
-                if(image.exif)
+                if(image.origin.takenAt)
                 {
-                    var took = new Date(image.exif.DateTime.split(' ')[0].replace(/:/g,'\/'));
+                    var took = new Date(image.origin.takenAt.split(' ')[0].replace(/:/g,'\/'));
                     if( memo > took)
                         return took;
                 }

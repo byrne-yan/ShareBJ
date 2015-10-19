@@ -83,12 +83,12 @@ Meteor.methods({
         var now = new Date();
 
         if( now.getTime() - token.when.getTime() >= 3*24*60*60*1000)
-            throw Meteor.Error(403, "Invitation Token Expired");
+            throw new Meteor.Error(403, "Invitation Token Expired");
 
         if(token.invitee !== this.userId)
         {
             console.log('token.invitee',token.invitee);
-            throw Meteor.Error(403, "Not Invitee");
+            throw new Meteor.Error(403, "Not Invitee");
         }
 
         guardianOrFollower = this.userId;
@@ -110,7 +110,7 @@ Meteor.methods({
                 $pull :{ 'services.invitation.verificationTokens': {token:token}}
             });
             if(nUpdated===0){
-                throw Meteor.Error(500,'Can not remove invitation token');
+                throw new Meteor.Error(500,'Can not remove invitation token');
             }
         }
     }
@@ -119,20 +119,28 @@ Meteor.methods({
         var request = Requests.findOne({_id:requestId});
         if(!request || (request.type!='guard' && request.type!='follow') )
         {
-            throw  Meteor.Error(404,"Invalid Request");
+            throw new Meteor.Error(404,"Invalid Request");
         }
         guardianOrFollower =request.requester;
         var babyId = request.baby;
         var type =request.type;
 
         if(type==='guard'){
+            if(Babies.findOne({owners:request.requester}))
+            {
+                throw new Meteor.Error(400,"Requester is already a guardian ")
+            }
             Babies.update({_id: babyId},{
                 $push: {owners:guardianOrFollower},
                 $pull: {followers: guardianOrFollower}
             });
         }else {
+            if(Babies.findOne({followers:request.requester}))
+            {
+                throw new Meteor.Error(400,"Requester is already a follower ")
+            }
             Babies.update({_id: babyId},{
-                $push: {followers:guardianOrFollower}
+                $addToSet: {followers:guardianOrFollower}
             });
         }
 
