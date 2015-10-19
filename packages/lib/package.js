@@ -105,6 +105,7 @@ Package.onTest(function(api) {
 
     api.addFiles([
         'tests/jasmine/lib_spec.js',
-        'tests/jasmine/net_spec.js'
+        'tests/jasmine/net_spec.js',
+        'tests/jasmine/age_spec.js'
         ],['client','server']);
 });

@@ -52,6 +52,17 @@ ageOf = function(birthDate, toThen) {
         if(days != 0){
             ageText += days + '天';
         }
+
+        if(ageText==='')
+        {
+            ageText = '出生';
+        }else if(age===0 && months===1 && days===0)
+        {
+            ageText = '满月';
+        } if(Math.ceil((today.getTime()-birthDate.getTime())/1000/60/60/24) === 100){
+            ageText = '百天';
+        }
+
         return [age,months,days, ageText];
     }
     return null;
