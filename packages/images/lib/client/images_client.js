@@ -29,3 +29,38 @@ Images.getImageScaleFactor = function(){
         quality:((limits && limits.quality==='high') ? 100 : 75)
     }
 };
+
+
+UploadsCollection = new Ground.Collection('uploads',{connection:null});
+Uploads = {
+
+    _uploaders:{},
+    isUploading:function(){
+        return !!UploadsCollection.findOne({_type:'upload', end: {$exists:false}});
+    },
+    find:function(selector,options){
+        if(!selector) selector={};
+        _.extend(selector,{_type:'upload',progress:{$gte: 0}});
+        return UploadsCollection.find(selector,options);
+    },
+    findOne:function(selector,options){
+        if(!selector) selector={};
+        _.extend(selector,{_type:'upload',progress:{$gte: 0}});
+        return UploadsCollection.findOne(selector,options);
+    },
+    insert:function(doc,callback){
+        if(doc) _.extend(doc,{_type:'upload'});
+
+        return UploadsCollection.insert(doc,callback);
+    },
+    update:function(selector,modifier,options,callback){
+        if(!selector) selector={};
+        _.extend(selector,{_type:'upload'});
+        return UploadsCollection.update(selector,modifier,options,callback);
+    },
+    remove:function(selector,callback){
+        if(!selector) selector={};
+        _.extend(selector,{_type:'upload',progress:{$gte: 0}});
+        return UploadsCollection.remove(selector,callback);
+    }
+};

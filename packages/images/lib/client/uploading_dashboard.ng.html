@@ -9,10 +9,10 @@
         <div ng-repeat="upload in uploads" class="row">
             <!--<div class="col">{{upload.filename}} </div>-->
             <div class="col col-67">{{upload.category==='origin'?'O':'S'}}|{{upload.size/1024 | number:0}}K|{{upload.status}}
-                |{{upload.start | date:'H:mm'}}
+                |{{(upload.status==='done'?upload.end:upload.start) | date:'yy-M-d H:mm'}}
             </div>
             <div class="col">{{upload.progress}}% </div>
-            <a class="col button button-small button-assertive" ng-click="cancelUpload(upload.uploader)">取消</a>
+            <a class="col button button-small button-assertive" ng-click="cancelUpload(upload.uploader)" ng-if="upload.status==='transferring'">取消</a>
         </div>
     </ion-content>
 </ion-view>

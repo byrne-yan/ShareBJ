@@ -44,7 +44,7 @@ Package.onUse(function(api) {
       'lib/client/cache/image_cache_index.js',
       'lib/client/upload_client.js',
       'lib/client/upimage.js',
-      'lib/client/image_server.js',
+      'lib/client/image_web_server.js',
       'lib/client/images.ng.js',
       'lib/client/router.ng.js',
       'lib/client/images_dashboard.ng.js',
@@ -69,8 +69,8 @@ Package.onUse(function(api) {
     'lib/server/s3_security.js'
     ],'server');
   api.export('Images');
-    api.export('Uploads');
-    api.export('UpImage');
+    api.export('Uploads','client');
+    api.export('UpImage','client');
 
 
 });

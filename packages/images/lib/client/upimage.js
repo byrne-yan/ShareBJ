@@ -122,6 +122,7 @@ UpImage = class UpImage {
                         takenAt: exifdata.DateTime
                     })
                 }else{
+                    console.log("no exif data");
                     window.imageResizer.getImageSize(function(data){
                             resolve(data);
                         },function(err){
@@ -166,6 +167,9 @@ UpImage = class UpImage {
                     .catch(function(err){   //error
                         reject(err);
                     })
+            })
+            .catch(function(err){
+                    reject(err);
             })
         });
     };

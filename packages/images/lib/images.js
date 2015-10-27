@@ -44,34 +44,4 @@ Slingshot.fileRestrictions("originUploads",{
     maxSize: Images.HighQualityMaxSize
 });
 
-Uploads = {
-    _uploaders:{},
-    isUploading:function(){
-        return !!LocalCollection.findOne({_type:'upload', end: {$exists:false}});
-    },
-    find:function(selector,options){
-        if(!selector) selector={};
-        _.extend(selector,{_type:'upload',progress:{$gte: 0}});
-        return LocalCollection.find(selector,options);
-    },
-    findOne:function(selector,options){
-        if(!selector) selector={};
-        _.extend(selector,{_type:'upload',progress:{$gte: 0}});
-        return LocalCollection.findOne(selector,options);
-    },
-    insert:function(doc,callback){
-        if(doc) _.extend(doc,{_type:'upload'});
 
-        return LocalCollection.insert(doc,callback);
-    },
-    update:function(selector,modifier,options,callback){
-        if(!selector) selector={};
-        _.extend(selector,{_type:'upload'});
-        return LocalCollection.update(selector,modifier,options,callback);
-    },
-    remove:function(selector,callback){
-        if(!selector) selector={};
-        _.extend(selector,{_type:'upload',progress:{$gte: 0}});
-        return LocalCollection.remove(selector,callback);
-    }
-};

@@ -261,7 +261,7 @@ angular.module('shareBJ.journals')
                                 $scope.picking = true;
                                 $cordovaImagePicker.getPictures(options)
                                 .then(function (results) {
-                                    var composeImage = function(uri,exifdata){
+                                    var composeImage = function(uri){
                                         var image = new UpImage();
                                         image.attachURI(uri).then(function(promiseScale){
                                             $timeout(function () {

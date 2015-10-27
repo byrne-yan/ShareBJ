@@ -4,7 +4,12 @@ angular.module('shareBJ.images')
 .controller('UploadDashCtrl',function($scope, $meteor, $timeout, $state, $ionicHistory,$ionicModal){
 
         $scope.$meteorAutorun(function(){
-            $scope.uploads = Uploads.find({status:{$nin:['failed','aborted','done']}}).fetch();
+            //$scope.uploads = Uploads.find({status:{$nin:['failed','aborted','done']}}).fetch();
+            $scope.uploads = Uploads.find({},{
+                sort:[
+                    ["start","desc"]
+                ]
+            }).fetch();
 
             $timeout( function(){} );
         });

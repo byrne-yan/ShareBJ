@@ -107,7 +107,7 @@ Uploads.removeUploader = function(uploadId){
     var self = Uploads;
       if(self._uploaders[uploadId])
       {
-          Uploads.update({uploader:uploadId},{$set:{progress:-1}});
+          self.update({uploader:uploadId},{$set:{progress:-1}});
           delete self._uploaders[uploadId];
       }
 };
