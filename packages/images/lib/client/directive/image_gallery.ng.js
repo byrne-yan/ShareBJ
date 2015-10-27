@@ -7,8 +7,9 @@ angular.module('shareBJ.lib')
                 src: '@',
                 orientation: '@',
                 start: '@',
-                close:'$'
+                onclose:'&'
             },
+
             replace: "true",
             templateUrl: "sbj_images_lib/client/directive/image_gallery.ng.html",
 
@@ -111,7 +112,7 @@ angular.module('shareBJ.lib')
                     return c;
                 };
                 $scope.closeModal = function(){
-                    $scope.close();
+                    $scope.onclose();
                 }
             }
         }

@@ -10,9 +10,7 @@
             },
             replace: "true",
             templateUrl: "sbj_journals_lib/client/directive/journal_directive.ng.html",
-            //link:function(scope,element,attrs){
-            //
-            //},
+
             controller: function ($scope, $meteor, $timeout, $ionicModal,$ionicPopover) {
                 //console.log($scope.journal.babyDetail);
                 $scope.error = {};
@@ -54,7 +52,7 @@
                     $scope.slideStart = index;
 
                     $scope.slideModal = $ionicModal.fromTemplate(
-                        '<sbj-slide-box images="currentImages" thumb="thumb" src="origin" orientation="orientation" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
+                        '<sbj-slide-box images="currentImages" thumb="thumb" src="origin" src2="url" orientation="orientation" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
                             scope: $scope,
                             animation: 'slide-in-up'
                         });

@@ -61,7 +61,7 @@ angular.module('shareBJ.images')
         $scope.showImage = function(index){
             $scope.index  = index;
             $scope.slideModal = $ionicModal.fromTemplate(
-                '<sbj-gallery images="images" src="cached_uri" orientation="orientation" start="{{index}}" close="closeGallery()"></sbj-gallery>', {
+                '<sbj-gallery images="images" src="cached_uri" orientation="orientation" start="{{index}}" onclose="closeGallery()"></sbj-gallery>', {
                     scope: $scope,
                     animation: 'slide-in-up'
                 });

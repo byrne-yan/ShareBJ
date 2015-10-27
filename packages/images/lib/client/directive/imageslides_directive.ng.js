@@ -6,6 +6,7 @@
                 images:'=',
                 thumb:'@',
                 src:'@',
+                src2:'@',
                 orientation:'@',
                 start:'@',
                 showTrash:'@',
@@ -50,7 +51,7 @@
                     _.each($scope.images,function(image,idx){
                         var thumb = getProperty($scope.images[idx],$scope.thumb);
                         var orientation = getProperty($scope.images[idx],$scope.orientation);
-                        var url = getProperty($scope.images[idx],$scope.src);
+                        var url = getProperty($scope.images[idx],$scope.src) || getProperty($scope.images[idx],$scope.src2);
                         LocalCollection.upsert({_type:'imageCache', jid:$scope.id, no:idx}, {$set:{orientation:orientation, thumb:thumb, src:$scope.enableCache?null:url, loaded:false}});
                         if($scope.enableCache){
                             if(url){
