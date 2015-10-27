@@ -32,6 +32,7 @@ ageOf = function(birthDate, toThen) {
         if(days <0  )
         {
             months--;
+            days += (new Date(today.getFullYear(),today.getMonth(),0)).getDate();
         }
 
         if(months <0 || (months ===0 && days < 0 )){
