@@ -205,8 +205,14 @@ class ImageCacheIndex{
         this.indexes.update({uri:uri},{$set:{uri:newURI}});
     }
     remove(cononicalURI){
-        var r = this.indexes.findOne({uri:cononicalURI});
         this.indexes.remove({uri:cononicalURI},function(err,num){
+            if(err || num!==1){
+                console.log(err,num);
+            }
+        });
+    }
+    removeByCachedURI(cached_uri){
+        this.indexes.remove({cached_uri:cached_uri},function(err,num){
             if(err || num!==1){
                 console.log(err,num);
             }
@@ -403,7 +409,7 @@ var openCacheDB = function(){
 };
 
 if(!Meteor.isCordova){
-    Images.cacheManager.cache = function(uri,callback){
+    Images.cacheManager.cache = function(uri,orientation,callback){
             console.log('no cache system',uri);
             callback(uri)
         }

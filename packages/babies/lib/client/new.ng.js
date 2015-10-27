@@ -82,30 +82,30 @@ angular.module('shareBJ.babies')
             return babyObj;
         }
         $scope.newBaby = function(baby){
-            $ionicLoading.show({template:"正在保存宝宝信息..."});
+            $ionicLoading.show({
+                template:"正在保存宝宝信息...",
+                hideOnStateChange:true,
+                delay:100,
+                duration:5000
+            });
             $scope.newbabyError = {newbaby:false};
 
             var babyObj = constructBabyObj(baby);
 
-            var save = function(){
-                $scope.babies.save( babyObj )
-                    .then(function(){
-                        $ionicLoading.hide();
-                        $ionicHistory.nextViewOptions({
-                            disableBack: true,
-                            historyRoot: true
-                        });
-                        $state.go(ShareBJ.state.home);
-                    },
-                    function(err){
-                        $ionicLoading.hide();
-                        $scope.newbabyError.newbaby = true;
-                        $scope.newbabyErrorMessage = err.message;
-                        console.log(err);
-                    });
-            };
-
-            save();
+            $scope.babies.save( babyObj )
+            .then(function(){
+                $ionicHistory.nextViewOptions({
+                    disableBack: true,
+                    historyRoot: true
+                });
+                $state.go(ShareBJ.state.home);
+            },
+            function(err){
+                $ionicLoading.hide();
+                $scope.newbabyError.newbaby = true;
+                $scope.newbabyErrorMessage = err.message;
+                console.log(err);
+            });
         };
 
         $scope.editAvatar = function(){

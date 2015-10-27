@@ -5,8 +5,9 @@
 
 .gallery-indicator{
     position: fixed;
-    width:32px;
+    width:64px;
     bottom:10px;
+    text-align: center;
     left: 50%;
-    margin-left: -16px;
+    margin-left: -32px;
 }

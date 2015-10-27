@@ -14,13 +14,13 @@ angular.module('shareBJ.lib')
             templateUrl: "sbj_images_lib/client/directive/image_gallery.ng.html",
 
             controller: function ($scope, $timeout, $ionicSlideBoxDelegate, $ionicScrollDelegate, $cordovaFile) {
-                var getProperty = function(obj, propertyName){
+                var getProperty = function(obj, propertyName,remap){
                     if(obj && propertyName){
                         var props = propertyName.split('.');
                         var newVal = _.reduce(props,function(newObj,prop){
                             return  newObj[prop];
                         },obj);
-                        if(Meteor.isCordova)
+                        if(Meteor.isCordova && (_.isUndefined(remap) || remap) )
                             return Images.server.remapuri(newVal);
                         else
                             return newVal;
@@ -113,6 +113,12 @@ angular.module('shareBJ.lib')
                 };
                 $scope.closeModal = function(){
                     $scope.onclose();
+                }
+                $scope.deleteImage = function(){
+
+                    var cached_uri = getProperty($scope.images[$scope.currentImage],$scope.src,false);
+                    console.log('remove cache:',cached_uri);
+                    Images.cacheManager.index.removeByCachedURI(cached_uri);
                 }
             }
         }

@@ -36,23 +36,16 @@
                 $scope.activeSlide = $scope.start;
 
 
-                //$scope.slideImages = new Array($scope.images.length);
-                //for(var i=0;i<$scope.images.length;++i){
-                //    $scope.slideImages[i] = {
-                //        src:getProperty($scope.images[i],$scope.src),
-                //        thumb:getProperty($scope.images[i],$scope.thumb),
-                //        orientation:getProperty($scope.images[i],$scope.orientation),
-                //        loaded:false
-                //    };
-                //    console.log($scope.slideImages[i].src,$scope.slideImages[i].orientation);
-                //};
                 $scope.id = Random.id();
                 Tracker.autorun(function(c){
                     _.each($scope.images,function(image,idx){
                         var thumb = getProperty($scope.images[idx],$scope.thumb);
                         var orientation = getProperty($scope.images[idx],$scope.orientation);
                         var url = getProperty($scope.images[idx],$scope.src) || getProperty($scope.images[idx],$scope.src2);
-                        LocalCollection.upsert({_type:'imageCache', jid:$scope.id, no:idx}, {$set:{orientation:orientation, thumb:thumb, src:$scope.enableCache?null:url, loaded:false}});
+
+                        LocalCollection.upsert({_type:'imageCache', jid:$scope.id, no:idx}, {$set:{
+                            _type:'imageCache', jid:$scope.id, no:idx,orientation:orientation, thumb:thumb, src:$scope.enableCache?null:url, loaded:false
+                        }});
                         if($scope.enableCache){
                             if(url){
                                 Images.cacheManager.cache(url,orientation,function(cachedURI){
@@ -60,6 +53,7 @@
                                 })
                             }else{
                                 console.log("WARN: no image url ");
+                                LocalCollection.update({_type:'imageCache', jid:$scope.id, no:idx },{$set: {src:thumb,loaded:true}});
                             }
                         }
                     });
