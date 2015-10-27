@@ -69,8 +69,8 @@ angular.module('shareBJ.babies')
                     birth:{
                         birthTime: baby.birthTime,
                         gender: baby.gender,
-                        birthWeight: baby.weight,
-                        birthHeight: baby.height
+                        birthWeight: baby.birthWeight,
+                        birthHeight: baby.birthHeight
                     }
                 });
             }else{
