@@ -2,9 +2,9 @@ angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'
     .controller('AppCtrl',function($scope,$state,$meteor,$ionicHistory,$rootScope,$timeout) {
         $scope.$meteorAutorun(function () {
             if (Meteor.userId()) {
-                $scope.notifications = $scope.$meteorCollection(function () {
+                $scope.notifications = function () {
                     return Herald.getNotifications({medium: 'onsite'});
-                });
+                };
                 $scope.notificationCount = $scope.notifications.length;
 
                 $scope.$meteorSubscribe('myRequests')
@@ -37,7 +37,7 @@ angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'
 
         $scope.menuBabies = ShareBJ.menu.babiesList;
         $scope.menuUserSummary = ShareBJ.menu.userSummary;
-        $scope.menuUploading = ShareBJ.menu.uploadDashboard;
+        $scope.menuImages = ShareBJ.menu.imagesDashboard;
         $scope.logout = function(){
             $meteor.logout().then(
                 function(){
@@ -49,6 +49,10 @@ angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'
                 console.log
             )
         }
+    })
+    .config(function($ionicConfigProvider){
+        $ionicConfigProvider.tabs.position('bottom');
+        $ionicConfigProvider.tabs.style('standard');
     })
     .run(function($ionicPlatform,$ionicPopup,$ionicHistory){
          $ionicPlatform.registerBackButtonAction(function(event){

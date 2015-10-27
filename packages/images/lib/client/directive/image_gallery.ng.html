@@ -1,0 +1,14 @@
+<ion-modal-view class="modal image-modal" >
+    <ion-scroll zooming="true" direction="xy" scrollbar-x="false" scrollbar-y="false"
+                min-zoom="{{zoomMin}}" style="width:100%;height:100%" ng-click="closeModal()"
+                delegate-handle="scrollHandleGallery" on-scroll="updateStatus()"
+                on-release="updateStatus()" on-swipe-left="onSwipeLeft()" on-swipe-right="onSwipeRight()">
+        <div class="image image-orientation-{{getOrientation()}}" ng-style="{'background-image':bgImage()}">
+            <img ng-src="{{imageSrc()}}" class="DummyImage" sbj-load="onImgLoad($event)" >
+            <div ng-if="!loaded">
+                <ion-spinner class="thumb-spinner spinner-balanced"></ion-spinner>
+            </div>
+        </div>
+    </ion-scroll>
+    <div class="gallery-indicator">{{getIndicator()}}/{{images.length}}</div>
+</ion-modal-view>

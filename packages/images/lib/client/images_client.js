@@ -12,7 +12,12 @@ if(Meteor.isCordova){
         ext_cache_url:'/extdata/cache/',
         local_ext_path_cache:'', //cordova.file.externalCacheDirectory
         ext_data_url:'/extdata/files/',
-        local_ext_path_data:'' //cordova.file.externalDataDirectory
+        local_ext_path_data:'', //cordova.file.externalDataDirectory
+
+        image_cache_url:'/images_cache/',
+        image_cache_path:'',
+        image_cache_ext_url:'/images_cache_ext/',
+        image_cache_ext_path:''
     };
 }
 Images.getImageScaleFactor = function(){

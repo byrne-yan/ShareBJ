@@ -39,11 +39,22 @@
 
                 $scope.showSlides = function(images,index){
                     //console.log('showSlides:',images)
+/*
+                    _.each(images,function(image,idx){
+                        LocalCollection.upsert({_type:'imageCache', jid:$scope.jouranl._id, no:idx, orientation:image.orientation, thumb:image.thumb, url:null});
+                        Images.cacheManager.cache(image.url,function(cachedURI){
+                            LocalCollection.update({_type:'imageCache', jid:$scope.jouranl._id, no:idx },{$set: {url:cachedURI}})
+                        })
+                    });
+                    $scope.currentImages = LocalCollection.find({_type:'imageCache', jid:$scope.jouranl._id});
+*/
+
                     $scope.currentImages = images;
+
                     $scope.slideStart = index;
 
                     $scope.slideModal = $ionicModal.fromTemplate(
-                        '<sbj-slide-box images="currentImages" thumb="thumb" src="url" orientation="orientation" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
+                        '<sbj-slide-box images="currentImages" thumb="thumb" src="origin" orientation="orientation" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
                             scope: $scope,
                             animation: 'slide-in-up'
                         });

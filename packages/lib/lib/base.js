@@ -1,6 +1,7 @@
 // ------------------------------------- Schemas -------------------------------- //
 
 
+/*
 SimpleSchema.extendOptions({
   private: Match.Optional(Boolean),
   editable: Match.Optional(Boolean),  // editable: true means the field can be edited by the document's owner
@@ -13,6 +14,7 @@ SimpleSchema.extendOptions({
   template: Match.Optional(String) // template used to display the field
   // editableBy: Match.Optional(String)
 });
+*/
 
 // ------------------------------ Dynamic Templates ------------------------------ //
 

@@ -15,7 +15,9 @@ Npm.depends({
 });
 Cordova.depends({
     "com.rjfun.cordova.httpd":"file://../cordova-plugins/cordova-httpd",
-    "com.raananw.imageResizer":"https://github.com/RaananW/PhoneGap-Image-Resizer/tarball/708b0091048a9f494e7efed7bf0ca2002501d66a"
+    "com.raananw.imageResizer":"https://github.com/RaananW/PhoneGap-Image-Resizer/tarball/708b0091048a9f494e7efed7bf0ca2002501d66a",
+    //"cordova-sqlite-storage":"https://github.com/litehelpers/Cordova-sqlite-storage/tarball/b467515205894cc9367824ac7086adb42cc5263b"
+    //"cordova-sqlite-storage":"file://../cordova-plugins/Cordova-sqlite-storage-0.7.7"
 });
 
 Package.onUse(function(api) {
@@ -27,6 +29,9 @@ Package.onUse(function(api) {
       'mongo',
       "random",
       'reactive-var',
+      'http',
+      //'ground:db@1.0.0-alpha.3',
+      'ground:db@0.3.0',
       'sbj:lib',
       'sbj:users'
     ]);
@@ -36,19 +41,26 @@ Package.onUse(function(api) {
 
   api.addFiles([
       'lib/client/images_client.js',
-      'lib/client/image_cache.js',
+      'lib/client/cache/image_cache_index.js',
       'lib/client/upload_client.js',
       'lib/client/upimage.js',
       'lib/client/image_server.js',
       'lib/client/images.ng.js',
       'lib/client/router.ng.js',
+      'lib/client/images_dashboard.ng.js',
+      'lib/client/images_dashboard.ng.html',
+      'lib/client/images_settings.ng.html',
+      'lib/client/images_list.ng.html',
+      'lib/client/images.css',
       'lib/client/directive/imageslides_directive.ng.html',
       'lib/client/directive/imageslides_directive.ng.js',
       'lib/client/directive/imageslides_directive.css',
+      'lib/client/directive/image_gallery.ng.js',
+      'lib/client/directive/image_gallery.ng.html',
       'lib/client/directive/thumbnail_directive.ng.html',
       'lib/client/directive/thumbnail_directive.ng.js',
 
-      'lib/client/uploading_menu.ng.html',
+      'lib/client/images_menu.ng.html',
       'lib/client/uploading_dashboard.ng.html'
   ],'client');
 

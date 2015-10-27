@@ -1,0 +1,49 @@
+<ion-view title="图片设置">
+    <ion-content>
+        <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()">
+
+        </ion-refresher>
+        <ion-list>
+            <ion-item class="item item-check" >
+                <label class="check-box">
+                    <input type="checkbox" ng-model="settings.externalEnable"
+                           ng-disabled="!storageSettings.hasExternal" ng-click="changeSettings()">
+                </label>
+                启用外部存储
+            </ion-item>
+            <ion-item class="item item-check item-check-positive">
+                <label class="check-box">
+                    <input type="checkbox" ng-model="settings.internalEnable" ng-click="changeSettings()">
+                </label>
+                启用内部存储
+            </ion-item>
+            <ion-item class="item item-check item-check-positive">
+                <label class="check-box">
+                    <input type="checkbox" ng-model="settings.externalFirst" ng-click="changeSettings()">
+                </label>
+                外部存储优先
+            </ion-item>
+
+            <ion-item class="" ng-if="storageSettings.hasExternal && storageSettings.externalEnable">
+                存储卡剩余空间<span class="item-note">{{(storageSettings.available/1024).toFixed(0)}}M</span>
+            </ion-item>
+
+
+            <ion-item class="" ng-if="storageSettings.hasExternal && storageSettings.externalEnable">
+                外部存储卡缓存照片数<span class="item-note">{{cacheStat.externalNumber}}张</span>
+            </ion-item>
+            <ion-item class="" ng-if="storageSettings.hasExternal && storageSettings.externalEnable">
+                外部存储卡缓存照片大小<span class="item-note">{{(cacheStat.externalSize/1024/1024).toFixed(2)}}M</span>
+            </ion-item>
+
+
+            <ion-item class="" ng-if="storageSettings.internalEnable">
+                内部存储卡缓存照片数<span class="item-note">{{cacheStat.internalNumber}}张</span>
+            </ion-item>
+            <ion-item class="" ng-if="storageSettings.internalEnable">
+                内部存储卡缓存照片大小<span class="item-note">{{(cacheStat.internalSize/1024/1024).toFixed(2)}}M</span>
+            </ion-item>
+
+        </ion-list>
+    </ion-content>
+</ion-view>

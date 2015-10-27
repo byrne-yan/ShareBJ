@@ -114,12 +114,22 @@ angular.module('shareBJ.journals')
                     });
 
                     Images.uploadOrigins($scope.journal.images,res,function(resolve,reject,docId,no,downloadUrl){
+                        var orientation = $scope.journal.images[no].origin.orientation;
                         Meteor.call('updateJournalImageURL', docId, no, downloadUrl,true, function (error, num) {
                             if (error) {
-                                return reject(error);
+                                reject(error);
                             } else {
                                 console.log("update journal's original images done", docId, num);
-                                return resolve({docId: docId, no: no});
+                                resolve({docId: docId, no: no});
+                                if(Meteor.isCordova){
+                                    var uri = $scope.journal.images[no].origin.uri;
+                                    setTimeout(function(){
+                                        Images.cacheManager.cache(uri, orientation, function(cacheURI){
+                                            if(downloadUrl !== cacheURI)
+                                                Images.cacheManager.renameURI(uri,downloadUrl);
+                                        })
+                                    },100);
+                                }
                             }
                         });
                     });
@@ -292,7 +302,7 @@ angular.module('shareBJ.journals')
             $scope.slideStart = index;
             $scope.slideModal = $ionicModal.fromTemplate(
                 '<sbj-slide-box images="journal.images" thumb="thumb.url" src="origin.uri" ' +
-                'orientation="origin.orientation" show-trash="true" start="{{slideStart}}"' +
+                'orientation="origin.orientation" show-trash="true" enableCache="false" start="{{slideStart}}"' +
                 ' onclose="closeSlides()"></sbj-slide-box>',
                 {
                     scope: $scope,

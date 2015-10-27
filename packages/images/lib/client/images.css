@@ -1,0 +1,12 @@
+.local-thumbnail {
+    width: 100%;
+
+}
+
+.gallery-indicator{
+    position: fixed;
+    width:32px;
+    bottom:10px;
+    left: 50%;
+    margin-left: -16px;
+}

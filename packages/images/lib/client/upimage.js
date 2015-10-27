@@ -116,8 +116,8 @@ UpImage = class UpImage {
             EXIF.readExifFromFileURI(uri, function (exifdata) {
                 if(exifdata){
                     resolve({
-                        width: exifdata.ImageWidth,
-                        height: exifdata.ImageHeight,
+                        width: exifdata.ImageWidth || exifdata.PixelXDimension,
+                        height: exifdata.ImageHeight || exifdata.PixelYDimension,
                         orientation: exifdata.Orientation,
                         takenAt: exifdata.DateTime
                     })
@@ -186,8 +186,8 @@ UpImage = class UpImage {
             EXIF.readExifFromFileURI(file, function (exifdata) {
                 if (exifdata) {
                     self.origin.orientation = exifdata.Orientation;
-                    self.origin.width = exifdata.ImageWidth;
-                    self.origin.height = exifdata.ImageHeight;
+                    self.origin.width = exifdata.ImageWidth || exifdata.PixelXDimension;
+                    self.origin.height = exifdata.ImageHeight || exifdata.PixelYDimension;
                     self.origin.takenAt = exifdata.DateTime;
                 }
                 processImage(file, {maxWidth:Images.ThumbWidth, maxHeight:Images.ThumbHeight,quality: 1,exif:exifdata},

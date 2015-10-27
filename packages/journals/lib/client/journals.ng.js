@@ -44,11 +44,21 @@ angular.module('shareBJ.journals')
 
         $scope.journals = $meteor.collection( function() {
                     return Journals.find({},{
-                    sort: {createdAt: -1}
+                    sort: {createdAt: -1}/*,
+                    transform: cacheTransform*/
                 })
             },
             false
         );
+
+        function cacheTransform(journal){
+            _.each(journal.iamges,function(iamge){
+               Images.cacheManager.cache(image.origin,function(cachedURI){
+                   image.origin = cachedURI;
+               })
+            });
+            return journal;
+        }
 
         $scope.loadOlderJournals = function(){
             if($scope.numLoads < $scope.journalsCount.count)
