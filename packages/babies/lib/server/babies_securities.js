@@ -1,4 +1,5 @@
 Babies.allow ( {
+    /*
     insert:function(userId,doc){
         if(Babies.find({owners:userId}).count()>5) {
             throw new Meteor.Error("Access Denied", "Too many babies", "Only five babies allowed for one user");
@@ -14,5 +15,5 @@ Babies.allow ( {
 
         console.log("Babies update allow:",userId,doc,fieldNames,modifier);
         return true;
-    }
+    }*/
 });

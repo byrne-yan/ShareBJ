@@ -1,4 +1,61 @@
 Meteor.methods({
+    'babies/create': function(baby){
+        Match.test(baby,{
+            avatar:Match.Optional(String),
+            name:String,
+            nickname:Match.Optional(String),
+            conceptionDate:Match.Optional(Date),
+            birth:Match.Optional({
+                birthTime:Match.Optional(Date),
+                gender:Match.Optional(String),
+                birthWeight:Match.Optional(Number),
+                birthHeight:Match.Optional(Number)
+            })
+        });
+
+        if(!this.userId)
+            return;
+        Babies.insert(
+            _.extend(baby,{
+                owners:[this.userId],
+                followers:[]
+            })
+        )
+    },
+    'babies/update': function(babyId, options){
+        //only owners can update baby's info
+        //console.log(this.userId , babyId ,options);
+        if (!this.userId || !babyId || !options)
+            throw new Meteor.Error(400,'unauthorized or bad request');
+
+        var baby = Babies.findOne({_id:babyId,'owners':this.userId});
+        if(!baby)
+            throw new Meteor.Error(404,'baby not found');;
+
+        //_id, owners, and folloers not allowed
+        check(options,{
+            avatar:Match.Optional(String),
+            name:Match.Optional(String),
+            nickname:Match.Optional(String),
+            conceptionDate:Match.Optional(Date),
+            birth:Match.Optional({
+                birthTime:Match.Optional(Date),
+                gender:Match.Optional(String),
+                birthWeight:Match.Optional(Number),
+                birthHeight:Match.Optional(Number)
+            })
+        });
+        var unset = _.pick(options,function(value,key,object){return _.isNull(value) || _.isUndefined(value)});
+        var set = _.omit(options,function(value,key,object){return _.isNull(value) || _.isUndefined(value)});
+        var modifier = {
+        };
+        if(!_.isEmpty(set))
+            modifier['$set'] = set;
+        if(!_.isEmpty(unset))
+            modifier['$unset'] = unset;
+        //console.log('babies/update:',options, modifier);
+        return Babies.update({_id:babyId},modifier);
+    },
     CancelGuardian: function(babyId,guardian){ //provided guardian is undefined, current user remove himself from guardians
         check(babyId,String);
         check(guardian,Match.OneOf(String, undefined));
@@ -126,7 +183,7 @@ Meteor.methods({
         var type =request.type;
 
         if(type==='guard'){
-            if(Babies.findOne({owners:request.requester}))
+            if(Babies.findOne({_id:babyId,owners:request.requester}))
             {
                 throw new Meteor.Error(400,"Requester is already a guardian ")
             }
@@ -135,7 +192,7 @@ Meteor.methods({
                 $pull: {followers: guardianOrFollower}
             });
         }else {
-            if(Babies.findOne({followers:request.requester}))
+            if(Babies.findOne({_id:babyId,followers:request.requester}))
             {
                 throw new Meteor.Error(400,"Requester is already a follower ")
             }

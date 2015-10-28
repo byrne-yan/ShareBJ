@@ -12,8 +12,8 @@ angular.module('shareBJ.babies')
 
         if($scope.newMode)
         {
-            $scope.babies = $scope.$meteorCollection(Babies);
-            $scope.baby.avatar = null;
+            $scope.babies = $scope.$meteorCollection(Babies,false);
+            $scope.baby.avatar = '';
             $scope.baby.name = "";
             $scope.baby.nickname = "";
             $scope.baby.born = true;
@@ -29,7 +29,7 @@ angular.module('shareBJ.babies')
 
             if($scope.babies.length > 0 )
             {
-                $scope.baby.avatar = $scope.babies[0].avatar;
+                $scope.baby.avatar = $scope.babies[0].avatar || '';
                 $scope.baby.name = $scope.babies[0].name;
                 $scope.baby.nickname = $scope.babies[0].nickname;
                 $scope.baby.born = $scope.babies[0].birth;
@@ -58,9 +58,7 @@ angular.module('shareBJ.babies')
             var babyObj = {
                 avatar: $scope.baby.avatar,
                 name: baby.name,
-                nickname:baby.nickname,
-                owners:[$rootScope.currentUser._id],
-                followers:[]
+                nickname:baby.nickname
             };
 
             if(baby.born){
@@ -76,9 +74,9 @@ angular.module('shareBJ.babies')
             }else{
                 _.extend(babyObj,{conceptionDate: baby.conceptionDate});
             }
-            if(!$scope.newMode){
+/*            if(!$scope.newMode){
                 babyObj._id = $scope.babies[0]._id;
-            }
+            }*/
             return babyObj;
         }
         $scope.newBaby = function(baby){
@@ -92,20 +90,25 @@ angular.module('shareBJ.babies')
 
             var babyObj = constructBabyObj(baby);
 
-            $scope.babies.save( babyObj )
-            .then(function(){
-                $ionicHistory.nextViewOptions({
-                    disableBack: true,
-                    historyRoot: true
-                });
-                $state.go(ShareBJ.state.home);
-            },
-            function(err){
-                $ionicLoading.hide();
-                $scope.newbabyError.newbaby = true;
-                $scope.newbabyErrorMessage = err.message;
-                console.log(err);
-            });
+            if($scope.newMode){
+                Meteor.call('babies/create',babyObj,babyCB);
+            }else{
+                Meteor.call('babies/update',$scope.babies[0]._id,babyObj,babyCB);
+            }
+            function babyCB(err,res) {
+                if (!err) {
+                    $ionicHistory.nextViewOptions({
+                        disableBack: true,
+                        historyRoot: true
+                    });
+                    $state.go(ShareBJ.state.home);
+                } else {
+                    $ionicLoading.hide();
+                    $scope.newbabyError.newbaby = true;
+                    $scope.newbabyErrorMessage = err.message;
+                    console.log(err);
+                }
+            };
         };
 
         $scope.editAvatar = function(){
