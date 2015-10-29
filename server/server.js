@@ -15,6 +15,10 @@ Meteor.startup(function () {
     BrowserPolicy.content.allowOriginForAll(process.env.ROOT_URL);
     BrowserPolicy.content.allowOriginForAll("https://*.amazonaws.com");
     BrowserPolicy.content.allowOriginForAll("https://*.amazonaws.com.cn");
+    BrowserPolicy.content.allowOriginForAll("http://*.weibo.com");
+    BrowserPolicy.content.allowOriginForAll("https://*.weibo.com");
+    BrowserPolicy.content.allowOriginForAll("http://*.qq.com");
+    BrowserPolicy.content.allowOriginForAll("https://*.qq.com");
     BrowserPolicy.content.allowEval();
     console.log('setted csp:',BrowserPolicy.content._constructCsp());
     // BrowserPolicy.content.disallowAll();

@@ -16,7 +16,11 @@ Package.onUse(function (api) {
         'sbj:accounts-phone@0.0.21',
         'sbj:sms',
         'sbj:notifications',
-        'sbj:avatar'
+        'sbj:avatar',
+        'service-configuration',
+        'leonzhang1109:accounts-qq@0.0.7',
+        'leonzhang1109:accounts-wechat@0.2.6',
+        'accounts-weibo@1.0.6'
     ];
 
   api.use(packages);
@@ -73,7 +77,10 @@ Package.onUse(function (api) {
     'lib/server/users_security.js',
     'lib/server/users_methods.js',
     'lib/server/recover_methods.js',
-    'lib/server/publications.js'
+    'lib/server/publications.js',
+      'lib/server/accounts_qq.js',
+      'lib/server/accounts_wechat.js',
+    'lib/server/accounts_weibo.js'
   ], ['server']);
 
   api.export('Users');

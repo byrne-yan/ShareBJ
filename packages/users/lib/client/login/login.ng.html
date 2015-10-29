@@ -35,6 +35,11 @@
                 <div class="padding">
                     <button id="loginButton" type="submit" ng-disabled="loginForm.$pristine || loginForm.$invalid"  class="button button-full button-balanced ink">登录</button>
                 </div>
+                <div class>
+                    <button class="button button-clear" id="qq" ng-click="loginWithQq()">QQ登录</button>
+                    <button class="button button-clear" id="wechat" ng-click="loginWithWechat()">微信登录</button>
+                    <button class="button button-clear" id="wechat" ng-click="loginWithWeibo()">微博登录</button>
+                </div>
             </div>
             <div id="errorMessages" ng-messages="user.loginError">
                 <div ng-message="login" class="error" >
@@ -43,6 +48,7 @@
                 </div>
             </div>
         </form>
+
         <a class="button button-clear" id="recover" ui-sref="recover">忘记密码?</a>
         <a class="button button-clear" id="enroll" ui_sref="signupByPhone" >注册</a>
         <!--<div class="button-bar social-login">-->

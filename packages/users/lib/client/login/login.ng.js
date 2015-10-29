@@ -34,5 +34,54 @@ angular.module('shareBJ.users')
 
                 }
             });
+        };
+        $scope.loginWithQq = function(){
+            Meteor.loginWithQq({
+                loginStyle:'redirect',
+                redirectUrl:Meteor.absoluteUrl('',{replaceLocalhost:true})
+            },function(error,res){
+                if(error){
+                    $scope.user.loginError = {'login':true};
+                    $scope.loginErrorMessage = error.message;
+                    console.log(error);
+                }else{
+                    console.log("login ok ",res);
+                    //$scope.user.password="";
+                    $state.go(ShareBJ.state.home);
+                }
+            })
+        };
+        $scope.loginWithWechat = function(){
+            Meteor.loginWithWechat({
+                loginStyle:'redirect',
+                redirectUrl:Meteor.absoluteUrl('',{replaceLocalhost:true})
+            },function(error,res){
+                if(error){
+                    $scope.user.loginError = {'login':true};
+                    $scope.loginErrorMessage = error.message;
+                    console.log(error);
+                }else{
+                    console.log("login ok ",res);
+                    //$scope.user.password="";
+                    $state.go(ShareBJ.state.home);
+                }
+            })
+        };
+        $scope.loginWithWeibo = function(){
+            Meteor.loginWithWeibo({
+                loginStyle:'redirect',
+                redirectUrl:Meteor.absoluteUrl('',{replaceLocalhost:true})
+            },function(error,res){
+                if(error){
+                    $scope.user.loginError = {'login':true};
+                    $scope.loginErrorMessage = error.message;
+                    console.log(error);
+                }else{
+                    console.log("login ok ",res);
+                    //$scope.user.password="";
+                    $state.go(ShareBJ.state.home);
+                }
+            })
         }
+
     });
