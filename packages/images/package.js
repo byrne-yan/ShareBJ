@@ -11,7 +11,7 @@ Package.describe({
 });
 
 Npm.depends({
-  "aws-sdk":'2.2.4'
+  "aws-sdk":'2.2.12'
 });
 Cordova.depends({
     "com.rjfun.cordova.httpd":"file://../cordova-plugins/cordova-httpd",

@@ -7,15 +7,21 @@ AWS.config.update({
     secretAccessKey:Meteor.settings.s3.image.SECRET
 });
 //console.log(AWS.config.credentials);
-AWS.config.credentials = new AWS.TemporaryCredentials();
+//AWS.config.credentials = new AWS.TemporaryCredentials();
+AWS.config.credentials = new AWS.TemporaryCredentials({
+    DurationSeconds:119600 //36 hours
+});
+
 //console.log(AWS.config.credentials);
 
 Images.getPresignedUrl = function(url,ip){
-    //console.log("siging url:",url);
     var getCredentialSync = Meteor.wrapAsync(AWS.config.credentials.get,AWS.config.credentials);
+    //console.log("siging url:",url,AWS.config.credentials);
 
-    if(AWS.config.credentials.expired) {
-        getCredentialSync();
+    if(AWS.config.credentials.expired || AWS.config.credentials.expireTime < (new Date())) {
+        var refreshCredentialSync = Meteor.wrapAsync(AWS.config.credentials.refresh,AWS.config.credentials);
+        refreshCredentialSync();
+        console.log("TemporaryCredentials refreshed:",AWS.config.credentials.expireTime);
     }
     var s3 = new AWS.S3({
         accessKeyId: AWS.config.credentials.accessKeyId,
