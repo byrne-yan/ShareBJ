@@ -16,6 +16,9 @@ Npm.depends({
 Cordova.depends({
     "com.rjfun.cordova.httpd":"file://../cordova-plugins/cordova-httpd",
     "com.raananw.imageResizer":"https://github.com/RaananW/PhoneGap-Image-Resizer/tarball/708b0091048a9f494e7efed7bf0ca2002501d66a",
+    "cordova-plugin-chrome-apps-common":"file://../cordova-plugins/cordova-plugin-chrome-apps-common",
+    "cordova-plugin-background-app":"file://../cordova-plugins/cordova-plugin-background-app",
+    "cordova-plugin-chrome-apps-system-storage":"file://../cordova-plugins/cordova-plugin-chrome-apps-system-storage"
     //"cordova-sqlite-storage":"https://github.com/litehelpers/Cordova-sqlite-storage/tarball/b467515205894cc9367824ac7086adb42cc5263b"
     //"cordova-sqlite-storage":"file://../cordova-plugins/Cordova-sqlite-storage-0.7.7"
 });
