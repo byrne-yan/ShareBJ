@@ -30,7 +30,7 @@ Package.onUse(function(api) {
     var packages =[
         'ecmascript',
         'meteor-platform@1.2.2',
-        'angular@1.0.2',
+        'angular@1.0.3',
         'momentjs:moment@2.10.6',
         'accounts-password@1.1.1',
         //'angularui:angular-ui-router@0.2.15',
