@@ -45,6 +45,7 @@ Package.onUse(function(api) {
   api.addFiles([
       'lib/client/images_client.js',
       'lib/client/cache/image_cache_index.js',
+      'lib/client/cache/downloader.js',
       'lib/client/upload_client.js',
       'lib/client/upimage.js',
       'lib/client/image_web_server.js',

@@ -15,51 +15,53 @@ describe('Images_on_client',()=> {
         });
 
         afterEach(()=>{
-            Uploads.clearUploaders();
+            Uploads.remove({});
+            Images.uploadManager.clearUploaders();
         });
 
         it('define _uploaders',()=>{
-            expect(Uploads._uploaders).toBeDefined();
+            expect(Images.uploadManager._uploaders).toBeDefined();
         });
 
         it('requests an uploader for images',()=>{
             var expectedValue = {
                 uploaderId:'uid1234567890',
                 journalId:'jid1234567890',
-                imageId:'iid1234567890'
+                babyId:'baby1234567890',
+                imageNo:0
             };
             spyOn(Random,'id').and.returnValue(expectedValue.uploaderId);
-            Uploads.requestUploader("imageUploads",expectedValue.journalId,expectedValue.imageId,{width:600,height:800});
-            expect(Uploads._uploaders[expectedValue.uploaderId]).toBeDefined();
-            expect(Uploads._uploaders[expectedValue.uploaderId]._journalId).toEqual(expectedValue.journalId);
+            Images.uploadManager.requestUploader("imageUploads",expectedValue.journalId,expectedValue.babyId ,expectedValue.imageNo,{width:600,height:800});
+            var expectedId = expectedValue.journalId + '-imageUploads-' + expectedValue.imageNo;
+            expect(Images.uploadManager._uploaders[expectedId]).toBeDefined();
+            expect(Images.uploadManager._uploaders[expectedId]._journalId).toEqual(expectedValue.journalId);
         });
 
         it('record progress when sending image',(done)=>{
             var expectedValue = {
                 journalId:'jid1234567890',
-                imageId:'iid1234567890',
+                imageNo:0,
+                babyId:'baby1234567890',
                 recordId:'rid1234567890'
             };
-            var uploader = Uploads.requestUploader("originUploads",expectedValue.journalId,expectedValue.imageId,{width:600,height:800});
+            var uploader = Images.uploadManager.requestUploader("originUploads",expectedValue.journalId,expectedValue.babyId ,expectedValue.imageNo,{width:600,height:800});
             expect(uploader).toBeDefined();
             expect(uploader._id).toBeDefined();
-            blob  ={
-                type:'image/jpeg',
-                name:'testname',
-                size:65
-            };
-
-            spyOn(Uploads._uploaders[uploader._id]._uploader,'send').and.callFake((file,callback)=>{
+            blob  = new Blob(['sdfddfhgfdhgfhj'],{
+                type:'images/jpeg'
+            });
+            blob.name = 'testblob';
+            spyOn(Images.uploadManager._uploaders[uploader._id]._uploader,'send').and.callFake((file,callback)=>{
                 callback(null,uploader._id);
             });
-            spyOn(Uploads,'insert').and.callThrough();
+            spyOn(Uploads,'upsert').and.callThrough();
 
             uploader.send(blob,(err,res)=>{
-                expect(err).toBe(null);
+                expect(err).toBeUndefined();
                 expect(res).toEqual(uploader._id);
-                expect(Uploads.insert).toHaveBeenCalled();
-                var record = LocalCollection.findOne({uploader:uploader._id});
-                console.log(record);
+                expect(Uploads.upsert).toHaveBeenCalled();
+                var record = Uploads.findOne({_id:uploader._id});
+                //console.log(record);
                 expect(record).toBeDefined();
                 expect(record.journal).toEqual(expectedValue.journalId);
                 expect(record.filename).toEqual(blob.name);
@@ -73,16 +75,15 @@ describe('Images_on_client',()=> {
             it('reports uploading progress',(done)=>{
                 var expectedValue = {
                     journalId:'jid1234567890',
-                    imageId:'iid1234567890'
+                    babyId:'baby1234567890',
+                    imageId:0
                 };
-                var uploader = Uploads.requestUploader("originUploads",expectedValue.journalId,expectedValue.imageId,{width:600,height:800});
+                var uploader = Images.uploadManager.requestUploader("originUploads",expectedValue.journalId,expectedValue.babyId, expectedValue.imageId,{width:600,height:800});
                 //console.log(uploader._id);
-                blob  ={
-                    type:'image/jpeg',
-                    name:'testname',
-                    size:65
-                };
-
+                blob  = new Blob(['sdfddfhgfdhgfhj'],{
+                    type:'images/jpeg'
+                });
+                blob.name = 'testblob';
 
                 var reactiveProgress = new ReactiveVar(0);
                 var reactiveStatus = new ReactiveVar('idle');
@@ -104,29 +105,28 @@ describe('Images_on_client',()=> {
                     this.timer = setInterval(forward,100,callback);
                 });
                 spyOn(Uploads,'update').and.callThrough();
-                spyOn(Uploads,'insert').and.callThrough();
+                spyOn(Uploads,'upsert').and.callThrough();
 
                 uploader.send(blob,(err,res)=> {
                     clearInterval(this.timer);
-                    expect(Uploads.insert.calls.count()).toEqual(1);
+                    expect(Uploads.upsert.calls.count()).toEqual(1);
                     //console.log(Uploads.update.calls.all());
                     expect(Uploads.update.calls.count()).toEqual(7);
-                    expect(Uploads.update.calls.argsFor(0)[0]).toEqual({_type:'upload',uploader:uploader._id});//selector
-                    expect(Uploads.update.calls.argsFor(0)[1]).toEqual({$set:{progress:0,status:'idle'}})//modifier
-                    expect(Uploads.update.calls.argsFor(1)[0]).toEqual({_type:'upload',uploader:uploader._id});//selector
-                    expect(Uploads.update.calls.argsFor(1)[1]).toEqual({$set:{progress:0,status:'transfering'}})//modifier
-                    expect(Uploads.update.calls.argsFor(2)[0]).toEqual({_type:'upload',uploader:uploader._id});//selector
-                    expect(Uploads.update.calls.argsFor(2)[1]).toEqual({$set:{progress:20,status:'transfering'}})//modifier
-                    expect(Uploads.update.calls.argsFor(3)[0]).toEqual({_type:'upload',uploader:uploader._id});//selector
-                    expect(Uploads.update.calls.argsFor(3)[1]).toEqual({$set:{progress:40,status:'transfering'}})//modifier
-                    expect(Uploads.update.calls.argsFor(4)[0]).toEqual({_type:'upload',uploader:uploader._id});//selector
-                    expect(Uploads.update.calls.argsFor(4)[1]).toEqual({$set:{progress:60,status:'transfering'}})//modifier
-                    expect(Uploads.update.calls.argsFor(5)[0]).toEqual({_type:'upload',uploader:uploader._id});//selector
-                    expect(Uploads.update.calls.argsFor(5)[1]).toEqual({$set:{progress:80,status:'transfering'}})//modifier
-                    expect(Uploads.update.calls.argsFor(6)[0]).toEqual({_type:'upload',uploader:uploader._id});//selector
+                    expect(Uploads.update.calls.argsFor(0)[0]).toEqual({_type:'upload',_id:uploader._id});//selector
+                    expect(Uploads.update.calls.argsFor(0)[1]['$set']).toEqual(jasmine.objectContaining({progress:0,status:'idle',speed:0}))//modifier
+                    expect(Uploads.update.calls.argsFor(1)[0]).toEqual({_type:'upload',_id:uploader._id});//selector
+                    expect(Uploads.update.calls.argsFor(1)[1]['$set']).toEqual(jasmine.objectContaining({progress:0,status:'transfering'}))//modifier
+                    expect(Uploads.update.calls.argsFor(2)[0]).toEqual({_type:'upload',_id:uploader._id});//selector
+                    expect(Uploads.update.calls.argsFor(2)[1]['$set']).toEqual(jasmine.objectContaining({progress:20,status:'transfering'}))//modifier
+                    expect(Uploads.update.calls.argsFor(3)[0]).toEqual({_type:'upload',_id:uploader._id});//selector
+                    expect(Uploads.update.calls.argsFor(3)[1]['$set']).toEqual(jasmine.objectContaining({progress:40,status:'transfering'}))//modifier
+                    expect(Uploads.update.calls.argsFor(4)[0]).toEqual({_type:'upload',_id:uploader._id});//selector
+                    expect(Uploads.update.calls.argsFor(4)[1]['$set']).toEqual(jasmine.objectContaining({progress:60,status:'transfering'}))//modifier
+                    expect(Uploads.update.calls.argsFor(5)[0]).toEqual({_type:'upload',_id:uploader._id});//selector
+                    expect(Uploads.update.calls.argsFor(5)[1]['$set']).toEqual(jasmine.objectContaining({progress:80,status:'transfering'}))//modifier
+                    expect(Uploads.update.calls.argsFor(6)[0]).toEqual({_type:'upload',_id:uploader._id});//selector
 
-                    expect(Uploads.update.calls.argsFor(6)[1]['$set'].progress).toEqual(100);
-                    expect(Uploads.update.calls.argsFor(6)[1]['$set'].status).toEqual('done');
+                    expect(Uploads.update.calls.argsFor(6)[1]['$set']).toEqual(jasmine.objectContaining({progress:100,status:'done'}));
                     expect(Uploads.update.calls.argsFor(6)[1]['$set'].end).toBeDefined();
                     done();
                 });
@@ -134,16 +134,15 @@ describe('Images_on_client',()=> {
             it('abort upload',(done)=>{
                 var expectedValue = {
                     journalId:'jid1234567891',
-                    imageId:'iid1234567891'
+                    babyId:'baby1234567890',
+                    imageId:0
                 };
-                var uploader = Uploads.requestUploader("originUploads",expectedValue.journalId,expectedValue.imageId,{width:600,height:800});
+                var uploader = Images.uploadManager.requestUploader("originUploads",expectedValue.journalId,expectedValue.babyId, expectedValue.imageId,{width:600,height:800});
                 //console.log(uploader._id);
-                blob  ={
-                    type:'image/jpeg',
-                    name:'testname',
-                    size:65
-                };
-
+                blob  = new Blob(['sdfddfhgfdhgfhj'],{
+                    type:'images/jpeg'
+                });
+                blob.name = 'testblob';
 
                 var reactiveProgress = new ReactiveVar(0);
                 var reactiveStatus = new ReactiveVar('idle');
@@ -154,7 +153,9 @@ describe('Images_on_client',()=> {
                 var registerCallback;
                 spyOn(uploader,'abort').and.callFake(()=>{
                     reactiveStatus.set('abort');
+                    clearInterval(this.timer);
                     registerCallback('abort by user');
+                    //
                 });
                 spyOn(uploader._uploader,'send').and.callFake((file,callback)=>{
                     registerCallback = callback;
@@ -172,29 +173,28 @@ describe('Images_on_client',()=> {
                     this.timer = setInterval(forward,100,callback);
                     setTimeout(()=>{
                         uploader.abort();
-                    },300)
+                    },280)
                 });
                 spyOn(Uploads,'update').and.callThrough();
-                spyOn(Uploads,'insert').and.callThrough();
+                spyOn(Uploads,'upsert').and.callThrough();
 
                 uploader.send(blob,(err,res)=> {
                     clearInterval(this.timer);
-                    expect(Uploads.insert.calls.count()).toEqual(1);
+                    expect(Uploads.upsert.calls.count()).toEqual(1);
                     //console.log(Uploads.update.calls.all());
                     expect(Uploads.update.calls.count()).toEqual(5);
-                    expect(Uploads.update.calls.argsFor(0)[0]).toEqual({_type:'upload',uploader:uploader._id});//selector
-                    expect(Uploads.update.calls.argsFor(0)[1]).toEqual({$set:{progress:0,status:'idle'}})//modifier
-                    expect(Uploads.update.calls.argsFor(1)[0]).toEqual({_type:'upload',uploader:uploader._id});//selector
-                    expect(Uploads.update.calls.argsFor(1)[1]).toEqual({$set:{progress:0,status:'transfering'}})//modifier
-                    expect(Uploads.update.calls.argsFor(2)[0]).toEqual({_type:'upload',uploader:uploader._id});//selector
-                    expect(Uploads.update.calls.argsFor(2)[1]).toEqual({$set:{progress:20,status:'transfering'}})//modifier
-                    expect(Uploads.update.calls.argsFor(3)[0]).toEqual({_type:'upload',uploader:uploader._id});//selector
-                    expect(Uploads.update.calls.argsFor(3)[1]).toEqual({$set:{progress:40,status:'transfering'}})//modifier
+                    expect(Uploads.update.calls.argsFor(0)[0]).toEqual({_type:'upload',_id:uploader._id});//selector
+                    expect(Uploads.update.calls.argsFor(0)[1]).toEqual({$set:{progress:0,status:'idle',speed:0}})//modifier
+                    expect(Uploads.update.calls.argsFor(1)[0]).toEqual({_type:'upload',_id:uploader._id});//selector
+                    expect(Uploads.update.calls.argsFor(1)[1]['$set']).toEqual(jasmine.objectContaining( {progress:0,status:'transfering'}))//modifier
+                    expect(Uploads.update.calls.argsFor(2)[0]).toEqual({_type:'upload',_id:uploader._id});//selector
+                    expect(Uploads.update.calls.argsFor(2)[1]['$set']).toEqual(jasmine.objectContaining({progress:20,status:'transfering'}))//modifier
+                    expect(Uploads.update.calls.argsFor(3)[0]).toEqual({_type:'upload',_id:uploader._id});//selector
+                    expect(Uploads.update.calls.argsFor(3)[1]['$set']).toEqual(jasmine.objectContaining({progress:40,status:'transfering'}))//modifier
 
-                    expect(Uploads.update.calls.argsFor(4)[0]).toEqual({_type:'upload',uploader:uploader._id});//selector
+                    expect(Uploads.update.calls.argsFor(4)[0]).toEqual({_type:'upload',_id:uploader._id});//selector
                     expect(Uploads.update.calls.argsFor(4)[1]['$set']).toBeDefined();
-                    expect(Uploads.update.calls.argsFor(4)[1]['$set'].progress).toEqual(40);
-                    expect(Uploads.update.calls.argsFor(4)[1]['$set'].status).toEqual('abort');
+                    expect(Uploads.update.calls.argsFor(4)[1]['$set']).toEqual(jasmine.objectContaining({progress:40,status:'abort'}));
                     expect(Uploads.update.calls.argsFor(4)[1]['$set'].end).toBeDefined();
 
                     done();

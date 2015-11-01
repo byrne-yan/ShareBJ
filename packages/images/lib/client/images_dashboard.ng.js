@@ -51,12 +51,41 @@ angular.module('shareBJ.images')
     }).controller('ImagesListCtrl',function($scope, $meteor, $timeout, $state, $ionicHistory,$ionicModal){
 
         $scope.images = $scope.$meteorCollection(function () {
-            return Images.cacheManager.index.indexes.find();
-        });
+            return Images.cacheManager.index.indexes.find({},{
+                transform:getThumbURI
+            });
+        },false);
 
-        $scope.remap = function(uri){
-            return Images.server.remapuri(uri);
+        function getThumbURI(doc){
+            var uri = doc.cached_uri;
+            doc.thumb = new ReactiveVar(null);
+            function getThumb(doc){
+                Images.cacheManager.getThumbnailURI(uri)
+                .then(function(thumbURI){
+                        Images.server.remapuriAsync(thumbURI,function(err,mappedURI){
+                            if(!err)
+                                doc.thumb.set(mappedURI);
+                            else
+                                noThumb(err);
+                        })
+                    },noThumb);
+                function noThumb(err){
+                    console.log('no thumb, use original image')
+                    doc.thumb.set(Images.server.remapuri(uri))
+                }
+            }
+            if(uri)
+                getThumb(doc);
+            return doc;
         }
+
+        $scope.$watchCollection(
+            'images',
+            function(newValue,oldValue) {
+                console.log(newValue);
+            },
+            true
+        );
 
         $scope.showImage = function(index){
             $scope.index  = index;

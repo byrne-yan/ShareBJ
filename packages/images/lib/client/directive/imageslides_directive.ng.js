@@ -1,3 +1,7 @@
+function slidesDebug(){
+    console.log.apply(console,arguments);
+}
+
 (function(){
     var directive = function(){
         return {
@@ -37,65 +41,17 @@
 
 
                 $scope.id = Random.id();
-                Tracker.autorun(function(c){
-                    _.each($scope.images,function(image,idx){
-                        var thumb = getProperty($scope.images[idx],$scope.thumb);
-                        var orientation = getProperty($scope.images[idx],$scope.orientation);
-                        var url = getProperty($scope.images[idx],$scope.src) || getProperty($scope.images[idx],$scope.src2);
 
-                        LocalCollection.upsert({_type:'imageCache', jid:$scope.id, no:idx}, {$set:{
-                            _type:'imageCache', jid:$scope.id, no:idx,orientation:orientation, thumb:thumb, src:$scope.enableCache?null:url, loaded:false
-                        }});
-                        if($scope.enableCache){
-                            if(url){
-                                Images.cacheManager.cache(url,orientation,function(cachedURI){
-                                    LocalCollection.update({_type:'imageCache', jid:$scope.id, no:idx },{$set: {src: Images.server.remapuri(cachedURI) } })
-                                })
-                            }else{
-                                console.log("WARN: no image url ");
-                                LocalCollection.update({_type:'imageCache', jid:$scope.id, no:idx },{$set: {src:thumb,loaded:true}});
-                            }
-                        }
-                    });
-
-                    $timeout(function(){});
-                });
-
-                $scope.$on('$destroy',function(){
-                    LocalCollection.remove({_type:'imageCache', jid:$scope.id});
-                });
-
-                Tracker.autorun(function(c) {
-                    $scope.slideImages = LocalCollection.find({_type: 'imageCache', jid: $scope.id}).fetch();
-                    console.log('images updated',$scope.slideImages);
-                });
-
-                $scope.zoomMin = 1;
-                $scope.updateSlideStatus = function(slide){
-                    var position = $ionicScrollDelegate.$getByHandle('scrollHandle'+slide).getScrollPosition();
-                    console.log("scrool position:",position);
-                    var zoomFactor = position.zoom;
-                    //console.log("zoom:",zoomFactor , $scope.zoomMin);
-                    if(zoomFactor == $scope.zoomMin){
-                        $ionicSlideBoxDelegate.enableSlide(true);
-                    }else{
-                        $ionicSlideBoxDelegate.enableSlide(false);
-                    }
-                };
-
-                $scope.onImgLoad = function(event,idx){
-                    console.log("img loaded:",idx);
-                    var image = angular.element(event.target);
-                    var imageDiv = angular.element(event.target).parent();
+                function getImageDivLayout(image,idx,orientation){
+                    var imageDiv = angular.element("#img-div-"+idx);
 
                     //image dimension
-                    var iw = image.width();
-                    var ih = image.height();
+                    var iw = image.width;
+                    var ih = image.height;
 
                     //div dimension
                     var sw =  imageDiv.width();
                     var sh =  imageDiv.height();
-                    var orientation = getProperty($scope.images[idx],$scope.orientation);
                     if(orientation===5 || orientation===6 || orientation===7 || orientation===8)
                     {
                         //strech div to ensure fit the height after rotation
@@ -107,22 +63,93 @@
                             imageDiv.height(nw);
                             imageDiv.width(nw);
                             var left = -parseInt(nw/2- (nw/ratio)/2);
-                            imageDiv.css('left',left);
-                            console.log("set image container layout:",nw,nh,iw,ih,sw,sh,ratio,scale,left);
+                            //imageDiv.css('left',left);
+                            slidesDebug("set image container layout:",nw,nh,iw,ih,sw,sh,ratio,scale,left);
+                            return [left,nw];
                         }
-                        ////imageDiv.css('background-size',w);
-
-                        //console.log('get size:',w,h,ratio, typeof w);
-
-
-                        //var leftAt = parseInt(-(nw/2-w/2));
-                        //imageDiv.css('left', leftAt );
-                        //console.log("set image container layout:",nh,nh,leftAt,nw,w,h,ratio);
-                        //$scope.slideImages[idx].loaded = true;
                     }
-                    LocalCollection.update({_type:'imageCache', jid:$scope.id, no:idx },{$set: {loaded:true}});
-                    $ionicSlideBoxDelegate.update();
+                }
+                function loadImg(url, data,callback){
+                    var i = new Image();
+                    i.onload = function(event){
+                        slidesDebug('img loaded:',url, data);
+                        var r = getImageDivLayout(i,data.no,data.orientation);
+                        if(r){
+                            data.left = r[0];
+                            data.width = r[1];
+                        }
+                        callback(data);
+                    };
+                    i.src = url;
+                }
+                $scope.$meteorAutorun(function(c){
+                    console.log('images changes',$scope.images);
+                    _.each($scope.images,function(image,idx){
+                        var thumb = getProperty($scope.images[idx],$scope.thumb);
+                        var orientation = getProperty($scope.images[idx],$scope.orientation);
+                        var url = getProperty($scope.images[idx],$scope.src) || getProperty($scope.images[idx],$scope.src2);
+
+                        LocalCollection.upsert({_type:'imageCache', jid:$scope.id, no:idx}, {$set:{
+                            _type:'imageCache', jid:$scope.id, no:idx,orientation:orientation, thumb:thumb, src:null, loaded:false
+                        }});
+                            if(url){
+                                if($scope.enableCache) {
+                                    Images.cacheManager.cache(url, orientation, function (cachedURI) {
+                                        var src = Images.server.remapuri(cachedURI);
+                                        slidesDebug('img src:', src, idx);
+                                        loadImg(src,{jid:$scope.id,no:idx,orientation:orientation},function(res){
+                                            LocalCollection.update({_type:'imageCache', jid:res.jid, no:res.no },{$set:
+                                                {src:url,loaded:true, width:res.width, left:res.left}
+                                            });
+                                        })
+
+                                    })
+                                }else{
+                                    loadImg(url,{jid:$scope.id,no:idx,orientation:orientation},function(res){
+                                        LocalCollection.update({_type:'imageCache', jid:res.jid, no:res.no },{$set:
+                                        {src:url,loaded:true, width:res.width, left:res.left}
+                                        });
+                                    })
+                                }
+                            }else{
+                                slidesDebug("WARN: no image url ");
+                                LocalCollection.update({_type:'imageCache', jid:$scope.id, no:idx },{$set: {src:thumb,loaded:true}});
+                            }
+                    });
+                });
+
+
+                $scope.$on('$destroy',function(){
+                    LocalCollection.remove({_type:'imageCache', jid:$scope.id});
+                });
+
+
+                function updateSlides(){
+                    setTimeout(function(){
+                        //$ionicSlideBoxDelegate.slide(0);
+                        $ionicSlideBoxDelegate.update();
+                        $scope.$apply();
+                    });
+                }
+                $scope.$meteorAutorun(function(c) {
+                    $scope.slideImages = LocalCollection.find({_type: 'imageCache', jid: $scope.id}).fetch();
+                    slidesDebug('slideImages updated',$scope.slideImages);
+                    updateSlides();
+                });
+
+                $scope.zoomMin = 1;
+                $scope.updateSlideStatus = function(slide){
+                    var position = $ionicScrollDelegate.$getByHandle('scrollHandle'+slide).getScrollPosition();
+                    //slidesDebug("scrool position:",position);
+                    var zoomFactor = position.zoom;
+                    //slidesDebug("zoom:",zoomFactor , $scope.zoomMin);
+                    if(zoomFactor == $scope.zoomMin){
+                        $ionicSlideBoxDelegate.enableSlide(true);
+                    }else{
+                        $ionicSlideBoxDelegate.enableSlide(false);
+                    }
                 };
+
                 $scope.closeModal = function(){
                     $scope.onclose();
                 };
@@ -131,16 +158,13 @@
                     return image && image.loaded?'url(' + image.src +')':'none';
                 };
                 $scope.slideChanged = function($index){
-                    console.log('slideChanged to:',$index,$scope.activeSlide);
-
+                    slidesDebug('slideChanged to:',$index,$scope.activeSlide);
                 };
-                $scope.repeatDone = function( ){
-                    console.log('repeat done');
-                    if(Session.get('image-slide-changed'))
-                        $ionicSlideBoxDelegate.update();
+                $scope.repeatDone = function(){
+                    slidesDebug('repeatDone');
                 };
                 $scope.deleteImage = function(e){
-                    console.log("try to delete image #" + $ionicSlideBoxDelegate.currentIndex());
+                    slidesDebug("try to delete image #" + $ionicSlideBoxDelegate.currentIndex());
                     var count = $ionicSlideBoxDelegate.slidesCount();
                     var idx = $ionicSlideBoxDelegate.currentIndex();
                     if(idx>0 && idx===count-1)//last one slide delete

@@ -15,12 +15,12 @@ angular.module('shareBJ.images')
         });
 
         $scope.cancelUpload = function(uploaderId){
-            var uploader = Uploads.getUploader(uploaderId);
+            var uploader = Images.uploadManager.getUploader(uploaderId);
             if(uploader)
             {
                 uploader.abort()
                 .then(function(){
-                    Uploads.removeUploader(uploaderId);
+                        Images.uploadManager.removeUploader(uploaderId);
                 })
             }
         }

@@ -1,3 +1,7 @@
+function cacheDebug(){
+    if(Images.cacheDebug)
+        console.log.apply(console,arguments);
+}
 class Storage{
     constructor(options){
         this.settings = new Ground.Collection('storage',{connection:null});
@@ -63,18 +67,17 @@ class Storage{
                                 updateSettings();
                                 self.ready.set(true);
                             }
-                            console.log('external local cache dir',localDir,bInternalReady,bExternalReady);
+                            cacheDebug('external local cache dir',localDir,bInternalReady,bExternalReady);
                         },ext_fail);
                     },ext_fail)
             }
             function ext_fail(err){
-                console.log(err);
+                cacheDebug(err);
                 this.hasExternal = false;
             }
         }else{
             bExternalReady = true;
         }
-
         window.resolveLocalFileSystemURL(cordova.file.dataDirectory,gotDirectoryEntry,fail);
         function gotDirectoryEntry(de){
             de.getDirectory('images_cache',{create:true,exclusive:false},
@@ -87,12 +90,12 @@ class Storage{
                             updateSettings();
                             self.ready.set(true);
                         }
-                        console.log('internal local cache dir:',localDir,bInternalReady,bExternalReady);
+                        cacheDebug('internal local cache dir:',localDir,bInternalReady,bExternalReady);
                     },fail);
                 },fail)
         }
         function fail(err){
-            console.log(err);
+            cacheDebug(err);
             this.internalEnable = false;
         }
 
@@ -118,7 +121,7 @@ class Storage{
                 available:result
             }});
         },function(err){
-            console.log(err);
+            cacheDebug(err);
         },"File","getFreeDiskSpace",[]);
     }
 
@@ -177,44 +180,61 @@ class ImageCacheIndex{
     }
      insert(uri,cacheURI,size,orientation=1){
          var self = this;
-         var id = this.indexes.insert({uri:uri,cached_uri:cacheURI,size:size,orientation:orientation,cachedAt:new Date()},insertCB);
+         var id = this.indexes.insert({_id:uri,cached_uri:cacheURI,size:size,orientation:orientation,cachedAt:new Date()},insertCB);
          function insertCB(err, id){
              if(err){
-                 console.log(err);
+                 cacheDebug(err);
              }else{
-                 console.log("cache inserted",id,uri);
+                 cacheDebug("cache inserted",id,uri);
              }
          }
      }
 
+    update(uri,cacheURI,size,orientation=1){
+        this.indexes.update({_id:uri},{$set:{cached_uri:cacheURI,size:size,orientation:orientation,cachedAt:new Date()}});
+    }
      hit(uri){
          var self = this;
          return new Promise(function(resolve,reject){
-             var c = self.indexes.findOne({uri:uri});
-             if(c){
-                 console.log("hit:",uri,c.cached_uri);
-                 resolve(c.cached_uri)
-             }else{
-                 console.log("miss:",uri);
-                 reject('no cache')
-             }
+             Tracker.autorun(function(c){
+                 var r = self.indexes.findOne({_id:uri});
+                 if(!r){
+                     c.stop();
+                     cacheDebug("miss:",uri);
+                     reject('no cache')
+                 }else if(r.cached_uri){
+                     c.stop();
+                     cacheDebug("hit:",uri,r.cached_uri);
+                     resolve(r.cached_uri)
+                 }else{ //downloading, wait
+                     //set timeout for downloading
+                     if(c.firstRun){
+                         Meteor.setTimeout(function(){
+                             c.stop();
+                            reject('downloading timeout');
+                         },1000*60*30)
+                     }
+                 }
+             })
          })
      }
 
     renameURI(uri,newURI) {
-        this.indexes.update({uri:uri},{$set:{uri:newURI}});
+        var r = this.indexes.findOne({_id:uri});
+        this.indexes.remove({_id:uri});
+        this.indexes.upsert({_id:newURI},{$set:{cached_uri:r.cached_uri,size:r.size,orientation:r.orientation,cachedAt:new Date()}});
     }
     remove(cononicalURI){
-        this.indexes.remove({uri:cononicalURI},function(err,num){
+        this.indexes.remove({_id:cononicalURI},function(err,num){
             if(err || num!==1){
-                console.log(err,num);
+                cacheDebug(err,num);
             }
         });
     }
     removeByCachedURI(cached_uri){
         this.indexes.remove({cached_uri:cached_uri},function(err,num){
             if(err || num!==1){
-                console.log(err,num);
+                cacheDebug(err,num);
             }
         });
     }
@@ -225,17 +245,19 @@ class ImageCacheIndex{
      */
     _stat(){
         var caches = this.indexes.find().fetch();
-        console.log(caches);
+        //console.log(caches);
         var extNumber = 0;
         var extSize = 0;
         var intSize = 0;
         _.each(caches,function(cache){
-            if(cache.cached_uri.startsWith(cordova.file.externalRootDirectory))
-            {
-                extNumber++;
-                extSize += cache.size;
-            }else{
-                intSize += cache.size;
+            if(cache.cached_uri){//exclude caching item
+                if(cache.cached_uri.startsWith(cordova.file.externalRootDirectory))
+                {
+                    extNumber++;
+                    extSize += cache.size;
+                }else{
+                    intSize += cache.size;
+                }
             }
         });
         this.stat.update({},{
@@ -251,7 +273,7 @@ class ImageCacheIndex{
                 upsert:true
             },
             function(){
-                console.log("update stat：",extNumber,extSize,caches.length - extNumber,intSize)
+                //console.log("update stat：",extNumber,extSize,caches.length - extNumber,intSize)
             }
         );
     }
@@ -288,22 +310,27 @@ class CacheManager {
         var self = this;
 
         if(/^file:\/\/.*/i.test(uri)){ //move to cache directory
+            self.logCache(uri,null,-1,1);
             self.moveToCache(uri).then(function(res){
-                self.logCache(uri,res.cachedURI,res.size,orientation);
+                self.updateCache(uri,res.cachedURI,res.size,orientation);
                 callback(res.cachedURI);
             },function(err){
-                console.log(err);
+                cacheDebug(err);
+                self.index.remove(uri);
                 callback(uri);//fallback to origin
             })
         }else{
             self.hit(uri).then(function(cachedURI){
                 callback(cachedURI);
             },function(err){
+                //
+                self.logCache(uri,null,-1,1);
                 self.download(uri).then(function(res){
-                    self.logCache(uri,res.cachedURI,res.size,orientation);
+                    self.updateCache(uri,res.cachedURI,res.size,orientation);
                     callback(res.cachedURI)
                 },function(err){
-                    console.log(err);
+                    cacheDebug(err);
+                    self.index.remove(uri);
                     callback(uri);//fallback to origin
                 });
             })
@@ -316,6 +343,9 @@ class CacheManager {
 
     logCache(uri,cacheURI,size,orientation=1){
         this.index.insert(canonical(uri),cacheURI,size,orientation);
+    }
+    updateCache(uri,cacheURI,size,orientation=1){
+        this.index.update(canonical(uri),cacheURI,size,orientation);
     }
 
     /**
@@ -330,16 +360,21 @@ class CacheManager {
 
             self.index.hit(canonicalURI)
             .then(function(cachedURI){
-                    //check index broken
-                    window.resolveLocalFileSystemURL(cachedURI,exists,not_exists);
-
-                    function exists(){resolve(cachedURI)};
-                    function not_exists(error){
-                        //fix cache index
-                        self.index.remove(canonicalURI);
-                        reject(new Error("cache broken"))
-                    }
+                //check index broken
+                window.resolveLocalFileSystemURL(cachedURI,exists,not_exists);
+                function exists(){
+                    resolve(cachedURI)
+                }
+                function not_exists(error){
+                    //fix cache index
+                    cacheDebug('remove broken cache:',canonicalURI,cachedURI);
+                    self.index.remove(canonicalURI);
+                    reject(new Error("cache broken"))
+                }
             },function(err){
+                if(err!=='no cache'){
+                    cacheDebug('Error:'+err);
+                }
                 reject(err);
             })
         })
@@ -356,18 +391,13 @@ class CacheManager {
             return newURI;
         };
         return new Promise(function(resolve,reject){
-            var downloader = new FileTransfer();
+            var downloader = Images.downloadManager.requestDownloader();
             var fileURL = makeCacheURL(uri);
-            console.log('downloading ' + uri +' to '+ fileURL);
-            downloader.download(uri,fileURL,function(entry){
-                console.log('downloaded');
-                entry.file(function(blob){
-                    resolve({
-                        cachedURI:entry.toURL(),
-                        size:   blob.size
-                    });
-                },errorHanlder);
+
+            downloader.download(uri,fileURL,function(res){
+                    resolve(res);
             },errorHanlder);
+
             function errorHanlder(err){
                 reject(err);
             }
@@ -378,7 +408,7 @@ class CacheManager {
         var self = this;
         return new Promise(function(resolve,reject){
             var errorHandler = function(err){
-                console.log(err);
+                cacheDebug(err);
                 reject(err);
             };
 
@@ -396,6 +426,65 @@ class CacheManager {
             })
         });
     }
+
+    getThumbnailURI(uri){
+        var parts = uri.match(/^(.*)\/(.*)\.([^\.]*)$/i);
+        var dir =  parts[1];
+        var thumbFilename = parts[2]+'-thumbnail.'+ parts[3];
+        var thumbURI = dir + '/' + thumbFilename;
+        return new Promise(function(resolve,reject){
+            window.resolveLocalFileSystemURL(thumbURI,function(fileEntry){
+                if(fileEntry.isFile)
+                {
+                    resolve(thumbURI)
+                }else{
+                    reject("not a file");
+                }
+            },createThumb);
+
+            function createThumb(err){
+                //not exists, try to create one
+                window.imageResizer.resizeImage(
+                    function (data) {
+                        resolve(dir + '/' + data.filename);
+                    },
+                    function (err) {
+                        reject(err);
+                    },
+                    uri, Images.ThumbWidth,Images.ThumbHeight,
+                    {
+                        imageDataType: ImageResizer.IMAGE_DATA_TYPE_URL,
+                        resizeType: ImageResizer.RESIZE_TYPE_MAXPIXEL,
+                        quality: 100,
+                        storeImage: true,
+                        directory: dir,
+                        filename: thumbFilename,
+                        pixelDensity: false,
+                        photoAlbum:false
+                    }
+                )
+            }
+        })
+    }
+
+    isCacheFileExists(uri,fix, callback){
+        var self = this;
+        window.resolveLocalFileSystemURL(uri,function(fileEntry) {
+            if (fileEntry.isFile) {
+                callback(undefined,true);
+            } else {
+                fixCahce(uri);
+                callback("not a file");
+            }
+        },function(err){
+            fixCahce(uri);
+            callback(err);
+        });
+
+        function fixCahce(uri){
+            self.index.removeByCachedURI(uri);
+        }
+    }
 }
 
 Images.cacheManager = new CacheManager();
@@ -410,7 +499,7 @@ var openCacheDB = function(){
 
 if(!Meteor.isCordova){
     Images.cacheManager.cache = function(uri,orientation,callback){
-            console.log('no cache system',uri);
+            cacheDebug('no cache system',uri);
             callback(uri)
         }
 }

@@ -33,19 +33,19 @@ Images.getImageScaleFactor = function(){
 
 UploadsCollection = new Ground.Collection('uploads',{connection:null});
 Uploads = {
-
     _uploaders:{},
+
     isUploading:function(){
         return !!UploadsCollection.findOne({_type:'upload', end: {$exists:false}});
     },
     find:function(selector,options){
         if(!selector) selector={};
-        _.extend(selector,{_type:'upload',progress:{$gte: 0}});
+        _.extend(selector,{_type:'upload'});
         return UploadsCollection.find(selector,options);
     },
     findOne:function(selector,options){
         if(!selector) selector={};
-        _.extend(selector,{_type:'upload',progress:{$gte: 0}});
+        _.extend(selector,{_type:'upload'});
         return UploadsCollection.findOne(selector,options);
     },
     insert:function(doc,callback){
@@ -58,9 +58,19 @@ Uploads = {
         _.extend(selector,{_type:'upload'});
         return UploadsCollection.update(selector,modifier,options,callback);
     },
+    upsert:function(selector,modifier,options,callback){
+        if(callback===undefined && _.isFunction(options))
+        {
+            callback = options;
+            options = undefined;
+        }
+        if(!selector) selector={};
+        _.extend(selector,{_type:'upload'});
+        return UploadsCollection.upsert(selector,modifier,options,callback);
+    },
     remove:function(selector,callback){
         if(!selector) selector={};
-        _.extend(selector,{_type:'upload',progress:{$gte: 0}});
+        _.extend(selector,{_type:'upload'});
         return UploadsCollection.remove(selector,callback);
     }
 };

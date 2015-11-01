@@ -1,7 +1,8 @@
 <ion-view title="本地照片浏览">
     <ion-content has-header="false" has-tabs-top="true" padding="true">
         <sbj-thumbnail class="journal-thumb rounded" thumb-width="80" thumb-height="80"
-                       ng-repeat="image in images" ng-src="remap(image.cached_uri)"
+                       ng-repeat="image in images" ng-src="image.thumb.get()"
+
                        orientation="{{image.orientation}}" ng-click="showImage($index)"></sbj-thumbnail>
     </ion-content>
 </ion-view>

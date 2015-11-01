@@ -60,44 +60,54 @@ if(Meteor.isCordova){
 
     ShareBJ.deviceReadyCallbacks.push(startImageServer);
 
-    Images.server.remapuri = function(uri, meteorWay=false){
-        var url = meteorWay?Images.server.meteor_url:Images.server.url;
+    Images.server.remapuriAsync = function(uri,callback){
+        var newURI = Images.server.remapuri(uri);
+        Images.cacheManager.isCacheFileExists(uri,true,function(err,res){
+            if(!err && res)
+                callback(undefined,newURI);
+            else
+                callback(undefined,uri);
+        });
 
+    };
+    Images.server.remapuri = function(uri){
+        var url = Images.server.url;
+        var mappedURI = uri;
         if(/^file:\/\/.*/i.test(uri)) {
             var path = uri.replace(/^file:\/\//i, '');
             if (cordova.file.externalApplicationStorageDirectory && 0 === path.indexOf(Images.server.image_cache_ext_path)) {
 
-                return url + Images.server.image_cache_ext_url + path.substring(Images.server.image_cache_ext_path.length);
+                mappedURI = url + Images.server.image_cache_ext_url + path.substring(Images.server.image_cache_ext_path.length);
             }else if (0 === path.indexOf(Images.server.image_cache_path)) {
 
-                return url + Images.server.image_cache_url + path.substring(Images.server.image_cache_path.length);
+                mappedURI = url + Images.server.image_cache_url + path.substring(Images.server.image_cache_path.length);
             }else if (0 === path.indexOf(Images.server.local_path_cache)) {
 
-                return url + Images.server.cache_url + path.substring(Images.server.local_path_cache.length);
+                mappedURI = url + Images.server.cache_url + path.substring(Images.server.local_path_cache.length);
 
             } else if (0 === path.indexOf(Images.server.local_path_data)) {
 
-                return url + path.substring(Images.server.local_path_data.length);
+                mappedURI = url + path.substring(Images.server.local_path_data.length);
 
             } else if (0 === path.indexOf(Images.server.local_path)) {
 
-                return url + Images.server.data_url + path.substring(Images.server.local_path_data.length);
+                mappedURI = url + Images.server.data_url + path.substring(Images.server.local_path_data.length);
 
             } else if (cordova.file.externalApplicationStorageDirectory && 0 === path.indexOf(Images.server.local_ext_path_cache)) {
 
-                return url + Images.server.ext_cache_url + path.substring(Images.server.local_ext_path_cache.length);
+                mappedURI = url + Images.server.ext_cache_url + path.substring(Images.server.local_ext_path_cache.length);
 
             } else if (cordova.file.externalApplicationStorageDirectory && 0 === path.indexOf(Images.server.local_ext_path_data)) {
 
-                return url + Images.server.ext_data_url + path.substring(Images.server.local_ext_path_data.length);
+                mappedURI = url + Images.server.ext_data_url + path.substring(Images.server.local_ext_path_data.length);
 
             } else if (cordova.file.externalApplicationStorageDirectory && 0 === path.indexOf(Images.server.local_ext_path)) {
 
-                return url + Images.server.ext_url + path.substring(Images.server.local_ext_path.length);
+                mappedURI = url + Images.server.ext_url + path.substring(Images.server.local_ext_path.length);
             }
         }
         //console.log('warn: not remap,',uri);
-        return uri;
+         return mappedURI;
     }
 }else
 {

@@ -4,7 +4,8 @@
             <!--<div class="col">文件名</div>-->
             <div class="col col-67">类别|大小|状态|开始时间</div>
             <div class="col">进度</div>
-            <div class="col">动作</div>
+            <div class="col">KiB/S</div>
+            <div class="col col-10">动作</div>
         </div>
         <div ng-repeat="upload in uploads" class="row">
             <!--<div class="col">{{upload.filename}} </div>-->
@@ -12,6 +13,7 @@
                 |{{(upload.status==='done'?upload.end:upload.start) | date:'yy-M-d H:mm'}}
             </div>
             <div class="col">{{upload.progress}}% </div>
+            <div class="col col-10">{{upload.speed}}</div>
             <a class="col button button-small button-assertive" ng-click="cancelUpload(upload.uploader)" ng-if="upload.status==='transferring'">取消</a>
         </div>
     </ion-content>
