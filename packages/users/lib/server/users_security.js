@@ -18,7 +18,7 @@ Accounts.onCreateUserEx(function(options, user){
     //    }
     //}
 
-    console.log('onCreateUser');
+    //console.log('onCreateUser');
    //for first account, tag it as a admin
     if(Meteor.users.find({}).count()===0)
     {
@@ -68,7 +68,7 @@ Accounts.onCreateUserEx(function(options, user){
 });
 
 Accounts.validateNewUser(function(user){
-    console.log('validateNewUser');
+    //console.log('validateNewUser');
 
     if(user.profile && user.profile.token){
         return false;

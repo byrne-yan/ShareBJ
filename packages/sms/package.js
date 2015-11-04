@@ -43,7 +43,7 @@ Package.onUse(function(api) {
 
 Package.onTest(function(api) {
   api.use([
-    'sanjo:jasmine@0.20.0',
+    'sanjo:jasmine@0.20.2',
     'coffeescript@1.0.6',
       'sbj:sms'
       ]);

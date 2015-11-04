@@ -17,7 +17,7 @@ angular.module('shareBJ.journals')
 
         $scope.babies = babies;
         $meteor.autorun($scope,function(){
-            $meteor.subscribe('myJournals',{
+            $meteor.subscribe('myViewableJournals',{
                 limit:parseInt($scope.getReactively('numLoads')),
                 sort:{createdAt: -1}
             },
@@ -26,7 +26,7 @@ angular.module('shareBJ.journals')
                     search:$scope.getReactively('filter.search')
                 }
             ).then(function(){
-                    $scope.journalsCount = $scope.$meteorObject(Counts,'numOfMyJournals',false);
+                    $scope.journalsCount = $scope.$meteorObject(Counts,'numOfMyViewableJournals',false);
             });
 
             $scope.timeFromNow = function(date){

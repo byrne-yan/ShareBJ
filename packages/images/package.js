@@ -82,7 +82,7 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
     api.use([
         'ecmascript',
-        'sanjo:jasmine@0.20.0',
+        'sanjo:jasmine@0.20.2',
         'accounts-base',
         'accounts-password',
         "random",

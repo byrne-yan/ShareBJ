@@ -65,7 +65,7 @@ Package.onUse(function(api) {
 
 Package.onTest(function(api) {
   api.use([
-    'sanjo:jasmine@0.16.0',
+    'sanjo:jasmine@0.20.2',
     'coffeescript@1.0.6',
     'angular:angular-mocks@1.4.2',
     'sbj:babies'

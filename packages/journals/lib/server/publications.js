@@ -1,3 +1,4 @@
+/*
 Meteor.publish('myOwnJournals',function(options, extra){
 
    var selector = {
@@ -79,35 +80,31 @@ Meteor.publish('myOwnJournals',function(options, extra){
 
    self.ready();
 });
+*/
 
-Meteor.publish('myJournals',function(options, extra){
+/**
+ * Viewable logic:
+ *      all journals for babies whom visitor follows or guardians
+ *      all journals visitor wrote
+ */
+Meteor.publish('myViewableJournals',function(options, extra){
+    if(!this.userId) return;
+    var self = this;
 
-    var followingBabis = Babies.find({$or:[
-        {owners:this.userId},
-        {followers:this.userId},
-    ]}).fetch();
+    var selector = { $or: [{author:self.userId}] }; //author
 
-    followingBabis = _.pluck(followingBabis,'_id');
+    var followingBabies = Babies.find({$or:[   {owners:self.userId},  {followers:self.userId} ] }).fetch();
+    followingBabies = _.pluck(followingBabies,'_id');
 
-    var selector;
-
-    if(followingBabis.length>0 && !(extra && extra.baby))
+    if(followingBabies.length>0 && !(extra && extra.baby))
     {
-        selector =
-            {$or:
-                [
-                    {author:this.userId},
-                    {baby:{$in:followingBabis}}
-                ]
-            }
-    }else{
-        selector = {author:this.userId}
+        selector['$or'].push({baby:{$in:followingBabies}});
     }
 
     if(extra && extra.baby){
-        _.extend(selector,{
+        selector ={
             baby:extra.baby
-        })
+        };
     }
 
     if(extra && extra.search){
@@ -116,10 +113,14 @@ Meteor.publish('myJournals',function(options, extra){
         })
     }
 
-    Counts.publish(this,'numOfMyJournals', Journals.find(selector),{noReady:true});
+    //console.log('myViewableJournals:',followingBabies,selector);
 
-    var connID = this.connection.id;
-    var connClientAddress = this.connection.clientAddress;
+    //selector = {};
+
+    Counts.publish(self,'numOfMyViewableJournals', Journals.find(selector),{noReady:true});
+
+    var connID = self.connection.id;
+    var connClientAddress = self.connection.clientAddress;
     var transform = function(doc){
         doc.author = Meteor.users.findOne({_id:doc.author},{fields:{username:1,'profile.name':1,'profile.avatar':1}});
         doc.baby = Babies.findOne({_id:doc.baby});
@@ -127,9 +128,9 @@ Meteor.publish('myJournals',function(options, extra){
         const ip = ShareBJ.getPublicIp(connID,connClientAddress);
         if(ip)
         {
-            console.time('Images.getPresignedUrls');
+            //console.time('Images.getPresignedUrls');
             doc.images = Images.getPresignedUrls(doc.images,ip);
-            console.timeEnd('Images.getPresignedUrls');
+            //console.timeEnd('Images.getPresignedUrls');
         }
         else　{
             doc.images = [];
@@ -151,7 +152,6 @@ Meteor.publish('myJournals',function(options, extra){
 
         return doc;
     };
-    var self = this;
 
     var observer =Journals.find(selector,options).observe({
         added: function (doc) {
@@ -166,9 +166,9 @@ Meteor.publish('myJournals',function(options, extra){
     }) ;
 
     //watch client public change
-    var observer2 = ShareBJ.observePublicIp(this.connection.id,(publicAddress)=>{
+    var observer2 = ShareBJ.observePublicIp(self.connection.id,(publicAddress)=>{
         Journals.find(selector,options).forEach((doc)=>{
-            if(doc.images.length>0)
+            if(doc.images && doc.images.length>0)
                 self.changed('journals',doc._id,transform(doc));
         })
     });

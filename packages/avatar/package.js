@@ -44,7 +44,7 @@ Package.onTest(function(api) {
   api.use('sbj:fixtures');
     api.use("accounts-password");
     api.use("random");
-  api.use('sanjo:jasmine@0.20.0');
+  api.use('sanjo:jasmine@0.20.2');
 
   api.use('sbj:avatar');
   api.addFiles('tests/jasmine/client/upload_sepc.js','client');

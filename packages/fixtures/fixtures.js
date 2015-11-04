@@ -5,6 +5,13 @@ Meteor.methods({
     'fixtures/users/makeupTest1':function(){
         Accounts.createUser({username:'test1',password:'test1'});
     },
+    'fixtures/users/create':function(users){
+        var userIds =  _.map(users,function(user) {
+                return Accounts.createUser({username: user.name, password: user.password});
+            });
+        return userIds;
+    },
+
     'signUp':function(user){
         Accounts.createUser(user);
     },
@@ -47,5 +54,42 @@ Meteor.methods({
     },
     'fixtures/avatar/get': function(avatarId){
         return Avatars.findOne({_id:avatarId});
+    },
+    'fixtures/reset':function(){
+        Meteor.users.remove({});
+        Babies.remove({});
+        Journals.remove({});
+    },
+    'fixtures/babies/create':function(babies){
+        var babiesIds =  _.map(babies,function(baby){
+           return Babies.insert({
+               name: baby.name,
+               owners:baby.owners,
+               followers:baby.followers,
+               conceptionDate: new Date()
+           })
+        });
+
+        //console.log(Babies.find().fetch());
+        return babiesIds;
+    },
+
+    'fixtures/journals/reset':function(){
+        Journals.remove({});
+    },
+
+    'fixtures/journals/create':function(journals){
+        var journalIds = _.map(journals,function(journal){
+            return Journals.insert({
+                description:journal.description,
+                author:journal.author,
+                baby: journal.baby
+            });
+        });
+
+        //console.log(Journals.find().fetch());
+
+        return journalIds;
     }
+
 });

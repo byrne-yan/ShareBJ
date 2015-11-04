@@ -52,7 +52,7 @@
                     $scope.slideStart = index;
 
                     $scope.slideModal = $ionicModal.fromTemplate(
-                        '<sbj-slide-box images="currentImages" thumb="thumb" src="origin" src2="url" orientation="orientation" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
+                        '<sbj-slide-box images="currentImages" thumb="thumb" src="url" src2="origin" orientation="orientation" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
                             scope: $scope,
                             animation: 'slide-in-up'
                         });

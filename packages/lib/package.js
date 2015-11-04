@@ -95,7 +95,7 @@ Package.onUse(function(api) {
 
 Package.onTest(function(api) {
     api.use([
-        'sanjo:jasmine@0.20.0',
+        'sanjo:jasmine@0.20.2',
         'sbj:lib'
     ]);
 

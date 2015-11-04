@@ -59,12 +59,11 @@ Package.onUse(function(api) {
 
 Package.onTest(function(api) {
   api.use([
-    'sanjo:jasmine@0.16.0',
-    'coffeescript@1.0.6',
-    'angular:angular-mocks@1.4.2',
-    'sbj:journals'
+    'sanjo:jasmine@0.20.2',
+    'sbj:journals',
+      'sbj:fixtures'
   ]);
 
-  //api.addFiles('journals_specs.coffee');
-
+    api.addFiles('tests/jasmine/client/journals_spec.js', 'client');
+    //api.addFiles('tests/jasmine/server/journals_spec.js', 'server');
 });
