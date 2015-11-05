@@ -1,3 +1,7 @@
+function babyDebug(){
+    if(Babies.debug)
+        console.log.apply(console,arguments);
+}
 angular.module('shareBJ.babies')
     .controller('BabiesListCtrl', function ($scope, $rootScope, $meteor, $ionicModal, $ionicPopup/*,$ionicNavBarDelegate,$ionicHistory*/) {
         //$ionicHistory.clearHistory();
@@ -33,13 +37,13 @@ angular.module('shareBJ.babies')
                         },
                         false
                     );
-                }, console.log);
-            console.log("filter:", $scope.getReactively('filter.search'));
-            console.log("$scope.babiesCount", $scope.getReactively('babiesCount'));
+                }, babyDebug);
+            babyDebug("filter:", $scope.getReactively('filter.search'));
+            babyDebug("$scope.babiesCount", $scope.getReactively('babiesCount'));
         });
         if($rootScope.currentUser) {
             $scope.$meteorSubscribe('myDeliveredPendingRequests')
-                .catch(console.log);
+                .catch(babyDebug);
         }
 
 
@@ -99,7 +103,7 @@ angular.module('shareBJ.babies')
                     template:'监护请求已发送，等待现有监护人批准'
                 })
             },function(error){
-                console.log(error);
+                babyDebug(error);
                 $ionicPopup.alert({
                     title:"请求监护",
                     template:'请求失败：' + error.message
@@ -115,7 +119,7 @@ angular.module('shareBJ.babies')
                     template:'关注请求已发送，等待监护人批准'
                 })
             },function(error){
-                console.log(error);
+                babyDebug(error);
                 $ionicPopup.alert({
                     title:"请求关注",
                     template:'请求失败:' + error.message
@@ -130,7 +134,7 @@ angular.module('shareBJ.babies')
                     template:'关注请求已撤回'
                 })
             },function(error){
-                console.log(error);
+                babyDebug(error);
                 $ionicPopup.alert({
                     title:"撤回关注请求",
                     template:'撤回关注请求失败：' + error.message
@@ -145,7 +149,7 @@ angular.module('shareBJ.babies')
                     template:'关注已取消'
                 })
             },function(error){
-                console.log(error);
+                babyDebug(error);
                 $ionicPopup.alert({
                     title:"放弃关注",
                     template:'放弃关注失败：' + error.message
@@ -160,7 +164,7 @@ angular.module('shareBJ.babies')
                     template:'监护请求已撤回'
                 })
             },function(error){
-                console.log(error);
+                babyDebug(error);
                 $ionicPopup.alert({
                     title:"撤回监护请求",
                     template:'撤回监护请求失败：' + error.message
@@ -175,7 +179,7 @@ angular.module('shareBJ.babies')
                     template:'监护已放弃'
                 })
             },function(error){
-                console.log(error);
+                babyDebug(error);
                 $ionicPopup.alert({
                     title:"放弃监护",
                     template:'放弃监护失败：' + error.message

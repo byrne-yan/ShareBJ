@@ -51,8 +51,11 @@
 
                     $scope.slideStart = index;
 
+                    var settings = Images.cacheManager.storage.settings.findOne();
+
+                    var urlsrc = (settings && settings.downloadOrigin)?'src2="url" src="origin"':'src="url" src2="origin"';
                     $scope.slideModal = $ionicModal.fromTemplate(
-                        '<sbj-slide-box images="currentImages" thumb="thumb" src="url" src2="origin" orientation="orientation" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
+                        '<sbj-slide-box images="currentImages" thumb="thumb" '+ urlsrc +' orientation="orientation" start="{{slideStart}}" onclose="closeSlides()"></sbj-slide-box>', {
                             scope: $scope,
                             animation: 'slide-in-up'
                         });

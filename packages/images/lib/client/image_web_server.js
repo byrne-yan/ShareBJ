@@ -7,23 +7,32 @@ if(Meteor.isCordova){
 
         var start = function(){
 
+            if(!Images.cacheManager.storage.internalDir)
+            {
+                Meteor.setTimeout(start,100);
+                return;
+            }
             paths = {};
             Images.server.local_path = cordova.file.applicationStorageDirectory.substring(7);
             Images.server.local_path_cache = cordova.file.cacheDirectory.substring(7);
             Images.server.local_path_data = cordova.file.dataDirectory.substring(7);
-            Images.server.image_cache_path = cordova.file.dataDirectory.substring(7)+'/images_cache';
-            if(cordova.file.externalApplicationStorageDirectory)
+
+            Images.server.image_cache_path = Images.cacheManager.storage.internalDir.substring(7);
+            paths[Images.server.image_cache_url] = Images.server.image_cache_path;
+
+            if(cordova.file.externalDataDirectory)
             {
                 Images.server.local_ext_path = cordova.file.externalApplicationStorageDirectory.substring(7);
                 Images.server.local_ext_path_cache = cordova.file.externalCacheDirectory.substring(7);
                 Images.server.local_ext_path_data = cordova.file.externalDataDirectory.substring(7);
-                Images.server.image_cache_ext_path = cordova.file.externalDataDirectory.substring(7)+'/images_cache';
+
+                paths[Images.server.ext_url] = Images.server.local_ext_path;
             }
 
-
-            paths[Images.server.ext_url] = Images.server.local_ext_path;
-            paths[Images.server.image_cache_url] = Images.server.image_cache_path;
-            paths[Images.server.image_cache_ext_url] = Images.server.image_cache_ext_path;
+            if(Images.cacheManager.storage.externalDir){
+                Images.server.image_cache_ext_path = Images.cacheManager.storage.externalDir.substring(7);
+                paths[Images.server.image_cache_ext_url] = Images.server.image_cache_ext_path;
+            }
 
             httpd.startServer({
                 'www_root': Images.server.local_path,
@@ -32,11 +41,8 @@ if(Meteor.isCordova){
                 'custom_paths': paths
             },function(url){
                 Images.server.url = url;
-                //var a = document.createElement('a');
-                //a.href = url;
-                //Images.server.meteor_url = a.protocol + '//' + 'meteor.local' + ':' + a.port;
 
-                console.log("Image server run on " + url/*, Images.server.meteor_url*/);
+                console.log("Image server run on " + url);
                 httpd.getLocalPath(function(path){
                     console.log("Image server work on local path:"+path);
                 })
@@ -75,7 +81,7 @@ if(Meteor.isCordova){
         var mappedURI = uri;
         if(/^file:\/\/.*/i.test(uri)) {
             var path = uri.replace(/^file:\/\//i, '');
-            if (cordova.file.externalApplicationStorageDirectory && 0 === path.indexOf(Images.server.image_cache_ext_path)) {
+            if (Images.cacheManager.storage.externalDir && 0 === path.indexOf(Images.server.image_cache_ext_path)) {
 
                 mappedURI = url + Images.server.image_cache_ext_url + path.substring(Images.server.image_cache_ext_path.length);
             }else if (0 === path.indexOf(Images.server.image_cache_path)) {

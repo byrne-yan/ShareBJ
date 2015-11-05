@@ -88,4 +88,17 @@ ShareBJ.getFileSize = function(uri,callback){
     },function(error){
         callback(error);
     });
+};
+
+ShareBJ.checkMem = function(){
+    return new Promise(function(resolve,reject){
+        if(chrome && chrome.system && chrome.system.memory)
+        {
+            chrome.system.memory.getInfo(function(info) {
+                resolve(parseInt(info.availableCapacity / 1024 / 1024));
+            })
+        }else{
+            reject('no memory plugin');
+        }
+    })
 }

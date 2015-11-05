@@ -1,50 +1,4 @@
 
-/*.journal > .item-body > .item-comment.item-input-set{*/
-    /*border-width: 1px;*/
-    /*padding-left: 0px;*/
-/*}*/
-
-/*.journal > .item:last-child{*/
-    /*border-bottom: 2px solid #ddd;*/
-/*}*/
-/*.journal .item.item-body{*/
-    /*padding-left: 64px;*/
-    /*padding-top: 8px;*/
-    /*padding-bottom: 8px;*/
-    /*line-height: 0px;*/
-/*}*/
-
-/*.journal .item.item-body .journal-date{*/
-    /*margin-top: 0;*/
-    /*margin-bottom: 0;*/
-    /*padding-left: 0;*/
-    /*font-size: 10px;*/
-/*}*/
-
-/*.journal .tab-item .icon{*/
-    /*/!*height: 16px;*!/*/
-/*}*/
-
-/*.journal .tabs{*/
-    /*/!*height:24px*!/*/
-/*}*/
-/*.journal .tabs .tab-item{*/
-    /*text-align: left;*/
-/*}*/
-/*.journal .tabs-icon-left.tabs .tab-item .icon:before,*/
-/*.journal .tabs-icon-left > .tabs .tab-item .icon:before,*/
-/*.journal .tabs-icon-right.tabs .tab-item .icon:before,*/
-/*.journal .tabs-icon-right > .tabs .tab-item .icon:before {*/
-    /*font-size: 14px;*/
-    /*line-height: 0px;*/
-/*}*/
-/*#imageFacade{*/
-    /*padding-left: 28px;*/
-    /*padding-right: 28px;*/
-/*}*/
-
-
-
 select.baby{
     font-size: 10px;
 }
@@ -88,14 +42,12 @@ input.journal-search{
 .image-action-sheet .action-sheet .button i{
     margin-right: 16px;
 }
-/*.item .item-upvoter{*/
-    /*padding-top: 0;*/
-    /*padding-left: 24px;*/
-    /*padding-bottom: 0;*/
-    /*padding-right: 2px;*/
-    /*margin-right: 0;*/
-/*}*/
+
 .journal-img{
     width: 80px;
     height: 80px;
+}
+
+.journal-images > a.subdued {
+    padding-right: 2px;
 }

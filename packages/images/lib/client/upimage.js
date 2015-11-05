@@ -1,3 +1,46 @@
+
+class ImagesProcessCenter{
+    constructor(max = 1){
+        this._pendings = [];
+        this._processMax = 1;
+        this._processings = [];
+    }
+    _start(image){
+        var self = this;
+        console.log('scaling image:'+image.uri);
+        this._processings.push(image);
+
+        image.image._createImage(image.uri,{save:true})
+            .then(function(){   //image created
+                console.log('scaling image done:'+image.uri);
+                image.image._scaleOK.set(true);
+                self._removeFromProcessings(image);
+            });
+
+    }
+    _removeFromProcessings(image){
+        this._processings.splice(this._processings.indexOf(image),1);
+        if(this._processings.length<this._processMax && this._pendings.length > 0){
+            this._start(this._pendings.pop());
+        }
+    }
+    push(image,uri){
+        var self = this;
+        if(this._processings.length<this._processMax){
+            this._start({
+                image:image,uri:uri
+            });
+        }else{
+            console.log("queue image process:"+uri);
+            this._pendings.push({
+                image:image,uri:uri
+            });
+        }
+    }
+}
+
+var ImagesCenter = new ImagesProcessCenter();
+
 UpImage = class UpImage {
     constructor(){
         this.thumb = {
@@ -157,11 +200,8 @@ UpImage = class UpImage {
                     .then(function(){   //thumbnail created
                         if (SBJ_DEBUG) console.timeEnd('attachURI took time');
                         Meteor.setTimeout(function(){
-                            self._createImage(uri,{save:true})
-                            .then(function(){   //image created
-                                self._scaleOK.set(true);
-                            });
-                        })
+                            ImagesCenter.push(self,uri);
+                        });
                         resolve(self);
                     })
                     .catch(function(err){   //error
@@ -280,3 +320,4 @@ UpImage = class UpImage {
         console.log("Upimage:",this.type,this.filename, this.thumb,this._dataURL,this.uri,this.exif);
     };
 }
+

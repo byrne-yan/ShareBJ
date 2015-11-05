@@ -5,7 +5,7 @@
                 on-release="updateStatus()" on-swipe-left="onSwipeLeft()" on-swipe-right="onSwipeRight()">
         <div class="image image-orientation-{{getOrientation()}}" ng-style="{'background-image':bgImage()}">
             <img ng-src="{{imageSrc()}}" class="DummyImage" sbj-load="onImgLoad($event)" >
-            <div ng-if="!loaded">
+            <div ng-if="!loaded && nodelay">
                 <ion-spinner class="thumb-spinner spinner-balanced"></ion-spinner>
             </div>
         </div>

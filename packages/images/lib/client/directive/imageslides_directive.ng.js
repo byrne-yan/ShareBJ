@@ -1,5 +1,6 @@
 function slidesDebug(){
-    console.log.apply(console,arguments);
+    if(Images.slidesDebug)
+        console.log.apply(console,arguments);
 }
 
 (function(){
@@ -83,7 +84,7 @@ function slidesDebug(){
                     i.src = url;
                 }
                 $scope.$meteorAutorun(function(c){
-                    console.log('images changes',$scope.images);
+                    slidesDebug('images changes',$scope.images);
                     _.each($scope.images,function(image,idx){
                         var thumb = getProperty($scope.images[idx],$scope.thumb);
                         var orientation = getProperty($scope.images[idx],$scope.orientation);

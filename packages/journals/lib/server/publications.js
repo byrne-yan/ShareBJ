@@ -93,7 +93,9 @@ Meteor.publish('myViewableJournals',function(options, extra){
 
     var selector = { $or: [{author:self.userId}] }; //author
 
-    var followingBabies = Babies.find({$or:[   {owners:self.userId},  {followers:self.userId} ] }).fetch();
+    var visitor = Meteor.users.findOne({_id:this.userId});
+    var relatedBabiesSelector = visitor.isAdmin?{}:{$or:[   {owners:self.userId},  {followers:self.userId} ] };
+    var followingBabies = Babies.find(relatedBabiesSelector).fetch();
     followingBabies = _.pluck(followingBabies,'_id');
 
     if(followingBabies.length>0 && !(extra && extra.baby))

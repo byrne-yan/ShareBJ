@@ -7,13 +7,9 @@ angular.module('shareBJ.images')
     }).controller('ImagesSettingsCtrl',function($scope, $meteor, $timeout, $state, $ionicHistory,$ionicModal){
         if(Meteor.isCordova){
 
-            $scope.handle = Meteor.setInterval(function(){
+            $timeout(function(){
                 Images.cacheManager.storage.getFreeSpace();
-            },1000);
-
-            $scope.$on('$destroy',function(){
-                Meteor.clearInterval($scope.handle );
-            });
+            },500);
 
             $scope.settings = {}
 
@@ -23,6 +19,12 @@ angular.module('shareBJ.images')
                 $scope.settings.externalEnable = $scope.storageSettings.externalEnable;
                 $scope.settings.internalEnable = $scope.storageSettings.internalEnable;
                 $scope.settings.externalFirst = $scope.storageSettings.externalFirst;
+                $scope.settings.externalAvailable = $scope.storageSettings.externalAvailable;
+                $scope.settings.internalAvailable = $scope.storageSettings.internalAvailable;
+
+                $scope.settings.uploadOrigin = $scope.storageSettings.uploadOrigin;
+                $scope.settings.downloadOrigin = $scope.storageSettings.downloadOrigin;
+
                 console.log('$scope.settings:',$scope.settings);
                 $timeout(function(){});
             });
@@ -33,13 +35,24 @@ angular.module('shareBJ.images')
                         $set: {
                             externalEnable: $scope.getReactively('settings.externalEnable'),
                             internalEnable: $scope.getReactively('settings.internalEnable'),
-                            externalFirst: $scope.getReactively('settings.externalFirst')
+                            externalFirst: $scope.getReactively('settings.externalFirst'),
+                            uploadOrigin: $scope.getReactively('settings.uploadOrigin'),
+                            downloadOrigin: $scope.getReactively('settings.downloadOrigin')
                         }
                     },
                     function(err,num){
                         console.log('change settings result:',err,num)
                     }
                 );
+            };
+
+            $scope.doRefresh = function(){
+                Images.cacheManager.storage.getFreeSpaceExternal();
+                Images.cacheManager.storage.getFreeSpace();
+                $timeout(function(){
+                    $scope.$broadcast('scroll.refreshComplete');
+                },100,false);
+
             };
 
             $scope.$meteorAutorun(function(){
@@ -79,13 +92,13 @@ angular.module('shareBJ.images')
             return doc;
         }
 
-        $scope.$watchCollection(
+/*        $scope.$watchCollection(
             'images',
             function(newValue,oldValue) {
                 console.log(newValue);
             },
             true
-        );
+        );*/
 
         $scope.showImage = function(index){
             $scope.index  = index;

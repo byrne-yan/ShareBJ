@@ -6,13 +6,7 @@ class Storage{
     constructor(options){
         this.settings = new Ground.Collection('storage',{connection:null});
         this.ready = new ReactiveVar(false);
-        this.hasExternal = true;
-        if(Meteor.isCordova)
-        {
-            this.hasExternal = cordova.file.externalDataDirectory!==null;
-            this.externalDir = cordova.file.externalDataDirectory + 'images_cache';
-            this.internalDir = cordova.file.dataDirectory + 'images_cache';
-        }
+        this.hasExternal = false;
         this.externalFirst = this.hasExternal || true;
         this.externalEnable = this.hasExternal || true;
         this.internalEnable = true;
@@ -24,7 +18,9 @@ class Storage{
                 internalDir:this.internalDir,
                 externalEnable:this.externalEnable,
                 internalEnable:this.internalEnable,
-                externalFirst: this.externalFirst
+                externalFirst: this.externalFirst,
+                uploadOrigin: false,
+                downloadOrigin: false
             });
         }
     }
@@ -37,11 +33,14 @@ class Storage{
                 internalDir:this.internalDir,
                 externalEnable:this.externalEnable,
                 internalEnable:this.internalEnable,
-                externalFirst: this.externalFirst
+                externalFirst: this.externalFirst,
+                externalAvailable: this.externalAvailable,
+                internalAvailable: this.internalAvailable
             }
         });
     }
     init(options){
+        var self = this;
         if(options.externalFirst)
             this.externalFirst = options.externalFirst;
         if(options.externalEnable)
@@ -49,18 +48,32 @@ class Storage{
         if(options.internalEnable )
             this.internalEnable = options.internalEnable;
 
-        var self = this;
-
         var bExternalReady = false;
         var bInternalReady = false;
+        if(chrome && chrome.system && chrome.system.storage)
+        {
+            chrome.system.storage.getInfo(function(storageUnits){
+                var hasExternal = false;
+                _.each(storageUnits,function(unit,idx){
+                    if(unit.type==='removable'){
+                        hasExternal = true;
+                        var extSDRoot ="file://";
+                        extSDRoot += unit.name.match(/\/$/)?unit.name: unit.name + '/';
+                        extSDRoot += cordova.file.externalDataDirectory.substring(cordova.file.externalRootDirectory.length);
+                        window.resolveLocalFileSystemURL(extSDRoot,gotDirectoryEntryExt,fail_ext);
 
-        if(cordova.file.externalDataDirectory){
-            window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory,gotDirectoryEntryExt,ext_fail);
-            function gotDirectoryEntryExt(de){
-                de.getDirectory('images_cache',{create:true,exclusive:false},
-                    function(dirEntry){
-                        //console.log(dirEntry);
-                        dirEntry.getDirectory('local',{create:true,exclusive:false},function(localDir){
+                        function gotDirectoryEntryExt(de){
+                            de.getDirectory('images_cache',{create:true,exclusive:false},cacheDirOK, fail_ext);
+                        }
+                        function cacheDirOK(dirEntry){
+                            dirEntry.getDirectory('local',{create:true,exclusive:false}, localDirOK,fail_ext );
+                        }
+                        function localDirOK(localDir){
+                            self.externalAvailable = parseInt(unit.capacity/1024);
+                            self.externalUnitId = unit.id;
+                            self.hasExternal = true;
+                            self.externalDir = extSDRoot + 'images_cache';
+
                             bExternalReady = true;
                             if(bInternalReady)
                             {
@@ -68,35 +81,39 @@ class Storage{
                                 self.ready.set(true);
                             }
                             cacheDebug('external local cache dir',localDir,bInternalReady,bExternalReady);
-                        },ext_fail);
-                    },ext_fail)
-            }
-            function ext_fail(err){
-                cacheDebug(err);
-                this.hasExternal = false;
-            }
-        }else{
-            bExternalReady = true;
+                        }
+                        function fail_ext(err){
+                            cacheDebug(err);
+                        }
+                    }
+                });
+                if(!hasExternal)
+                    bExternalReady = true;
+            })
         }
-        window.resolveLocalFileSystemURL(cordova.file.dataDirectory,gotDirectoryEntry,fail);
+
+        var internalDir =cordova.file.externalDataDirectory || cordova.file.dataDirectory;
+
+        window.resolveLocalFileSystemURL(internalDir,gotDirectoryEntry,fail);
         function gotDirectoryEntry(de){
             de.getDirectory('images_cache',{create:true,exclusive:false},
                 function(dirEntry){
                     //console.log(dirEntry);
                     dirEntry.getDirectory('local',{create:true,exclusive:false},function(localDir){
+                        self.internalDir = internalDir + 'images_cache';
+                        self.getFreeSpace();
                         bInternalReady = true;
-                        if(bExternalReady || !self.hasExternal)
+                        if(bExternalReady)
                         {
                             updateSettings();
                             self.ready.set(true);
                         }
-                        cacheDebug('internal local cache dir:',localDir,bInternalReady,bExternalReady);
+                        cacheDebug('internal local cache dir',localDir,bInternalReady,bExternalReady);
                     },fail);
                 },fail)
         }
         function fail(err){
             cacheDebug(err);
-            this.internalEnable = false;
         }
 
         function updateSettings(){
@@ -118,13 +135,21 @@ class Storage{
         var self = this;
         cordova.exec(function(result/*K*/){
             self.settings.update({},{$set: {
-                available:result
+                internalAvailable:result
             }});
         },function(err){
             cacheDebug(err);
         },"File","getFreeDiskSpace",[]);
     }
 
+    getFreeSpaceExternal(){
+        var self = this;
+        chrome.system.storage.getAvailableCapacity(this.externalUnitId,function(info){
+            self.settings.update({},{$set: {
+                externalAvailable: parseInt(info.availableCapacity/1024) //K
+            }});
+        })
+    }
     getFreeSpace2(callback){
         function querySize(expectSize,okCB,failCB){
             window.requestFileSystem(LocalFileSystem.PERSISTENT,expectSize,function(fs){
@@ -251,7 +276,7 @@ class ImageCacheIndex{
         var intSize = 0;
         _.each(caches,function(cache){
             if(cache.cached_uri){//exclude caching item
-                if(cache.cached_uri.startsWith(cordova.file.externalRootDirectory))
+                if(cache.cached_uri.startsWith(Images.cacheManager.storage.getStorageLocation()))
                 {
                     extNumber++;
                     extSize += cache.size;

@@ -1,6 +1,8 @@
-function uploadDebug(...args){
-    //console.log.apply(console,args);
+function uploadDebug(){
+    if(Images.debug)
+        console.log.apply(console,arguments);
 }
+
 
 class MyUploader{
     constructor(mgr,category,journalId,babyId,imageNo,resolution){
@@ -238,7 +240,7 @@ Images.uploadThumbs = function(images,journalId,babyId,callback){
     return Promise.all(_.map(images,function(image,idx) {
             var imageId = idx;
             var uploaderThumb = new Slingshot.Upload("thumbUploads", {journalId: journalId, babyId: babyId, imageNo: idx});
-            console.log("Thumb uploading #" + idx, image.filename, image.thumb);
+            uploadDebug("Thumb uploading #" + idx, image.filename, image.thumb);
 
             return new Promise(function (resolve, reject) {
                 uploaderThumb.send(ShareBJ.dataURL2Blob(image.thumb.url, image.origin.uri.match(/.*([^\/]+)$/)[1]),
@@ -264,12 +266,12 @@ Images.uploadImages = function(images,thumbsInfo,callback){
       thumb = _.find(thumbsInfo, function (thumb) {
           return thumb.no == idx
       });
-      console.log("uploaded thumb info:", thumb);
+      uploadDebug("uploaded thumb info:", thumb);
 
 
       var uploaderImage = Images.uploadManager.requestUploader("imageUploads", thumb.docId, thumb.babyId, thumb.no,
           {width: image.image.width, height: image.image.height});
-      console.log("image uploading :", image.image.uri);
+      uploadDebug("image uploading :", image.image.uri);
 
 
       return new Promise(function (resolve, reject) {
@@ -299,11 +301,11 @@ Images.uploadOrigins = function(images,thumbsInfo,callback){
     return Promise.all(_.map(images,function(image,idx){
 
             thumb = _.find(thumbsInfo,function(thumb) {return thumb.no==idx});
-            console.log("uploaded thumb info:",thumb);
+            uploadDebug("uploaded thumb info:",thumb);
 
             var uploaderImage = Images.uploadManager.requestUploader("originUploads", thumb.docId,thumb.babyId,thumb.no,
                 {width:image.origin.width,height:image.origin.height});
-            console.log("origin uploading :", image.origin.uri);
+            uploadDebug("origin uploading :", image.origin.uri);
 
             return new Promise(function (resolve, reject) {
                 //if(!image.file.name) image.file.name = image.filename;

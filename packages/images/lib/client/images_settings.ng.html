@@ -1,9 +1,22 @@
 <ion-view title="图片设置">
     <ion-content>
-        <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()">
-
-        </ion-refresher>
+        <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()"></ion-refresher>
         <ion-list>
+            <ion-item class="item item-check" >
+                <label class="check-box">
+                    <input type="checkbox" ng-model="settings.uploadOrigin"
+                           ng-click="changeSettings()">
+                </label>
+                上传原始照片
+            </ion-item>
+            <ion-item class="item item-check" >
+                <label class="check-box">
+                    <input type="checkbox" ng-model="settings.downloadOrigin"
+                           ng-click="changeSettings()">
+                </label>
+                下载原始照片
+            </ion-item>
+
             <ion-item class="item item-check" >
                 <label class="check-box">
                     <input type="checkbox" ng-model="settings.externalEnable"
@@ -25,7 +38,7 @@
             </ion-item>
 
             <ion-item class="" ng-if="storageSettings.hasExternal && storageSettings.externalEnable">
-                存储卡剩余空间<span class="item-note">{{(storageSettings.available/1024).toFixed(0)}}M</span>
+                外部存储卡剩余空间<span class="item-note">{{(storageSettings.externalAvailable/1024).toFixed(0)}}M</span>
             </ion-item>
 
 
@@ -36,6 +49,10 @@
                 外部存储卡缓存照片大小<span class="item-note">{{(cacheStat.externalSize/1024/1024).toFixed(2)}}M</span>
             </ion-item>
 
+
+            <ion-item class="" ng-if="storageSettings.internalEnable">
+                内部存储卡剩余空间<span class="item-note">{{(storageSettings.internalAvailable/1024).toFixed(0)}}M</span>
+            </ion-item>
 
             <ion-item class="" ng-if="storageSettings.internalEnable">
                 内部存储卡缓存照片数<span class="item-note">{{cacheStat.internalNumber}}张</span>

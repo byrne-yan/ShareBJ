@@ -1,3 +1,9 @@
+function galleryDebug(){
+    if(Images.debug)
+        console.log.apply(console,arguments);
+}
+
+
 angular.module('shareBJ.lib')
     .directive('sbjGallery',function(){
         return {
@@ -28,11 +34,12 @@ angular.module('shareBJ.lib')
                 };
 
                 $scope.currentImage = $scope.start;
+                $scope.nodelay = false;
                 $scope.zoomMin = 1;
                 $scope.updateStatus = function(){
                     var position = $ionicScrollDelegate.$getByHandle('scrollHandleGallery').getScrollPosition();
                     var zoomFactor = position.zoom;
-                    //console.log("zoom:",zoomFactor , $scope.zoomMin);
+                    //galleryDebug("zoom:",zoomFactor , $scope.zoomMin);
                     if(zoomFactor == $scope.zoomMin){
                         $scope.enableSlide = true;
                     }else{
@@ -44,6 +51,7 @@ angular.module('shareBJ.lib')
                     if ($scope.enableSlide && $scope.currentImage < $scope.images.length-1) {
                         $scope.currentImage++;
                         $scope.loaded = false;
+                        $scope.nodelay = false;
                     }
                 }
 
@@ -51,10 +59,11 @@ angular.module('shareBJ.lib')
                     if ($scope.enableSlide && $scope.currentImage > 0) {
                         $scope.currentImage--;
                         $scope.loaded = false;
+                        $scope.nodelay = false;
                     }
                 }
                 $scope.onImgLoad = function(event){
-                    console.log("img loaded:");
+                    galleryDebug("img loaded:");
                     var image = angular.element(event.target);
                     var imageDiv = angular.element(event.target).parent();
 
@@ -78,23 +87,14 @@ angular.module('shareBJ.lib')
                             imageDiv.width(nw);
                             var left = -parseInt(nw/2- (nw/ratio)/2);
                             imageDiv.css('left',left);
-                            console.log("set image container layout:",nw,nh,iw,ih,sw,sh,ratio,scale,left);
+                            galleryDebug("set image container layout:",nw,nh,iw,ih,sw,sh,ratio,scale,left);
                             var position = $ionicScrollDelegate.$getByHandle('scrollHandleGallery').getScrollPosition();
-                            console.log(position);
+                            galleryDebug(position);
                             $ionicScrollDelegate.$getByHandle('scrollHandleGallery').scrollBy(-position.left,-position.top,false);
                         }
-                        ////imageDiv.css('background-size',w);
-
-                        //console.log('get size:',w,h,ratio, typeof w);
-
-
-                        //var leftAt = parseInt(-(nw/2-w/2));
-                        //imageDiv.css('left', leftAt );
-                        //console.log("set image container layout:",nh,nh,leftAt,nw,w,h,ratio);
-                        //$scope.slideImages[idx].loaded = true;
                     }
                     $scope.loaded = true;
-                    $timeout(function(){})
+                    $timeout(function(){$scope.nodelay = true},100);
                 };
 
                 $scope.getOrientation = function(){
@@ -117,7 +117,7 @@ angular.module('shareBJ.lib')
                 $scope.deleteImage = function(){
 
                     var cached_uri = getProperty($scope.images[$scope.currentImage],$scope.src,false);
-                    console.log('remove cache:',cached_uri);
+                    galleryDebug('remove cache:',cached_uri);
                     Images.cacheManager.index.removeByCachedURI(cached_uri);
                 }
             }
