@@ -16,6 +16,12 @@
     height: 32px;
     border-radius: 50%;
 }
+.SBJ-AVATAR-IMG{
+    margin-right:32px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
 
 .directive-avatar img{
     margin-right:16px;

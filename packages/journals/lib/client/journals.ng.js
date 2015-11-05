@@ -26,7 +26,8 @@ angular.module('shareBJ.journals')
                     search:$scope.getReactively('filter.search')
                 }
             ).then(function(){
-                    $scope.journalsCount = $scope.$meteorObject(Counts,'numOfMyViewableJournals',false);
+                $scope.journalsCount = $scope.$meteorObject(Counts,'numOfMyViewableJournals',false).count;
+                //console.log('total count:',$scope.journalsCount);
             });
 
             $scope.timeFromNow = function(date){
@@ -61,10 +62,9 @@ angular.module('shareBJ.journals')
         }
 
         $scope.loadOlderJournals = function(){
-            if($scope.numLoads < $scope.journalsCount.count)
+            if($scope.numLoads < $scope.journalsCount)
             {
-                console.log("loading older journals");
-                $scope.numLoads = $scope.numLoads + Journals.feedStep;
+                $scope.numLoads += Journals.feedStep;
             }
             $scope.$broadcast('scroll.infiniteScrollComplete');
         };
@@ -74,8 +74,8 @@ angular.module('shareBJ.journals')
         };
 
         $scope.newJournal = function () {
-            console.log("params", $scope.filter, babies.length);
-            console.log("params", $scope.filter, babies);
+            //console.log("params", $scope.filter, babies.length);
+            //console.log("params", $scope.filter, babies);
             if ($scope.filter.baby) {
                 //current baby
                 $state.go("shareBJ.journals.new", {baby: $scope.filter.baby});

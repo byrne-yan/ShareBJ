@@ -1,7 +1,7 @@
 <ion-view view-title="宝宝日记" >
     <ion-nav-title></ion-nav-title>
     <ion-nav-buttons side="primary">
-        <img class="SBJ-AVATAR" ng-src="{{$root.currentUser.profile.avatar}}" ng-if="$root.currentUser.profile.avatar">
+        <img class="SBJ-AVATAR-IMG" ng-src="{{$root.currentUser.profile.avatar}}" ng-if="$root.currentUser.profile.avatar">
         <ng-letter-avatar class="SBJ-AVATAR" data="{{$root.currentUser.profile.name || $root.currentUser.username}}"
                           charCount="1" height="32" width="32" shape="round"
                           ng-if="!$root.currentUser.profile.avatar"></ng-letter-avatar>

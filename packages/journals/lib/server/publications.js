@@ -113,7 +113,7 @@ Meteor.publish('myViewableJournals',function(options, extra){
         })
     }
 
-    //console.log('myViewableJournals:',followingBabies,selector);
+    console.log('myViewableJournals:',followingBabies,selector,options);
 
     //selector = {};
 
