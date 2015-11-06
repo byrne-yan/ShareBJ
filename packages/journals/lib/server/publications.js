@@ -127,16 +127,16 @@ Meteor.publish('myViewableJournals',function(options, extra){
         doc.author = Meteor.users.findOne({_id:doc.author},{fields:{username:1,'profile.name':1,'profile.avatar':1}});
         doc.baby = Babies.findOne({_id:doc.baby});
 
-        const ip = ShareBJ.getPublicIp(connID,connClientAddress);
-        if(ip)
-        {
+        //const ip = ShareBJ.getPublicIp(connID,connClientAddress);
+        //if(ip)
+        //{
             //console.time('Images.getPresignedUrls');
-            doc.images = Images.getPresignedUrls(doc.images,ip);
+            doc.images = Images.getPresignedUrls(doc.images);
             //console.timeEnd('Images.getPresignedUrls');
-        }
-        else　{
-            doc.images = [];
-        }
+        //}
+        //else　{
+        //    doc.images = [];
+        //}
 
         //console.log("images after sigining:",doc.images);
         if(doc.upvoters){

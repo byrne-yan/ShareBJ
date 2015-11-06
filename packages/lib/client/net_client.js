@@ -1,3 +1,4 @@
+/*
 Meteor.startup(function(){
     Tracker.autorun(function(c){
         console.log(Meteor.status());
@@ -14,3 +15,4 @@ Meteor.startup(function(){
         }
     });
 })
+*/

@@ -54,7 +54,8 @@ ShareBJ.get_temp_url = function(region, key, secret,session, bucket, expires, ur
     canonical_querystring += '&X-Amz-Date=' + amz_date;
     canonical_querystring += '&X-Amz-Expires=' + expires;
     canonical_querystring += '&X-Amz-SignedHeaders=' + signed_headers;
-    canonical_querystring += '&x-amz-expect-ip=' + encodeURIComponent(clientIp);
+    if(!!clientIp)
+        canonical_querystring += '&x-amz-expect-ip=' + encodeURIComponent(clientIp);
     canonical_querystring += '&x-amz-security-token=' + encodeURIComponent(session);
 
     const payload_hash = crypto.createHash('SHA256').update('').digest('hex');
