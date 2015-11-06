@@ -141,9 +141,10 @@ class UploaderManager{
                 var ret= uploader._uploader.send(uploader.blob,function(err,downloadUrl){
                     self._computation.stop();
                     self.removeUploader(uploader._uploader);
+                    self._removeUploading(uploader);
 
                     if(err) {
-                        uploadDebug("upload fail:", uploader._category, uploader.filename);
+                        console.log("upload fail:", uploader._category, uploader.filename);
                         Uploads.update({_id:uploader._id},{$set:{
                             progress:Math.ceil(100*uploader._uploader.progress()),
                             status:uploader._uploader.status(),
@@ -157,8 +158,6 @@ class UploaderManager{
                         uploadDebug("upload done:",uploader._category,uploader.filename,speed,'K/S');
 
                         Uploads.update({_id:uploader._id},{$set:{progress:100,status:'done', end:new Date(),speed:speed}});
-
-                        self._removeUploading(uploader);
 
                         uploader.callback(undefined, downloadUrl);
                     }

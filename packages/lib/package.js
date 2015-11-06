@@ -23,8 +23,8 @@ Cordova.depends({
     //"cordova-plugin-sim":"1.0.2",
     //"cordova-plugin-contacts":"1.1.0",
     //"cordova-plugin-device":"1.0.1"
-    'cordova-plugin-crosswalk-webview': '1.3.1'
-    //'cordova-plugin-crosswalk-webview': 'file://../cordova-plugins/cordova-plugin-crosswalk-webview'
+    //'cordova-plugin-crosswalk-webview': '1.3.1'
+    'cordova-plugin-crosswalk-webview': 'file://../cordova-plugins/cordova-plugin-crosswalk-webview'
 });
 
 Package.onUse(function(api) {
