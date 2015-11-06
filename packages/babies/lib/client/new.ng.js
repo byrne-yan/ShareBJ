@@ -38,9 +38,8 @@ angular.module('shareBJ.babies')
                     $scope.baby.birthTime = $scope.babies[0].birth.birthTime;
                     $scope.baby.birthWeight = $scope.babies[0].birth.birthWeight;
                     $scope.baby.birthHeight = $scope.babies[0].birth.birthHeight;
-                }else{
-                    $scope.baby.conceptionDate = $scope.babies[0].conceptionDate;
                 }
+                $scope.baby.conceptionDate = $scope.babies[0].conceptionDate;
             }
        }
 
@@ -61,6 +60,7 @@ angular.module('shareBJ.babies')
                 nickname:baby.nickname
             };
 
+            _.extend(babyObj,{conceptionDate: baby.conceptionDate});
             if(baby.born){
 
                 _.extend(babyObj,{
@@ -71,8 +71,6 @@ angular.module('shareBJ.babies')
                         birthHeight: baby.birthHeight
                     }
                 });
-            }else{
-                _.extend(babyObj,{conceptionDate: baby.conceptionDate});
             }
 /*            if(!$scope.newMode){
                 babyObj._id = $scope.babies[0]._id;
@@ -87,6 +85,12 @@ angular.module('shareBJ.babies')
                 duration:5000
             });
             $scope.newbabyError = {newbaby:false};
+
+            if(!baby.conceptionDate || (baby.born && baby.conceptionDate>=baby.birthTime))
+            {
+                babyCB(new Error('无效受孕日期, 请设置正确受孕日期并且要早于出生日期'));
+                return;
+            }
 
             var babyObj = constructBabyObj(baby);
 

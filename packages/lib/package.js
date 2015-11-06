@@ -88,7 +88,6 @@ Package.onUse(function(api) {
     api.export('ageOf');
     api.export('clone');
     api.export('LocalCollection','client');
-    api.export('SBJ_DEBUG');
 
     //testing purpose
     api.export('_lib_methods4Testing')

@@ -41,26 +41,24 @@
                     <span class="assertive" ng-if="!baby.born">未出生</span>
                 </li>
 
-                <div ng-if="!baby.born">
-                    <label class="item item-input">
-                        <div class="input-label">受孕日期</div>
-                        <input type="date" name="conceptionDate" ng-model="baby.conceptionDate" min="2005-01-01"
-                               placeholder="yyyy-MM-dd" max="{{dateBeforeNow}}" required>
-                    </label>
-                    <div  ng-messages="newBabyForm.conceptionDate.$error" class="error-container"
-                          ng-if="newBabyForm.conceptionDate.$touched">
+                <label class="item item-input">
+                    <div class="input-label">受孕日期</div>
+                    <input type="date" name="conceptionDate" ng-model="baby.conceptionDate" min="2005-01-01"
+                           placeholder="yyyy-MM-dd" max="{{dateBeforeNow}}" required>
+                </label>
+                <div  ng-messages="newBabyForm.conceptionDate.$error" class="error-container"
+                      ng-if="newBabyForm.conceptionDate.$touched">
 
-                        <div ng-message="required" class="error">
-                            <i class="ion-information-circled"></i>
-                            请提供受孕日期
-                        </div>
-                        <div ng-message="datetimelocal" class="error">
-                            <i class="ion-information-circled"></i>
-                            请提供有效受孕日期
-                        </div>
-
-                        <!--<ng-messages-include src="errors-messages"> </ng-messages-include>-->
+                    <div ng-message="required" class="error">
+                        <i class="ion-information-circled"></i>
+                        请提供受孕日期
                     </div>
+                    <div ng-message="datetimelocal" class="error">
+                        <i class="ion-information-circled"></i>
+                        请提供有效受孕日期
+                    </div>
+
+                    <!--<ng-messages-include src="errors-messages"> </ng-messages-include>-->
                 </div>
                 <div ng-if="baby.born">
                     <div class="item item-divider">出生信息</div>

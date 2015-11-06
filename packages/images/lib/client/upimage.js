@@ -1,4 +1,7 @@
-
+function upimageDebug(){
+    if(Images.debug)
+        console.log.apply(console,arguments);
+}
 class ImagesProcessCenter{
     constructor(max = 1){
         this._pendings = [];
@@ -184,13 +187,13 @@ UpImage = class UpImage {
      * @returns {Promise} return a promise of creating scaled image when sucess
      */
     attachURI(uri){
-        if(SBJ_DEBUG) console.time('attachURI took time');
+        if(Images.debug) console.time('attachURI took time');
         var self  = this;
         this.origin.uri = uri;
         return new Promise(function(resolve,reject) {
             UpImage._getImageInfo(uri)
             .then(function(data){
-                if(SBJ_DEBUG) console.log("Image info:",data);
+                upimageDebug("Image info:",data);
                 self.origin.width = data.width;
                 self.origin.height = data.height;
                 self.origin.takenAt = data.takenAt;
@@ -198,7 +201,7 @@ UpImage = class UpImage {
                 //create thumbnail
                 self._createThumbnail(uri)
                     .then(function(){   //thumbnail created
-                        if (SBJ_DEBUG) console.timeEnd('attachURI took time');
+                        if (Images.debug) console.timeEnd('attachURI took time');
                         Meteor.setTimeout(function(){
                             ImagesCenter.push(self,uri);
                         });

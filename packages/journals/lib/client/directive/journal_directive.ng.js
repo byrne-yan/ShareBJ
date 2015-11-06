@@ -25,9 +25,10 @@
                         }
                     }
                 });
-                $scope.age = $scope.journal.baby.birth?
-                        ageOf($scope.journal.baby.birth.birthTime,$scope.journal.when||$scope.journal.createdAt)[3]
-                        :conceptionAge($scope.journal.baby.conceptionDate,$scope.journal.when||$scope.journal.createdAt)[2];
+                var took = $scope.journal.when||$scope.journal.createdAt;
+                $scope.age = ($scope.journal.baby.birth && $scope.journal.baby.birth.birthTime<=took)?
+                        ageOf($scope.journal.baby.birth.birthTime,took)[3]
+                        :conceptionAge($scope.journal.baby.conceptionDate,took)[2];
 
 
                 $scope.closeSlides = function(){
