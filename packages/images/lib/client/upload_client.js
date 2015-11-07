@@ -267,16 +267,13 @@ Images.uploadImages = function(images,thumbsInfo,callback){
       });
       uploadDebug("uploaded thumb info:", thumb);
 
-
-      var uploaderImage = Images.uploadManager.requestUploader("imageUploads", thumb.docId, thumb.babyId, thumb.no,
-          {width: image.image.width, height: image.image.height});
-      uploadDebug("image uploading :", image.image.uri);
-
-
       return new Promise(function (resolve, reject) {
           Tracker.autorun(function (c) {
               if (image.scaleDone) {
                   c.stop();
+                  var uploaderImage = Images.uploadManager.requestUploader("imageUploads", thumb.docId, thumb.babyId, thumb.no,
+                      {width: image.image.width, height: image.image.height});
+                  uploadDebug("image uploading :", image.image.uri);
                   uploaderImage.send(image.image.uri, function (error, downloadUrl) {
                       if (error) {
                           return reject(error);

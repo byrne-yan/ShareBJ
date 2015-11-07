@@ -10,33 +10,57 @@ class ImagesProcessCenter{
     }
     _start(image){
         var self = this;
-        console.log('scaling image:'+image.uri);
+        Images.debug && console.log('scaling image:'+image.uri,image.options);
         this._processings.push(image);
 
-        image.image._createImage(image.uri,{save:true})
-            .then(function(){   //image created
-                console.log('scaling image done:'+image.uri);
-                image.image._scaleOK.set(true);
+        if(image.options && image.options.isThumb) {
+            image.image._createThumbnail(image.uri).then(function(res){
+                Images.debug && console.log('thumbing image done:'+image.uri);
                 self._removeFromProcessings(image);
-            });
-
+                image.callback && image.callback(undefined,res);
+            },function(err){
+                console.log('error:'+err);
+                self._removeFromProcessings(image);
+                image.callback && image.callback(err);
+            })
+        }else{
+            image.image._createImage(image.uri,{save:true})
+                .then(function(){   //image created
+                    Images.debug && console.log('scaling image done:'+image.uri);
+                    image.image._scaleOK.set(true);
+                    self._removeFromProcessings(image);
+                },function(err){
+                    console.log('error:'+err);
+                    self._removeFromProcessings(image);
+                });
+        }
     }
     _removeFromProcessings(image){
         this._processings.splice(this._processings.indexOf(image),1);
         if(this._processings.length<this._processMax && this._pendings.length > 0){
-            this._start(this._pendings.pop());
+            //thumbnail is higher priority
+            var next = _.find(this._pendings,function(task){
+                return task.options && task.options.isThumb;
+            });
+            if(next){
+                this._pendings.splice(this._pendings.indexOf(next),1);
+                this._start(next);
+            }else
+            {
+                this._start(this._pendings.pop());
+            }
         }
     }
-    push(image,uri){
+    push(image,uri,options,callback){
         var self = this;
-        if(this._processings.length<this._processMax){
+        if(this._processings.length<this._processMax && this._pendings.length === 0){
             this._start({
-                image:image,uri:uri
+                image:image,uri:uri,options:options,callback:callback
             });
         }else{
-            console.log("queue image process:"+uri);
+            Images.debug && console.log("queue image process:"+uri,options);
             this._pendings.push({
-                image:image,uri:uri
+                image:image,uri:uri,options:options,callback:callback
             });
         }
     }
@@ -187,7 +211,7 @@ UpImage = class UpImage {
      * @returns {Promise} return a promise of creating scaled image when sucess
      */
     attachURI(uri){
-        if(Images.debug) console.time('attachURI took time');
+        Images.debug &&  console.time('attachURI took time');
         var self  = this;
         this.origin.uri = uri;
         return new Promise(function(resolve,reject) {
@@ -199,17 +223,18 @@ UpImage = class UpImage {
                 self.origin.takenAt = data.takenAt;
                 self.origin.orientation = data.orientation;
                 //create thumbnail
-                self._createThumbnail(uri)
-                    .then(function(){   //thumbnail created
-                        if (Images.debug) console.timeEnd('attachURI took time');
-                        Meteor.setTimeout(function(){
-                            ImagesCenter.push(self,uri);
+                ImagesCenter.push(self,uri,{isThumb:true},function(err) {
+                    //thumbnail created
+                    if (err) {
+                        reject(err);
+                    } else {
+                        Images.debug && console.timeEnd('attachURI took time');
+                        Meteor.setTimeout(function () {
+                            ImagesCenter.push(self, uri);
                         });
                         resolve(self);
-                    })
-                    .catch(function(err){   //error
-                        reject(err);
-                    })
+                    }
+                });
             })
             .catch(function(err){
                     reject(err);
