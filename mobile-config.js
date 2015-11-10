@@ -2,7 +2,7 @@ App.info({
    id:"info.hy-cloud.sharebj",
     name: 'sharebj',
     description: 'Shared Baby Journals',
-    version:'0.1.0',
+    version:'0.1.1',
     author: 'Byrne Yan',
     email: 'yanjb@hy-cloud.info',
     website: 'http://sharebj.hy-cloud.info'
