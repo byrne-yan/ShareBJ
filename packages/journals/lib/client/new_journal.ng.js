@@ -29,7 +29,7 @@ angular.module('shareBJ.journals')
         $scope.journal.imagesCount = 0;
         $scope.maxImages = 9;
 
-        ShareBJ.checkMem().then(function(mem) {
+/*        ShareBJ.checkMem().then(function(mem) {
             journalDebug('available memory:', mem);
             var max = Math.floor((mem - 40) / 10);
             if (max > 9) max = 9;
@@ -38,7 +38,7 @@ angular.module('shareBJ.journals')
                 $scope.memTip = "剩余内存不太够(" + mem + "M)，本次最多只允许上传" + max + "张照片";
             }
             $scope.maxImages = max;
-        });
+        });*/
 
         $scope.$meteorAutorun(function(){
             var desc = $scope.getReactively('journal.description');

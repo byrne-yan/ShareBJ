@@ -1,8 +1,8 @@
 <ion-view view-title="宝宝日记" >
     <ion-nav-title></ion-nav-title>
-    <ion-nav-buttons side="primary">
-        <img class="SBJ-AVATAR-IMG" ng-src="{{$root.currentUser.profile.avatar}}" ng-if="$root.currentUser.profile.avatar">
-        <ng-letter-avatar class="SBJ-AVATAR" data="{{$root.currentUser.profile.name || $root.currentUser.username}}"
+    <ion-nav-buttons side="left">
+        <img class="SBJ-JOURNAL-AVATAR-IMG" ng-src="{{$root.currentUser.profile.avatar}}" ng-if="$root.currentUser.profile.avatar">
+        <ng-letter-avatar class="SBJ-JOURNAL-AVATAR" data="{{$root.currentUser.profile.name || $root.currentUser.username}}"
                           charCount="1" height="32" width="32" shape="round"
                           ng-if="!$root.currentUser.profile.avatar"></ng-letter-avatar>
         <button class="button button-clear" ng-click="newJournal()">
@@ -15,9 +15,12 @@
             </label>
             <!--<button class="button button-clear button-small" ng-click="cancelSearch()">取消</button>-->
         </div>
+        <label class="journal-checkbox checkbox">
+            <input type="checkbox" ng-model="filter.sortByPublish">
+        </label>
         <select class="button button-clear button-balanced button-small baby" ng-model="filter.baby">
-            <option value="" selected>全部</option>
-            <option ng-repeat="baby in babies" value="{{baby._id}}">{{baby.nickname || baby.name}}</option>
+            <option value="" selected ng-if="babies.length > 1">全部</option>
+            <option ng-repeat="baby in babies" value="{{baby._id}}" ng-selected="{{filter.baby===baby._id}}">{{baby.nickname || baby.name}}</option>
         </select>
     </ion-nav-buttons>
 

@@ -14,7 +14,7 @@
             </div>
             <div class="col">{{upload.progress}}% </div>
             <div class="col col-10">{{upload.speed}}</div>
-            <a class="col button button-small button-assertive" ng-click="cancelUpload(upload.uploader)" ng-if="upload.status==='transferring'">取消</a>
+            <a class="col button button-small button-assertive" ng-click="cancelUpload(upload.uploader)" ng-if="upload.status==='transferring' || upload.status==='pending'">取消</a>
         </div>
     </ion-content>
 </ion-view>

@@ -1,5 +1,5 @@
 angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals','shareBJ.images'])
-    .controller('AppCtrl',function($scope,$state,$meteor,$ionicHistory,$rootScope,$timeout) {
+    .controller('AppCtrl',function($scope,$state,$meteor,$ionicHistory,$rootScope,$timeout,$ionicPopup) {
         $scope.$meteorAutorun(function () {
             if (Meteor.userId()) {
                 $scope.notifications = function () {
@@ -49,6 +49,22 @@ angular.module('ShareBJ', ['shareBJ.users', 'shareBJ.babies', 'shareBJ.journals'
                 console.log
             )
         }
+
+        Tracker.autorun(function(c){
+            if(Reload.isWaitingForResume()){
+                c.stop();
+                $ionicPopup.confirm({
+                    title:'',
+                    template:'发现新版本，马上重新启动应用更新吗？选择不的话，下次启动时自动更新！',
+                    cancelText:'不',
+                    okText:'是'
+                }).then(function(res){
+                    if(res){
+                        window.location.reload();
+                    }
+                })
+            }
+        })
     })
     .config(function($ionicConfigProvider){
         $ionicConfigProvider.tabs.position('bottom');

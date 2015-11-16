@@ -1,4 +1,19 @@
+.SBJ-JOURNAL-AVATAR-IMG{
+    margin-right: 4px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+.SBJ-JOURNAL-AVATAR img{
+    margin-right: 4px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
 
+.checkbox.journal-checkbox input{
+    top: -3px;
+}
 select.baby{
     font-size: 10px;
 }
