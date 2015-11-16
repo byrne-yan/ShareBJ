@@ -1,11 +1,14 @@
 AWS = Npm.require('aws-sdk');
 var urlapi = Npm.require('url');
 
+if(Meteor.settings.s3)
+{
 AWS.config.update({
     region:Meteor.settings.s3.image.region,
     accessKeyId:Meteor.settings.s3.image.KEY,
     secretAccessKey:Meteor.settings.s3.image.SECRET
 });
+}
 //console.log(AWS.config.credentials);
 //AWS.config.credentials = new AWS.TemporaryCredentials();
 AWS.config.credentials = new AWS.TemporaryCredentials({

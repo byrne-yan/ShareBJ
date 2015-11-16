@@ -19,6 +19,8 @@ var authorizeFn = function(file, meta) {
     return true;
 };
 
+if(Meteor.settings.s3)
+{
 Slingshot.createDirective("imageUploads",Slingshot.S3Storage,{
     region:Meteor.settings.s3.image.region,
     bucket: Meteor.settings.s3.image.bucket,
@@ -63,3 +65,4 @@ Slingshot.createDirective("originUploads",Slingshot.S3Storage,{
         return s3key;
     }
 })
+}

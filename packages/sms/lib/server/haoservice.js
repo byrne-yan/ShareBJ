@@ -111,5 +111,5 @@ HaoService = class HaoService extends SMSProvider{
     }
 };
 
-
-SMSDeliver.registerProvider('haoservice',new HaoService());
+if(Meteor.settings && Meteor.settings.haoservice)
+    SMSDeliver.registerProvider('haoservice',new HaoService());
