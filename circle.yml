@@ -1,3 +1,7 @@
+checkout:
+    post:
+        - git submodule sync
+        - git submodule update --init  
 dependencies:
     cache_directories:
         - "~/.meteor"
@@ -14,6 +18,7 @@ dependencies:
         # Install package dependencies for Cucumber support files
         - npm install --production:
             pwd: tests/cucumber
+
 test:
     override:
         # Run tests in Velocity CI mode
