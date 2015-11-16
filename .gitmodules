@@ -4,6 +4,6 @@
 [submodule "packages/meteor-clientside-image-manipulation"]
   path = packages/meteor-clientside-image-manipulation
   url = https://github.com/byrne-yan/meteor-clientside-image-manipulation.git
-[submodule "packages/meteor-cordova-file-server"]
-  path = packages/meteor-cordova-file-server
-  url = https://github.com/byrne-yan/meteor-cordova-file-server.git
+#[submodule "packages/meteor-cordova-file-server"]
+#  path = packages/meteor-cordova-file-server
+#  url = https://github.com/byrne-yan/meteor-cordova-file-server.git
