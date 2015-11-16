@@ -19,7 +19,7 @@ test:
     # Run tests in Velocity CI mode
     - meteor --test:
       enviroment:
-        VELOCITY_CI:true
+        VELOCITY_CI: true
         CUCUMBER_SCREENSHOTS_DIR: "$CIRCLE_ARTIFACTS/screenshots"
         CUCUMBER_JSON_OUTPUT: "$CIRCLE_TEST_REPORTS/results.cucumber"
     - cp .meteor/local/log/*.log $CIRCLE_ARTIFCATS
