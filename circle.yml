@@ -5,7 +5,7 @@ dependencies:
 
     override:
         # Install Meteor
-        - curl https://intsall.meteor.com | sh
+        - curl https://install.meteor.com | sh
         # Restore the meteor symlink
         - if [-d ~/.meteor ]; then sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor; fi
         # Install Meteor if the cache didn't restore it
