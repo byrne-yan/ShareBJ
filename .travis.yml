@@ -1,11 +1,11 @@
 sudo: required
 language: node_js
 node_js:
-    - "0.8"
-    - "0.10
+    - "0.10"
+
 env:
     PACKAGES=packages/accounts-phone
     TEST_COMMAND=./travis.sh
+
 before_install:
     - "curl -L http://git.io/ejPSng | /bin/sh"
-
