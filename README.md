@@ -1,5 +1,4 @@
-[![Circle CI](https://circleci.com/gh/byrne-yan/ShareBJ/tree/master.svg?style=shield&circle-token=bd1af33cae573bc642c2ef22388c1b341f650d9d)](https://circleci.com/gh/byrne-yan/ShareBJ/tree/master)
-
+[![Circle CI](https://circleci.com/gh/byrne-yan/ShareBJ/tree/master.svg?style=shield&circle-token=bd1af33cae573bc642c2ef22388c1b341f650d9d)](https://circleci.com/gh/byrne-yan/ShareBJ/tree/master) [![Build Status](https://travis-ci.org/byrne-yan/ShareBJ.svg)](https://travis-ci.org/byrne-yan/ShareBJ)
 ShareBJ（分享宝宝日记）是一个开源的、实时的家庭社交应用。通过ShareBJ, 宝宝的成长精彩瞬间可以通过文字、照片存储在云端。这些精彩瞬间不再会因为手机遗失、损坏而丢失。
 
 **注**：ShareBJ是个beta阶段软件。它的绝大多数功能应该都能使用，但仍然存在一些未琢磨的地方，你很有可能会发现一些BUG。使用时请自己承担风险:)

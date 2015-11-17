@@ -3,7 +3,7 @@ Package.describe({
   version: '0.0.1',
 
   summary: 'ShareBJ cores',
-  git: 'https://git.oschina.net/vamp/ShareBJ.git',
+  git: 'https://github.com/byrne-yan/ShareBJ.git',
   documentation: 'README.md'
 });
 
@@ -18,5 +18,4 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
   api.use('tinytest');
   api.use('sbj:core');
-  api.addFiles('core-tests-bak.js');
 });
