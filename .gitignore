@@ -24,5 +24,4 @@ node_modules
 .meteor/local
 
 s3.sh
-/packages/images/.npm
-settings.json
+/app/packages/images/.npm

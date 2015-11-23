@@ -1,0 +1,73 @@
+{
+  "admin":{
+    "username":"admin",
+    "password":"admin403",
+    "email":"yanjb@hy-cloud.info"
+  },
+  "MAIL_URL":"smtp://pk_sender:pk_password@pk_smtp/",
+  "s3":{
+    "avatar":{
+      "region":"cn-north-1",
+      "bucket":"sharebj",
+      "prefix": "avatars/",
+      "acl":"public-read",
+      "KEY":"AKIAOETG7B56JKF6AXKA",
+      "SECRET":"pk_AKIAOETG7B56JKF6AXKA"
+    },
+    "image":{
+      "region":"cn-north-1",
+      "bucket":"sharebj",
+      "prefix": "images/",
+      "acl":"private",
+      "KEY":"AKIAOETG7B56JKF6AXKA",
+      "SECRET":"pk_AKIAOETG7B56JKF6AXKA"
+    }
+  },
+  "sms":{
+    "provider":"haoservice"
+  },
+  "haoservice":{
+    "key":"pk_5b35e03165b8ba1",
+    "send_url":"http://apis.haoservice.com/sms/send",
+    "status_url":"http://apis.haoservice.com/sms/getmessagestatus",
+
+    "templates":{
+      "register":{
+        "id":927,
+        "params":["code","minutes"]
+      },
+      "initial_password":{
+        "id":932,
+        "params":["password"]
+      },
+      "password_reset":{
+        "id":928,
+        "params":["code","minutes"]
+      },
+      "mobile_confirm":{
+        "id":929,
+        "params":["name","nickname","code","minutes"]
+      },
+      "test":{
+        "id":470,
+        "params":["no"]
+      }
+    }
+  },
+  "QQ":{
+    "APP_ID":"1104934552",
+    "APP_KEY":"pk_1104934552"
+  },
+  "Weibo":{
+    "APP_ID":"3510021374",
+    "APP_KEY":"pk_3510021374"
+  },
+  "Wechat":{
+    "APP_ID":"1104934686",
+    "APP_KEY":"pk_1104934686"
+  },
+  "kadira": {
+    "appId": "Pm5wArbvZTe5gP4DC",
+    "appSecret": "pk_Pm5wArbvZTe5gP4DC"
+  }
+}
