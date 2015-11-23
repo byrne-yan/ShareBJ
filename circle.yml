@@ -33,7 +33,7 @@ dependencies:
         - if [ -e /tmp/update-chrome ] && [ ! -e ~/_opt/google-chrome.tar ]; then sudo apt-get install google-chrome-stable; fi
         - if [ -e /tmp/update-chrome ] && [ ! -e ~/_opt/google-chrome.tar ]; then mkdir ~/_opt; tar -cvf ~/_opt/google-chrome.tar /opt/google/chrome/; fi
         
-        # -- CACHE Meeor --
+        # -- CACHE Meteor --
         # Restore the meteor symlink
         - if [-d ~/.meteor ]; then sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor; fi
         # Install Meteor if the cache didn't restore it
@@ -45,7 +45,7 @@ dependencies:
         #            pwd: app
         #            environment:
         #                INSTALL_DEPENDENCIES: true
-        - meteor --raw-logs --settings /home/ubuntu/ShareBJ/environments/build/settings.json:
+        - meteor --version:
             pwd: app
             
         # -- UPDATE NPM --
