@@ -35,10 +35,10 @@ dependencies:
         
         # -- CACHE Meteor --
         # Restore the meteor symlink
-        - if [-d ~/.meteor ]; then sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor; fi
+        #- if [-d ~/.meteor ]; then sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor; fi
         # Install Meteor if the cache didn't restore it
-        - if [ ! -e ~/.meteor/meteor ]; then curl https://install.meteor.com | /bin/sh; fi
-
+        #- if [ ! -e ~/.meteor/meteor ]; then curl https://install.meteor.com | /bin/sh; fi
+        - curl https://install.meteor.com | /bin/sh
         - ls ~/.meteor
         - echo $PATH
         # -- CACHE CUCUMBER NPM MDOULES --
