@@ -6,6 +6,8 @@ ShareBJ（分享宝宝日记）是一个开源的、实时的家庭社交应用�
 注意ShareBJ遵循[GPL协议](https://www.gnu.org/licenses/gpl-2.0.html), 意味你打算将本项目运用于商业目的时，你的项目也必须是GPL开源。
 
 # 功能
+
+[![Join the chat at https://gitter.im/byrne-yan/ShareBJ](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/byrne-yan/ShareBJ?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 1. 数据云中保存，永不担心丢失
 1. 文字、照片记录宝宝成长瞬间
 1. 一人上传，亲朋实时可见
