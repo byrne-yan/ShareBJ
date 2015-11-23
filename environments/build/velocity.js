@@ -58,7 +58,8 @@ meteorProcess.stdout.on('data', function (data) {
     }
 
     // watch for Meteor error messages
-    if (line.indexOf('Your application is crashing') !== -1) {
+    if (line.indexOf('Your application is crashing') !== -1 ||
+        line.indexOf('Your application has errors')) {
         meteorProcess.kill('SIGINT');
         process.exit(1);
     }

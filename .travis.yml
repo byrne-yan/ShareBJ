@@ -5,7 +5,7 @@ node_js:
 
 env:
     PACKAGES=packages/accounts-phone
-    TEST_COMMAND=./travis.sh
+    TEST_COMMAND=cd app && ./travis.sh
 
 before_install:
     - "curl -L http://git.io/ejPSng | /bin/sh"

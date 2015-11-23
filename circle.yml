@@ -72,7 +72,7 @@ test:
 #                CUCUMBER_SCREENSHOTS_DIR: "$CIRCLE_ARTIFACTS/screenshots"
 #                CUCUMBER_JSON_OUTPUT: "$CIRCLE_TEST_REPORTS/results.cucumber"
 #        - cp .meteor/local/log/*.log $CIRCLE_ARTIFACTS
-        - velocity test-package packages/accounts-phone --ci --settings settings-ci.json
+#        - velocity test-package packages/accounts-phone --ci --settings settings-ci.json
         # Test the app with Chrome and ensure all artifacts can be traced back to the chrome run
         - node ../environments/build/velocity.js:
             pwd: app

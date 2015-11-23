@@ -1,4 +1,4 @@
 #!/bin/sh
 
-meteor "$@" --settings settings-ci.json
+meteor "$@" --settings ../environments/build/settings.json
 
