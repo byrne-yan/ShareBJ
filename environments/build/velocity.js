@@ -12,7 +12,7 @@ args.push('--raw-logs');
 args.push('--settings');
 args.push(path.resolve(process.cwd(), process.env.SETTINGS_FILE));
 
-
+process.env.VELOCITY_DEBUG = 1;
 
 // Setting INSTALL_DEPENDENCIES downloads dependencies and exits. Used for build caching
 if (!!process.env.INSTALL_DEPENDENCIES) {
@@ -24,7 +24,11 @@ else {
     args.push('--test');
 }
 
-console.log('Starting Meteor');
+console.log('INSTALL_DEPENDENCIES:'+!!process.env.INSTALL_DEPENDENCIES);
+console.log('CWD:'+process.cwd());
+console.log('SETTINGS_FILE:'+process.env.SETTINGS_FILE);
+
+console.log('Starting Meteor with args:'+args);
 var meteorProcess = spawn(
     'meteor', args, {
         cwd: process.cwd(),

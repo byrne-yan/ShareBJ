@@ -16,4 +16,8 @@ fi
 
 cd app
 #meteor $1 --settings ../environments/local/settings.json --release velocity:METEOR@1.1.0.3_2 --raw-logs
-meteor $1 --settings ../environments/local/settings.json --raw-logs
+if [ "$1" = "test-packages" ]; then
+    meteor $1 --settings ../environments/local/settings.json
+else
+    meteor $1 --settings ../environments/local/settings.json --raw-logs
+fi
