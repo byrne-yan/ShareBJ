@@ -45,7 +45,7 @@ dependencies:
         #            pwd: app
         #            environment:
         #                INSTALL_DEPENDENCIES: true
-        - meteor --raw-logs --settings /home/ubuntu/ShareBJ/environments/build/settings.json
+        - meteor --raw-logs --settings /home/ubuntu/ShareBJ/environments/build/settings.json:
             pwd: app
             
         # -- UPDATE NPM --
