@@ -41,10 +41,10 @@ dependencies:
 
         # -- CACHE CUCUMBER NPM MDOULES --
         # Install Meteor releated dependencies
-#        - node ../environments/build/velocity.js:
-#            pwd: app
-#            environment:
-#                INSTALL_DEPENDENCIES: true
+        #        - node ../environments/build/velocity.js:
+        #            pwd: app
+        #            environment:
+        #                INSTALL_DEPENDENCIES: true
         - meteor --raw-logs --settings /home/ubuntu/ShareBJ/environments/build/settings.json
             pwd: app
             
