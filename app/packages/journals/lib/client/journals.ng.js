@@ -4,22 +4,32 @@ angular.module('shareBJ.journals')
     .controller('JournalsCtrl', function ($scope, $meteor, $stateParams, babies, $state, $ionicHistory,$ionicModal) {
         $scope.error = {};
 
+        $scope.filter = {};
         if (babies.length === 0) {
             $ionicHistory.nextViewOptions({
                 disableBack: true
             });
             $state.go('shareBJ.babies.list');
         }
+        if (babies.length === 1) {
+            $scope.filter.baby = babies[0]._id;
+        }
         $scope.numLoads = Journals.feedStep;
-        $scope.filter = {};
         if($stateParams.baby)
             $scope.filter.baby = $stateParams.baby;
 
         $scope.babies = babies;
+        $scope.filter.sortByPublish = false;
+        $scope.sortMode = {when: -1};
         $meteor.autorun($scope,function(){
+
+            if($scope.getReactively('filter.sortByPublish'))
+                $scope.sortMode = {createdAt: -1};
+            else
+                $scope.sortMode = {when: -1};
             $meteor.subscribe('myViewableJournals',{
                 limit:parseInt($scope.getReactively('numLoads')),
-                sort:{createdAt: -1}
+                sort: $scope.sortMode
             },
                 {
                     baby: $scope.getReactively('filter.baby'),
@@ -42,15 +52,16 @@ angular.module('shareBJ.journals')
         //    if($scope.getReactively('journals',true))
         //        console.timeEnd('shareBJ.journals.list');
         //});
-
-        $scope.journals = $meteor.collection( function() {
-                    return Journals.find({},{
-                    sort: {createdAt: -1}/*,
-                    transform: cacheTransform*/
-                })
-            },
-            false
-        );
+        $scope.$meteorAutorun(function() {
+            $scope.journals = $meteor.collection(function () {
+                    return Journals.find({}, {
+                        sort: $scope.getReactively('sortMode')/*,
+                         transform: cacheTransform*/
+                    })
+                },
+                false
+            );
+        });
 
         function cacheTransform(journal){
             _.each(journal.iamges,function(iamge){

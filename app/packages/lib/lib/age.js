@@ -8,12 +8,18 @@ conceptionAge = function(conceptionDate,toThen){
         else
             now = new Date();
 
-        var timeSpan = now.getTime() - conceptionDate.getTime() ;
+        var timeSpan = now.getTime() - conceptionDate.getTime();
+        if(timeSpan>=0)
+        {
+            var weeks = Math.floor(timeSpan/1000/60/60/24/7);
+            var days = Math.ceil(timeSpan/1000/60/60/24) - weeks*7;
+            return [weeks,days,weeks+'周' + (days?'+'+days:'')];
+        }
+        //孕前
+        timeSpan = conceptionDate.getTime() - now.getTime();
         var weeks = Math.floor(timeSpan/1000/60/60/24/7);
         var days = Math.ceil(timeSpan/1000/60/60/24) - weeks*7;
-
-
-        return [weeks,days,weeks+'周' + (days?'+'+days:'')];
+        return [-weeks,-days,'孕前'+weeks+'周' + (days?'+'+days:'')];
     }
     return null;
 };
