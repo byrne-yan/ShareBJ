@@ -1,4 +1,4 @@
-[![Circle CI](https://circleci.com/gh/byrne-yan/ShareBJ/tree/master.svg?style=shield&circle-token=bd1af33cae573bc642c2ef22388c1b341f650d9d)](https://circleci.com/gh/byrne-yan/ShareBJ/tree/master) [![Build Status](https://travis-ci.org/byrne-yan/ShareBJ.svg?branch=master)](https://travis-ci.org/byrne-yan/ShareBJ)[![Join the chat at https://gitter.im/byrne-yan/ShareBJ](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/byrne-yan/ShareBJ?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Circle CI](https://circleci.com/gh/byrne-yan/ShareBJ/tree/master.svg?style=shield&circle-token=bd1af33cae573bc642c2ef22388c1b341f650d9d)](https://circleci.com/gh/byrne-yan/ShareBJ/tree/master)
 
 ShareBJ（分享宝宝日记）是一个开源的、实时的家庭社交应用。通过ShareBJ, 宝宝的成长精彩瞬间可以通过文字、照片存储在云端。这些精彩瞬间不再会因为手机遗失、损坏而丢失。
 
@@ -20,11 +20,11 @@ To run ShareBJ, clone the repo and type:
 
 `./run.sh`
 
-To test locally, type:
+To test end-to-end tests locally, type:
 
 `./run.sh --test`
 
-To test packages with tinytest, type:
+To test packages, type:
 
 `./run.sh test-packages`
 

@@ -33,6 +33,9 @@ class SMSManger{
 
         this._providers[name] = provider;
     }
+    listProviders(){
+        return this._providers;
+    }
     setProvider(provider){
         if(!this._providers[provider])
             throw new Error(`'${provider} is not registered yet`);

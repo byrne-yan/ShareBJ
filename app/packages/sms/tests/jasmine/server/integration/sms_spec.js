@@ -107,9 +107,9 @@ describe('SMSManager',function(){
     });
 
     describe('haoservice_provider_basic',function(){
-        let originProvider;
+        //let originProvider;
         beforeEach(function(){
-            originProvider = SMSDeliver._current;
+            this.originProvider = SMSDeliver._current;
             let testProvider = new HaoService();
             testProvider._key = "key1234567890123456789";
             testProvider._send_url = "http:/exmaple.com.sms/send";
@@ -120,7 +120,7 @@ describe('SMSManager',function(){
             SMSDeliver._current = testProvider;
         });
         afterEach(()=>{
-            SMSDeliver._current= originProvider;
+            SMSDeliver._current= this.originProvider;
         });
 
         it('should has a name',function(){
@@ -178,9 +178,10 @@ describe('SMSManager',function(){
     });
 
     describe('haoservice_provider_templates',function(){
-        let originProvider;
+        //let originProvider;
         beforeEach(()=>{
-            originProvider = SMSDeliver._current;
+            //console.log('SMSDeliver._current:',SMSDeliver._current);
+            this.originProvider = SMSDeliver._current;
 
             try{
                 SMSDeliver.setProvider('haoservice');
@@ -190,7 +191,8 @@ describe('SMSManager',function(){
             }
         });
         afterEach(()=>{
-            SMSDeliver._current= originProvider;
+            //console.log("originProvider:",this.originProvider);
+            SMSDeliver._current= this.originProvider;
         });
 
         it('send register verification code',(done)=>{
