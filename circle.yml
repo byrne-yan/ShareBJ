@@ -41,7 +41,7 @@ dependencies:
         - meteor || curl https://install.meteor.com | /bin/sh
 
         # test if metro ok?
-        - meteor --raw-logs --settings ../environments/build/settings.json
+        - meteor --raw-logs --settings ../environments/build/settings.json:
             pwd: app
             environment:
                 INSTALL_DEPENDENCIES: true
