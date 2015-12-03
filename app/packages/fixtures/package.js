@@ -24,6 +24,7 @@ Package.onUse(function(api) {
   api.addFiles('fixtures.js','server');
     api.addFiles('helpers.js');
     api.addFiles('server_helpers.js','server');
+    api.addFiles('Blob.js');
 
     api.export('TestStorageService');
 });

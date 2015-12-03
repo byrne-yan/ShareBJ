@@ -1,3 +1,5 @@
+Accounts.removeDefaultRateLimit();
+
 Meteor.methods({
     'fixtures/users/reset':function(){
         Meteor.users.remove({});

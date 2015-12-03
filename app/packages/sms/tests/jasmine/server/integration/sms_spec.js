@@ -181,7 +181,13 @@ describe('SMSManager',function(){
         let originProvider;
         beforeEach(()=>{
             originProvider = SMSDeliver._current;
-            SMSDeliver.setProvider('haoservice');
+
+            try{
+                SMSDeliver.setProvider('haoservice');
+            }catch(e){
+                SMSDeliver.registerProvider('haoservice',new HaoService());
+                SMSDeliver.setProvider('haoservice');
+            }
         });
         afterEach(()=>{
             SMSDeliver._current= originProvider;

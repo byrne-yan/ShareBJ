@@ -79,7 +79,7 @@ Accounts.validateNewUser(function(user){
 
 getUploadLimits = function(userId){
     if(!userId || !Users.findOne({_id:userId}))
-        throw  new Meteor(404,"User not found");
+        throw  new Meteor.Error(404,"User not found");
 
     //TODO: no limits yet
     return {counts: 0, size: 0, quality:"high"}

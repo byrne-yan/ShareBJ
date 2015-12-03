@@ -27,12 +27,12 @@ describe "sbj:users", ->
     describe '$scope.login', ->
       it 'should have a valid user logged in', ->
         loginCtrl = $controller 'LoginCtrl', $scope:$scope
-        $state.go 'users_login'
+        $state.go 'login'
         $rootScope.$digest()
-        $scope.username = 'test_user'
-        $scope.password = '123456'
+        $scope.user.username = 'test_user'
+        $scope.user.password = '123456'
         $scope.login()
-        expect($state.current.name).toBe('users_login')
+        expect($state.current.name).toBe('login')
         expect($location.path()).toBe('/login')
 
 

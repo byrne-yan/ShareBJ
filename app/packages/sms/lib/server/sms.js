@@ -103,6 +103,6 @@ Meteor.startup(function(){
        SMSDeliver.setProvider(Meteor.settings.sms.provider);
    }
    if(!SMSDeliver.isReady){
-       console.log("Waring: no sms deliver provoder set! SMS messages will not be sent!");
+       console.log("Waring: no sms deliver provider set! SMS messages will not be sent!");
    }
 });

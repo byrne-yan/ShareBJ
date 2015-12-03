@@ -57,9 +57,6 @@ dependencies:
         # - cd $HOME/.meteor/packages/meteor-tool/1.1.4/mt-*/dev_bundle/lib && ../bin/npm install npm
         # - cd $HOME/.meteor/packages/velocity_meteor-tool/1.1.4_2/mt-*/dev_bundle/lib && ../bin/npm install npm
 
-        # Install velocity-cli
-        - npm install velocity-cli -g
-
         # -- CACHE CUCUMBER NPM MDOULES --
         # Install package dependencies for Cucumber support files
         - npm install --production:
@@ -71,14 +68,12 @@ dependencies:
 
 test:
     override:
-        # Run tests in Velocity CI mode
-#        - meteor --test:
-#            environment:
-#                VELOCITY_CI: true
-#                CUCUMBER_SCREENSHOTS_DIR: "$CIRCLE_ARTIFACTS/screenshots"
-#                CUCUMBER_JSON_OUTPUT: "$CIRCLE_TEST_REPORTS/results.cucumber"
-#        - cp .meteor/local/log/*.log $CIRCLE_ARTIFACTS
-#        - velocity test-package packages/accounts-phone --ci --settings settings-ci.json
+        # Run packages tests in Velocity CI mode
+        - meteor test-packages --velocity --settings ../environments/build/settings.json "--driver-package velocity:html-reporter":
+            pwd: app
+            enviroment:
+                VELOCITY_TEST_PACKAGES: 1
+
         # Test the app with Chrome and ensure all artifacts can be traced back to the chrome run
         - node ../environments/build/velocity.js:
             pwd: app
