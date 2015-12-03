@@ -39,7 +39,6 @@ var meteorProcess = spawn(
 
 meteorProcess.stderr.pipe(process.stderr);
 meteorProcess.stdout.on('data', function (data) {
-
     var line = data.toString();
 
     // ignore this line
@@ -59,9 +58,8 @@ meteorProcess.stdout.on('data', function (data) {
 
     // watch for Meteor error messages
     if (line.indexOf('Your application is crashing') !== -1 ||
-        line.indexOf('Your application has errors')) {
+        line.indexOf('Your application has errors') !== -1 )  {
         meteorProcess.kill('SIGINT');
-        console.log(line);
         process.exit(1);
     }
 
