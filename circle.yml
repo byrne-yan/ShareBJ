@@ -71,7 +71,7 @@ test:
         # Run packages tests in Velocity CI mode
         - meteor test-packages --velocity --settings ../environments/build/settings.json:
             pwd: app
-            enviroment:
+            environment:
                 VELOCITY_TEST_PACKAGES: 1
 
         # Test the app with Chrome and ensure all artifacts can be traced back to the chrome run
