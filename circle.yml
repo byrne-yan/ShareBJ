@@ -69,7 +69,7 @@ dependencies:
 test:
     override:
         # Run packages tests in Velocity CI mode
-        - meteor test-packages --velocity --settings ../environments/build/settings.json --driver-package velocity&colon;html-reporter:
+        - meteor test-packages --velocity --settings ../environments/build/settings.json --driver-package velocity:html-reporter:
             pwd: app
             enviroment:
                 VELOCITY_TEST_PACKAGES: 1
