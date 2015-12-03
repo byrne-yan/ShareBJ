@@ -42,6 +42,7 @@ module.exports = function () {
 
     this.Then(/^Babies list page shows with no back button$/, function () {
         client.waitForExist('#baby-search');
+        client.pause(200);
         expect(client.isVisible('#baby-search')).toBe(true);
     });
 
